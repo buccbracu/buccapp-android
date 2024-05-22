@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             BuccTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "demo",
+                        name = "BUCC",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

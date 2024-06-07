@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import com.buccbracu.bucc.R
 import androidx.compose.ui.unit.dp
 
@@ -35,7 +35,7 @@ fun Memberslist(){
 
 @Composable
 fun MemberlistCard(ProfileImg:String,ProfileName:String,ActiveTM:String){
-    Card {
+    Card() {
         Row (horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,8 +59,3 @@ fun MemberlistCard(ProfileImg:String,ProfileName:String,ActiveTM:String){
 }
 
 
-@Preview
-@Composable
-fun MemberListPreview(){
-    Memberslist()
-}

@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Memberslist(){
-    Column {
-        MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "2 hrs ago")
-        MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "2 hrs ago")
-        MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "2 hrs ago")
-        MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "2 hrs ago")
-        MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "2 hrs ago")
+    Column (
+            Modifier.verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center)
+    {
+        for(i in 1..15){
+            MemberlistCard(ProfileImg = "Itachi", ProfileName = "Itachi Uchiha", ActiveTM = "$i hrs ago")
+        }
     }
 }
 

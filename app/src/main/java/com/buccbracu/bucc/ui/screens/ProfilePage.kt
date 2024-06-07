@@ -51,7 +51,7 @@ fun ProfilePage(){
                 )
             Button(onClick = { /*TODO*/ },
                 shape = RectangleShape,
-                ) {}
+                ) {Text = text = "Message"}
         }
         Row(horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
@@ -76,7 +76,7 @@ fun ProfileActivity(txt1:String,txt2:String){
                 .clip(CircleShape),
             contentScale = ContentScale.Crop)
         Text(text = txt1, fontWeight = FontWeight.Bold)
-        Text(text = "Followers")
+        Text(text = txt2)
     }
 }
 

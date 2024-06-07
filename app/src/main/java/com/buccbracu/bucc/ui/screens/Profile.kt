@@ -6,4 +6,5 @@ import androidx.compose.runtime.Composable
 @Composable
 fun Profile(){
     Text(text = "Profile")
+    ProfilePage()
 }

@@ -21,10 +21,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 import com.buccbracu.bucc.R
 import androidx.compose.ui.unit.dp
-import com.buccbracu.bucc.ui.theme.BRACblue
+
 
 @Composable
 fun ProfilePage(){
@@ -83,8 +83,3 @@ fun ProfileActivity(txt1:String,txt2:String){
 
 
 
-@Preview
-@Composable
-fun ProfilePagepreview(){
-    ProfilePage()
-}

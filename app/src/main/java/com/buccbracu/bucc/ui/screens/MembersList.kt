@@ -63,7 +63,7 @@ fun Memberslist(){
                 horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            for(i in 1..15){ MembersI()}
+            for(i in 1..20){ MembersI()}
         }
     }
 }

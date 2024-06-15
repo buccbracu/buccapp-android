@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">bucc</string>
+    <string name="bucc_desc">A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology.</string>
 </resources>

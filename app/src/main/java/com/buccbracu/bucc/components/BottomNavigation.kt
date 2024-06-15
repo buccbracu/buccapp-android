@@ -15,9 +15,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import com.buccbracu.bucc.Greeting
 import com.buccbracu.bucc.models.BottomNavItem
 import com.buccbracu.bucc.ui.theme.BuccTheme
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)

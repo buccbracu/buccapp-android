@@ -35,7 +35,10 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Main(){
-    var selectedIndex by rememberSaveable {
+    var selectedIndexBotNav by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+    var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(0)
     }
     val navController = rememberNavController()
@@ -48,13 +51,17 @@ fun Main(){
         drawerContent = { ModalDrawerSheet {
             NavDrawer(
                 scrollState = scrollState,
-                onClick = {title ->
-                    navController.navigate(title)
-                    selectedIndex = -1
+                selectedIndex = selectedIndexDrawer,
+                onClick = {item ->
+                    navController.navigate(item.title)
+                    selectedIndexBotNav = -1
                     scope.launch {
                         drawerState.close()
                     }
-                }
+                    selectedIndexDrawer = item.index!!
+                    
+                },
+                
             )
             }
         },
@@ -63,8 +70,10 @@ fun Main(){
 
         Scaffold(
             bottomBar = {
-                BottomNavigation(selectedIndex = selectedIndex) { index ->
-                    selectedIndex = index
+                BottomNavigation(selectedIndex = selectedIndexBotNav) { index ->
+                    selectedIndexBotNav = index
+                    selectedIndexDrawer = -1
+                    println("$selectedIndexDrawer $selectedIndexBotNav")
                     when (index) {
                         0 -> navController.navigate("Profile")
                         1 -> navController.navigate("Dashboard")

@@ -3,21 +3,29 @@ package com.buccbracu.bucc.models
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.SupervisedUserCircle
+import androidx.compose.material.icons.outlined.Apartment
+import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavDrawerItem(
-    val icon: ImageVector? = null,
+    val selectedIcon: ImageVector? = null,
+    val unselectedIcon: ImageVector? = null,
     val title: String,
     val isDivider: Boolean = false,
-    val isHeader: Boolean = false
+    val isHeader: Boolean = false,
+    val index: Int? = null
 ){
     object AboutUs: NavDrawerItem(
-        icon = Icons.Filled.SupervisedUserCircle,
+        selectedIcon = Icons.Filled.SupervisedUserCircle,
+        unselectedIcon = Icons.Outlined.SupervisedUserCircle,
         title = "About Us",
+        index = 0
     )
     object AboutClub: NavDrawerItem(
-        icon = Icons.Filled.Apartment,
-        title = "About BUCC"
+        selectedIcon = Icons.Filled.Apartment,
+        unselectedIcon = Icons.Outlined.Apartment,
+        title = "About BUCC",
+        index = 1
     )
 
     object Divider: NavDrawerItem(

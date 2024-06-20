@@ -37,8 +37,7 @@ fun BottomNavigation(selectedIndex: Int, onItemSelcted: (Int) -> Unit){
                     onItemSelcted(item.idx)
                     navSelect = item.idx
                     item.badge.value = false
-                    item.badgeCount.value = 0
-                    println("${item.badge} ${item.badgeCount}")
+                    item.badgeCount.intValue = 0
                           },
                 label = {
                     Text(text = item.title)

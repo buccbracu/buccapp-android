@@ -1,10 +1,7 @@
 package com.buccbracu.bucc.ui
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
@@ -14,12 +11,9 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,6 +25,11 @@ import com.buccbracu.bucc.ui.screens.AboutUs
 import com.buccbracu.bucc.ui.screens.Dashboard
 import com.buccbracu.bucc.ui.screens.Profile
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -39,12 +38,33 @@ fun Main(){
         mutableIntStateOf(0)
     }
     var selectedIndexDrawer by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableIntStateOf(-1)
     }
     val navController = rememberNavController()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
     var scrollState = rememberScrollState()
+
+    // server check
+
+    val loginVM: LoginVM = viewModel()
+
+    LaunchedEffect(Unit) {
+        loginVM.loginSuccess(
+            memberID = "23341077",
+            memberName = "Aadit",
+            memberDepartment = "R&D",
+            memberDesignation = "AD"
+        )
+        
+    }
+
+    val sessionData by loginVM.allSessions.collectAsState()
+
+
+
+    //-------------------------------
+
     
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -92,7 +112,7 @@ fun Main(){
                     Dashboard()
                 }
                 composable("About Us"){
-                    AboutUs()
+                    AboutUs(sessionData[0])
                 }
                 composable("About BUCC"){
                     AboutClub()

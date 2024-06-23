@@ -4,16 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -23,16 +18,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.buccbracu.bucc.R
+import com.buccbracu.bucc.backend.local.models.Session
 
 val bucc_desc = "A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology."
 
 @Composable
-fun AboutUs(){
-    Text(text = "We are R&D")
+fun AboutUs(s: Session){
+    Row(
+        modifier = Modifier
+            .padding(top = 20.dp)
+    ) {
+        Text(text = "${s.name}")
+    }
 }
 
 @Composable

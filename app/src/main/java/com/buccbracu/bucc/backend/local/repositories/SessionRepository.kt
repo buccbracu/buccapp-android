@@ -2,14 +2,17 @@ package com.buccbracu.bucc.backend.local.repositories
 
 import com.buccbracu.bucc.backend.local.LocalServer
 import com.buccbracu.bucc.backend.local.models.Session
+import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class SessionRepository {
+class SessionRepository @Inject constructor(
+    private val realm: Realm
+) {
 
-    private val realm = LocalServer.realm
 
     suspend fun createSession(session: List<String>){
         realm.write {

@@ -27,7 +27,7 @@ import com.buccbracu.bucc.ui.screens.Profile
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
 
 
@@ -47,7 +47,7 @@ fun Main(){
 
     // server check
 
-    val loginVM: LoginVM = viewModel()
+    val loginVM: LoginVM = hiltViewModel()
 
     LaunchedEffect(Unit) {
         loginVM.loginSuccess(

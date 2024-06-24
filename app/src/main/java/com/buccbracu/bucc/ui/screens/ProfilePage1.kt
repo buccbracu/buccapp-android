@@ -100,7 +100,7 @@ fun TopBar(
 
 @Composable
 fun ProfileSection(
-    modifier: Modifier = Modifier.padding(top = 20.dp)
+    modifier: Modifier = Modifier.padding(top = 17.dp)
 ){
     Column(
         modifier = modifier.fillMaxWidth()
@@ -108,7 +108,7 @@ fun ProfileSection(
     {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
@@ -117,7 +117,7 @@ fun ProfileSection(
                 modifier = Modifier
                     .size(100.dp)
                     .weight(3f))
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(60.dp))
             Details()
         }
         StatSection(modifier = Modifier.weight(7f))
@@ -148,9 +148,10 @@ fun RoundImage(
 @Composable
 fun StatSection(modifier: Modifier = Modifier){
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = modifier.fillMaxWidth()
+            .padding(top=40.dp)
     ) {
         ProfileStats(statNum = "100", statName = "Attendance")
         ProfileStats(statNum = "1", statName = "Github")
@@ -162,7 +163,7 @@ fun StatSection(modifier: Modifier = Modifier){
 fun ProfileStats(
     statNum: String,
     statName: String,
-    modifier: Modifier =  Modifier
+    modifier: Modifier =  Modifier.fillMaxWidth()
 ){
     Column(
         verticalArrangement = Arrangement.Center,
@@ -186,7 +187,7 @@ fun Details(){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
+        modifier = Modifier.padding(end=45.dp)
     ) {
         Text(text = "NiloyAditya",
             fontWeight = FontWeight.Bold)

@@ -118,7 +118,7 @@ fun MiniProfile(){
             fontSize = 12.sp
         )
     }
-    Divider(
+    HorizontalDivider(
         modifier = Modifier
             .padding(bottom = 20.dp, top = 20.dp)
     )

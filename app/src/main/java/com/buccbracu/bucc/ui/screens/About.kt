@@ -34,7 +34,7 @@ fun AboutUs(s: Session){
         Text(text = "${s.name}")
     }
 }
-
+val a=5;
 @Composable
 fun AboutClub(){
     Column(

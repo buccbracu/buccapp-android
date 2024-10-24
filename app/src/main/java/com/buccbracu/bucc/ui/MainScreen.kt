@@ -30,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
 import com.buccbracu.bucc.ui.screens.BUCCLandingPage
+import com.buccbracu.bucc.ui.screens.SEDashboard
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -107,7 +108,7 @@ fun Main(){
             NavHost(navController = navController, startDestination = "Profile" ){
                 // Routes
                 composable("Profile"){
-                    BUCCLandingPage()
+                    SEDashboard()
                 }
                 composable("Dashboard"){
                     Dashboard()

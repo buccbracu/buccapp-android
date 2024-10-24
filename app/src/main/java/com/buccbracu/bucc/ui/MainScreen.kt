@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
 import com.buccbracu.bucc.ui.screens.BUCCLandingPage
 import com.buccbracu.bucc.ui.screens.SEDashboard
+import com.buccbracu.bucc.ui.screens.LoginScreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -118,6 +119,9 @@ fun Main(){
                 }
                 composable("About BUCC"){
                     AboutClub()
+                }
+                composable("LoginScreen") {
+                    LoginScreen()
                 }
             }
         }

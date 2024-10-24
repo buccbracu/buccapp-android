@@ -27,6 +27,12 @@ sealed class NavDrawerItem(
         title = "About BUCC",
         index = 1
     )
+    object LoginScreen: NavDrawerItem(
+        selectedIcon = Icons.Filled.Apartment,
+        unselectedIcon = Icons.Outlined.Apartment,
+        title = "LoginScreen",
+        index = 2
+    )
 
     object Divider: NavDrawerItem(
         title = "Divider",
@@ -36,7 +42,8 @@ sealed class NavDrawerItem(
     companion object{
         val navDrawerItems = listOf(
             AboutUs,
-            AboutClub
+            AboutClub,
+            LoginScreen
         )
     }
 }

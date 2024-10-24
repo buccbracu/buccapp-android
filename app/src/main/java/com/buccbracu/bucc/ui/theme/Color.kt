@@ -50,3 +50,6 @@ val palette6LightIndigo = Color(183, 165, 217) // #B7A5D9
 val palette6LightOrchid = Color(211, 183, 217) // #D3B7D9
 val palette6PalePink = Color(217, 183, 183) // #D9B7B7
 
+
+val Cyan = Color(0xFF39ABF6)
+val Navy = Color(0xFF111827)

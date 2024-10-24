@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.buccbracu.bucc.ui.theme.Navy
 
-var darkMode = true;
+var darkMode = false;
 
 var bgColor = if(darkMode==false) Color.White else Navy;
 var logoImg = if(darkMode==false) R.drawable.bucc_logo_light else R.drawable.bucc_logo_dark;

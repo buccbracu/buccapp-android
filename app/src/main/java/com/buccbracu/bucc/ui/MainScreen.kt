@@ -23,15 +23,14 @@ import com.buccbracu.bucc.components.TopActionBar
 import com.buccbracu.bucc.ui.screens.AboutClub
 import com.buccbracu.bucc.ui.screens.AboutUs
 import com.buccbracu.bucc.ui.screens.Dashboard
-import com.buccbracu.bucc.ui.screens.Profile
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
-import com.buccbracu.bucc.ui.screens.BUCCLandingPage
+import com.buccbracu.bucc.ui.screens.Login
 import com.buccbracu.bucc.ui.screens.SEDashboard
-import com.buccbracu.bucc.ui.screens.LoginScreen
+import com.buccbracu.bucc.ui.screens.Login.LoginScreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -92,18 +91,18 @@ fun Main(){
     ) {
 
         Scaffold(
-            bottomBar = {
-                BottomNavigation(selectedIndex = selectedIndexBotNav) { index ->
-                    selectedIndexBotNav = index
-                    selectedIndexDrawer = -1
-                    println("$selectedIndexDrawer $selectedIndexBotNav")
-                    when (index) {
-                        0 -> navController.navigate("Profile")
-                        1 -> navController.navigate("Dashboard")
-                    }
-
-                }
-            },
+//            bottomBar = {
+//                BottomNavigation(selectedIndex = selectedIndexBotNav) { index ->
+//                    selectedIndexBotNav = index
+//                    selectedIndexDrawer = -1
+//                    println("$selectedIndexDrawer $selectedIndexBotNav")
+//                    when (index) {
+//                        0 -> navController.navigate("Profile")
+//                        1 -> navController.navigate("Dashboard")
+//                    }
+//
+//                }
+//            },
             topBar = { TopActionBar(drawerState = drawerState, scope = scope ) }
         ){
             NavHost(navController = navController, startDestination = "Profile" ){
@@ -121,7 +120,7 @@ fun Main(){
                     AboutClub()
                 }
                 composable("LoginScreen") {
-                    LoginScreen()
+                    Login()
                 }
             }
         }

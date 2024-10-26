@@ -15,7 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.buccbracu.bucc.models.BottomNavItem
+import com.buccbracu.bucc.components.models.BottomNavItem
 
 
 

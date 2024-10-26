@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.R
-import com.buccbracu.bucc.models.NavDrawerItem
+import com.buccbracu.bucc.components.models.NavDrawerItem
 
 
 @Composable

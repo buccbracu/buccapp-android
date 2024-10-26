@@ -1,9 +1,15 @@
-package com.buccbracu.bucc.models
+package com.buccbracu.bucc.components.models
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.GroupWork
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.Apartment
+import androidx.compose.material.icons.outlined.GroupWork
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -13,25 +19,31 @@ sealed class NavDrawerItem(
     val title: String,
     val isDivider: Boolean = false,
     val isHeader: Boolean = false,
-    val index: Int? = null
 ){
     object AboutUs: NavDrawerItem(
         selectedIcon = Icons.Filled.SupervisedUserCircle,
         unselectedIcon = Icons.Outlined.SupervisedUserCircle,
         title = "About Us",
-        index = 0
     )
     object AboutClub: NavDrawerItem(
         selectedIcon = Icons.Filled.Apartment,
         unselectedIcon = Icons.Outlined.Apartment,
         title = "About BUCC",
-        index = 1
     )
     object LoginScreen: NavDrawerItem(
-        selectedIcon = Icons.Filled.Apartment,
-        unselectedIcon = Icons.Outlined.Apartment,
-        title = "LoginScreen",
-        index = 2
+        selectedIcon = Icons.AutoMirrored.Filled.Login,
+        unselectedIcon = Icons.AutoMirrored.Outlined.Login,
+        title = "Login",
+    )
+    object SEDashboard: NavDrawerItem(
+        selectedIcon = Icons.Filled.GroupWork,
+        unselectedIcon = Icons.Outlined.GroupWork,
+        title = "SE Dashboard",
+    )
+    object Profile: NavDrawerItem(
+        selectedIcon = Icons.Filled.Person,
+        unselectedIcon = Icons.Outlined.Person,
+        title = "Profile"
     )
 
     object Divider: NavDrawerItem(
@@ -41,6 +53,9 @@ sealed class NavDrawerItem(
 
     companion object{
         val navDrawerItems = listOf(
+            Profile,
+            SEDashboard,
+            Divider,
             AboutUs,
             AboutClub,
             LoginScreen

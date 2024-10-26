@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.models
+package com.buccbracu.bucc.components.models
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dashboard

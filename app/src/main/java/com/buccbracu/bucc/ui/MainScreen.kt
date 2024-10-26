@@ -27,10 +27,13 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
+import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.ui.screens.Login
 import com.buccbracu.bucc.ui.screens.SEDashboard
 import com.buccbracu.bucc.ui.screens.Login.LoginScreen
+import com.buccbracu.bucc.ui.screens.Profile
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -46,10 +49,22 @@ fun Main(){
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
     var scrollState = rememberScrollState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     // server check
 
     val loginVM: LoginVM = hiltViewModel()
+
+    LaunchedEffect(navBackStackEntry?.destination) {
+        when (navBackStackEntry?.destination?.route) {
+            "Profile" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Profile" }
+            "About BUCC" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About BUCC" }
+            "About Us" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About Us" }
+            "Login" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Login" }
+            "SE Dashboard" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "SE Dashboard" }
+            // Add other routes here if needed
+        }
+    }
 
     LaunchedEffect(Unit) {
         loginVM.loginSuccess(
@@ -75,13 +90,12 @@ fun Main(){
                 scrollState = scrollState,
                 selectedIndex = selectedIndexDrawer,
                 onClick = {item ->
+                    selectedIndexDrawer = navDrawerItems.indexOf(item)
                     navController.navigate(item.title)
                     selectedIndexBotNav = -1
                     scope.launch {
                         drawerState.close()
                     }
-                    selectedIndexDrawer = item.index!!
-                    
                 },
                 
             )
@@ -105,13 +119,13 @@ fun Main(){
 //            },
             topBar = { TopActionBar(drawerState = drawerState, scope = scope ) }
         ){
-            NavHost(navController = navController, startDestination = "Profile" ){
+            NavHost(navController = navController, startDestination = "About BUCC" ){
                 // Routes
                 composable("Profile"){
-                    SEDashboard()
+                    Profile()
                 }
-                composable("Dashboard"){
-                    Dashboard()
+                composable("SE Dashboard"){
+                    SEDashboard()
                 }
                 composable("About Us"){
                     AboutUs(sessionData[0])
@@ -119,9 +133,10 @@ fun Main(){
                 composable("About BUCC"){
                     AboutClub()
                 }
-                composable("LoginScreen") {
+                composable("Login") {
                     Login()
                 }
+
             }
         }
         

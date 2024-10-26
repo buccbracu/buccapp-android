@@ -24,7 +24,8 @@ fun AnimatedVector(asset: String){
         playMode = Mode.FORWARD,
         modifier = Modifier
             .rotate(180f)
-            .size(100.dp)
+            .size(150.dp)
+
     )
 
 }

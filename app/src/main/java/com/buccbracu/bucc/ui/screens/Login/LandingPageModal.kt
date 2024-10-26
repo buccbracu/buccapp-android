@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,15 +48,16 @@ import com.buccbracu.bucc.components.AnimatedVector
 import com.buccbracu.bucc.ui.theme.Navy
 import kotlinx.coroutines.launch
 
-var darkMode = false;
 
-var bgColor = if(darkMode ==false) Color.White else Navy;
-var logoImg = if(darkMode ==false) R.drawable.bucc_logo_light else R.drawable.bucc_logo_dark;
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
-fun LandingPage() {
+fun LandingPageModal() {
+
+    var swipeOffset by remember { mutableStateOf(0f) }
+    val maxOffset = 1000f
+
 
     var isSwipedUp by remember {
         mutableStateOf(false)
@@ -66,19 +66,12 @@ fun LandingPage() {
     val scope = rememberCoroutineScope()
 
     // Triggered animation values
-    val imageScale by animateFloatAsState(targetValue = if (isSwipedUp) 1.2f else 2f)
-    val imageOffsetY by animateDpAsState(targetValue = if (isSwipedUp) 100.dp else 0.dp)
+    val imageScale by animateFloatAsState(targetValue = if (isSwipedUp) 0.5f else 1f)
+    val imageOffsetY by animateDpAsState(targetValue = if (isSwipedUp) 200.dp else 0.dp)
     val contentOpacity by animateFloatAsState(
         targetValue = if (isSwipedUp) 0f else 1f,
         animationSpec = tween(
-            durationMillis = 800, // Adjust this value for faster or slower fade
-            easing = LinearOutSlowInEasing // Customize easing if desired
-        )
-    )
-    val reverseContentOpacity by animateFloatAsState(
-        targetValue = if (isSwipedUp) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 800, // Adjust this value for faster or slower fade
+            durationMillis = 300, // Adjust this value for faster or slower fade
             easing = LinearOutSlowInEasing // Customize easing if desired
         )
     )
@@ -95,60 +88,62 @@ fun LandingPage() {
     println(scaffoldState.bottomSheetState.currentValue.toString())
 
 
-    println("ImageScale: $imageScale ImageOffset $imageOffsetY")
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bgColor)
-            .pointerInput(Unit) {
-                detectVerticalDragGestures { _, dragAmount ->
-                    // Update swipe offset only for upward swipe (dragAmount is negative)
-                    if (dragAmount < -50) { // Negative value indicates upward swipe
-                        isSwipedUp = true // Trigger the full animation
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
 
-                    } else {
-                        isSwipedUp = false
-                        scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 0.dp,
+        sheetContent = {
+            Box(
+                modifier = Modifier
+                    .height(550.dp)
+            ){
+                LoginScreen()
+            }
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(bgColor)
+                .pointerInput(Unit) {
+                    detectVerticalDragGestures { _, dragAmount ->
+                        // Update swipe offset only for upward swipe (dragAmount is negative)
+                        if (dragAmount < -50) { // Negative value indicates upward swipe
+                            isSwipedUp = true // Trigger the full animation
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+
+                        } else {
+                            isSwipedUp = false
+                            scope.launch {
+                                scaffoldState.bottomSheetState.partialExpand()
+                            }
                         }
                     }
                 }
-            }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .padding(top = 70.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = logoImg),
-                contentDescription = "BUCC Logo",
+            Column(
                 modifier = Modifier
-                    .graphicsLayer(
-                        scaleX = imageScale,
-                        scaleY = imageScale,
-                        translationY = -imageOffsetY.value
-                    )
-                    .padding(top = 50.dp)
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 70.dp, bottom = 16.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = logoImg),
+                    contentDescription = "BUCC Logo",
+                    modifier = Modifier
+                        .size(400.dp)
+                        .graphicsLayer(
+                            scaleX = imageScale,
+                            scaleY = imageScale,
+                            translationY = -imageOffsetY.value
+                        )
 
 
-            )
-            if(isSwipedUp){
-                Box(
-                    modifier =Modifier
-                    .fillMaxWidth()
-                    .alpha(reverseContentOpacity)
-                ){
-                    LoginScreen()
-                }
-            }
-            else{
+                )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -156,7 +151,7 @@ fun LandingPage() {
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    Spacer(modifier = Modifier.height(200.dp))
+                    //            Spacer(modifier = Modifier.height(150.dp))
                     Text(
                         text = "BRAC University Computer Club",
                         fontSize = 36.sp,
@@ -180,17 +175,12 @@ fun LandingPage() {
                         color = Color.Gray
                     )
                 }
+
+
             }
-
-
         }
     }
 
 
 }
 
-@Preview
-@Composable
-fun BUCCLandingPagepreview(){
-    LandingPage()
-}

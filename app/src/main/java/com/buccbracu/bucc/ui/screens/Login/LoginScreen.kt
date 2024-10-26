@@ -44,16 +44,11 @@ fun LoginScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(bgColor)
-            .padding(top = 100.dp)
+            .padding(top = 10.dp)
         ,
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = logoImg),
-            contentDescription = "Login Image",
-            modifier = Modifier.size(200.dp)
-        )
         Text(
             text = "Welcome Back",
             fontSize = 28.sp,

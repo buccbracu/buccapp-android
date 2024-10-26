@@ -52,7 +52,8 @@ import kotlinx.coroutines.launch
 var darkMode = false;
 
 var bgColor = if(darkMode ==false) Color.White else Navy;
-var logoImg = if(darkMode ==false) R.drawable.bucc_logo_light else R.drawable.bucc_logo_dark;
+//var logoImg = if(darkMode ==false) R.drawable.bucc_logo_light else R.drawable.bucc_logo_dark;
+val logoImg = R.drawable.bucc
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UseOfNonLambdaOffsetOverload")
@@ -66,8 +67,7 @@ fun LandingPage() {
     val scope = rememberCoroutineScope()
 
     // Triggered animation values
-    val imageScale by animateFloatAsState(targetValue = if (isSwipedUp) 1.2f else 2f)
-    val imageOffsetY by animateDpAsState(targetValue = if (isSwipedUp) 100.dp else 0.dp)
+    val imageScale by animateFloatAsState(targetValue = if (isSwipedUp) 0.8f else 1.2f)
     val contentOpacity by animateFloatAsState(
         targetValue = if (isSwipedUp) 0f else 1f,
         animationSpec = tween(
@@ -95,7 +95,6 @@ fun LandingPage() {
     println(scaffoldState.bottomSheetState.currentValue.toString())
 
 
-    println("ImageScale: $imageScale ImageOffset $imageOffsetY")
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,15 +103,19 @@ fun LandingPage() {
                 detectVerticalDragGestures { _, dragAmount ->
                     // Update swipe offset only for upward swipe (dragAmount is negative)
                     if (dragAmount < -50) { // Negative value indicates upward swipe
-                        isSwipedUp = true // Trigger the full animation
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
+                        if (!isSwipedUp) {
+                            isSwipedUp = true // Trigger the full animation
+                            scope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
                         }
 
                     } else {
-                        isSwipedUp = false
-                        scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
+                        if(isSwipedUp){
+                            isSwipedUp = false
+                            scope.launch {
+                                scaffoldState.bottomSheetState.partialExpand()
+                            }
                         }
                     }
                 }
@@ -122,7 +125,7 @@ fun LandingPage() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
-                .padding(top = 70.dp, bottom = 16.dp),
+                .padding(top = 100.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -133,17 +136,17 @@ fun LandingPage() {
                     .graphicsLayer(
                         scaleX = imageScale,
                         scaleY = imageScale,
-                        translationY = -imageOffsetY.value
+//                        translationY = -imageOffsetY.value
                     )
-                    .padding(top = 50.dp)
 
 
             )
+
             if(isSwipedUp){
                 Box(
-                    modifier =Modifier
-                    .fillMaxWidth()
-                    .alpha(reverseContentOpacity)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .alpha(reverseContentOpacity),
                 ){
                     LoginScreen()
                 }
@@ -156,7 +159,7 @@ fun LandingPage() {
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    Spacer(modifier = Modifier.height(200.dp))
+                    Spacer(modifier = Modifier.height(50.dp))
                     Text(
                         text = "BRAC University Computer Club",
                         fontSize = 36.sp,
@@ -165,7 +168,7 @@ fun LandingPage() {
                         lineHeight = 32.sp,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(50.dp))
+                    Spacer(modifier = Modifier.height(150.dp))
                     AnimatedVector("up_new.json")
                     Text(
                         text = "Swipe Up to",

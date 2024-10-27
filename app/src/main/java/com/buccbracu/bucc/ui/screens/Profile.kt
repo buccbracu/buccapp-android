@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Profile(){
-    ProfilePage1()
+    BUCCLandingPage()
 }
 
 @Preview(showBackground = true)

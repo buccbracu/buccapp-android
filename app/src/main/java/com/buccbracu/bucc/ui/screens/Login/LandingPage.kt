@@ -1,12 +1,6 @@
 package com.buccbracu.bucc.ui.screens.Login
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.graphics.res.animatedVectorResource
-import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,9 +18,7 @@ import com.buccbracu.bucc.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.LaunchedEffect
@@ -37,88 +29,57 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.util.lerp
 import com.buccbracu.bucc.components.AnimatedVector
 import com.buccbracu.bucc.ui.theme.Navy
 import kotlinx.coroutines.launch
 
-var darkMode = false;
+var darkMode = false
 
-var bgColor = if(darkMode ==false) Color.White else Navy;
-//var logoImg = if(darkMode ==false) R.drawable.bucc_logo_light else R.drawable.bucc_logo_dark;
+var bgColor = if(darkMode == false) Color.White else Navy
 val logoImg = R.drawable.bucc
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 fun LandingPage() {
-
-    var isSwipedUp by remember {
-        mutableStateOf(false)
-    }
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    var isSwipedUp by remember { mutableStateOf(false) }
+    var swipeProgress by remember { mutableFloatStateOf(0f) } // Track the swipe progress (0 to 1)
     val scope = rememberCoroutineScope()
 
-    // Triggered animation values
-    val imageScale by animateFloatAsState(targetValue = if (isSwipedUp) 0.8f else 1.2f)
-    val contentOpacity by animateFloatAsState(
-        targetValue = if (isSwipedUp) 0f else 1f,
-        animationSpec = tween(
-            durationMillis = 800, // Adjust this value for faster or slower fade
-            easing = LinearOutSlowInEasing // Customize easing if desired
-        )
-    )
-    val reverseContentOpacity by animateFloatAsState(
-        targetValue = if (isSwipedUp) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 800, // Adjust this value for faster or slower fade
-            easing = LinearOutSlowInEasing // Customize easing if desired
-        )
-    )
+    val swipeThreshold = 1000f
+    val minSwipeToShow = 0.5f
 
-
-    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
-
-        scope.launch{
-            if (scaffoldState.bottomSheetState.currentValue.toString() != "Expanded" && isSwipedUp) {
-                isSwipedUp = false
-            }
-        }
-    }
-    println(scaffoldState.bottomSheetState.currentValue.toString())
-
+    val imageScale by animateFloatAsState(targetValue = 1.2f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.8
+    val contentOpacity by animateFloatAsState(targetValue = 1f - swipeProgress) // Opacity from 1 to 0
+    val reverseContentOpacity by animateFloatAsState(targetValue = swipeProgress) // Reverse opacity
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(bgColor)
             .pointerInput(Unit) {
-                detectVerticalDragGestures { _, dragAmount ->
-                    // Update swipe offset only for upward swipe (dragAmount is negative)
-                    if (dragAmount < -50) { // Negative value indicates upward swipe
-                        if (!isSwipedUp) {
-                            isSwipedUp = true // Trigger the full animation
-                            scope.launch {
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
-
-                    } else {
-                        if(isSwipedUp){
+                detectVerticalDragGestures(
+                    onVerticalDrag = { _, dragAmount ->
+                        // Update the swipe offset based on the drag amount
+                        swipeProgress = (swipeProgress - (dragAmount / swipeThreshold)).coerceIn(0f, 1f)
+                    },
+                    onDragEnd = {
+                        // When the user releases the swipe
+                        if (swipeProgress >= minSwipeToShow) {
+                            // If swipe progress is greater than the threshold, complete the swipe
+                            swipeProgress = 1f
+                            isSwipedUp = true
+                        } else {
+                            // If swipe progress is less than the threshold, reset the swipe
+                            swipeProgress = 0f
                             isSwipedUp = false
-                            scope.launch {
-                                scaffoldState.bottomSheetState.partialExpand()
-                            }
                         }
                     }
-                }
+                )
             }
     ) {
         Column(
@@ -135,29 +96,16 @@ fun LandingPage() {
                 modifier = Modifier
                     .graphicsLayer(
                         scaleX = imageScale,
-                        scaleY = imageScale,
-//                        translationY = -imageOffsetY.value
+                        scaleY = imageScale
                     )
-
-
             )
 
-            if(isSwipedUp){
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .alpha(reverseContentOpacity),
-                ){
-                    LoginScreen()
-                }
-            }
-            else{
+            Box {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(contentOpacity),
                     horizontalAlignment = Alignment.CenterHorizontally
-
                 ) {
                     Spacer(modifier = Modifier.height(50.dp))
                     Text(
@@ -183,17 +131,14 @@ fun LandingPage() {
                         color = Color.Gray
                     )
                 }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .alpha(reverseContentOpacity),
+                ) {
+                    LoginScreen()
+                }
             }
-
-
         }
     }
-
-
-}
-
-@Preview
-@Composable
-fun BUCCLandingPagepreview(){
-    LandingPage()
 }

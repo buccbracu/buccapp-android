@@ -1,9 +1,11 @@
 package com.buccbracu.bucc.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -26,6 +28,7 @@ import com.buccbracu.bucc.ui.screens.Dashboard
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
@@ -34,6 +37,8 @@ import com.buccbracu.bucc.ui.screens.Login
 import com.buccbracu.bucc.ui.screens.SEDashboard
 import com.buccbracu.bucc.ui.screens.Login.LoginScreen
 import com.buccbracu.bucc.ui.screens.Profile
+import com.buccbracu.bucc.ui.theme.BuccTheme
+import com.buccbracu.bucc.ui.theme.paletteGreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -117,7 +122,10 @@ fun Main(){
 //
 //                }
 //            },
-            topBar = { TopActionBar(drawerState = drawerState, scope = scope ) }
+            topBar = {
+                    TopActionBar(drawerState = drawerState, scope = scope )
+                    },
+
         ){
             NavHost(navController = navController, startDestination = "About BUCC" ){
                 // Routes

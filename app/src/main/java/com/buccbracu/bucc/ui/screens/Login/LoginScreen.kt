@@ -43,7 +43,6 @@ fun LoginScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(bgColor)
             .padding(top = 10.dp)
         ,
         verticalArrangement = Arrangement.Top,

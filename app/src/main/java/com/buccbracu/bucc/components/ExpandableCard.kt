@@ -78,7 +78,6 @@ fun ExpandableCard(
                     text = title,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = palette3violet1,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth(0.90f)

@@ -40,7 +40,6 @@ import kotlinx.coroutines.launch
 
 var darkMode = false
 
-var bgColor = if(darkMode == false) Color.White else Navy
 val logoImg = R.drawable.bucc
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +59,6 @@ fun LandingPage() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(bgColor)
             .pointerInput(Unit) {
                 detectVerticalDragGestures(
                     onVerticalDrag = { _, dragAmount ->
@@ -112,7 +110,6 @@ fun LandingPage() {
                         text = "BRAC University Computer Club",
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
                         lineHeight = 32.sp,
                         textAlign = TextAlign.Center
                     )

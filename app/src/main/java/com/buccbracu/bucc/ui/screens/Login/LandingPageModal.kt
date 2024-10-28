@@ -104,7 +104,6 @@ fun LandingPageModal() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(bgColor)
                 .pointerInput(Unit) {
                     detectVerticalDragGestures { _, dragAmount ->
                         // Update swipe offset only for upward swipe (dragAmount is negative)

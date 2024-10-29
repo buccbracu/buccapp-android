@@ -49,6 +49,9 @@ fun Main(){
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
     }
+    var sessionSnapshot by remember{
+        mutableStateOf(listOf<Session>())
+    }
     val navController = rememberNavController()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
@@ -76,6 +79,7 @@ fun Main(){
 //            delay(200)
 //            isLoading = false
             loginVM.getSessionSnapshot { list ->
+                sessionSnapshot = list
                 if (list.isEmpty()){
                     loginVM.loginSuccess(
                         memberID = "23341077",
@@ -139,7 +143,7 @@ fun Main(){
             NavHost(navController = navController, startDestination = "About BUCC") {
                 // Routes
                 composable("Profile") {
-                    Profile(sessionData)
+                    Profile(sessionSnapshot)
                 }
                 composable("SE Dashboard") {
                     SEDashboard()

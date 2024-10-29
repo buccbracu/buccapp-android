@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.backend.local
+package com.buccbracu.bucc.application
 
 import dagger.Module
 import dagger.Provides

@@ -2,6 +2,7 @@ package com.buccbracu.bucc.backend.local.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,5 +39,13 @@ open class LoginVM @Inject constructor(
             )
         }
     }
+
+    fun getSessionSnapshot(setValue: (List<Session>) -> Unit){
+        viewModelScope.launch {
+            setValue(sessionR.getAllSessionSnapshot())
+        }
+    }
+
+
 
 }

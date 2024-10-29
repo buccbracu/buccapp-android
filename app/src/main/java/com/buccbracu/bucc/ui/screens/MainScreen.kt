@@ -1,11 +1,12 @@
-package com.buccbracu.bucc.ui
+package com.buccbracu.bucc.ui.screens
 
+import android.Manifest
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -19,28 +20,26 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.buccbracu.bucc.components.BottomNavigation
 import com.buccbracu.bucc.components.NavDrawer
 import com.buccbracu.bucc.components.TopActionBar
-import com.buccbracu.bucc.ui.screens.AboutClub
-import com.buccbracu.bucc.ui.screens.AboutUs
-import com.buccbracu.bucc.ui.screens.Dashboard
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
+import com.buccbracu.bucc.components.CircularLoadingBasic
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
-import com.buccbracu.bucc.ui.screens.Login
-import com.buccbracu.bucc.ui.screens.SEDashboard
-import com.buccbracu.bucc.ui.screens.Login.LoginScreen
-import com.buccbracu.bucc.ui.screens.Profile
-import com.buccbracu.bucc.ui.theme.BuccTheme
-import com.buccbracu.bucc.ui.theme.paletteGreen
+import com.buccbracu.bucc.components.permissionLauncher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Main(){
@@ -55,10 +54,11 @@ fun Main(){
     var scope = rememberCoroutineScope()
     var scrollState = rememberScrollState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val context = LocalContext.current
 
     // server check
-
     val loginVM: LoginVM = hiltViewModel()
+    val sessionData by loginVM.allSessions.collectAsState()
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
@@ -72,38 +72,47 @@ fun Main(){
     }
 
     LaunchedEffect(Unit) {
-        loginVM.loginSuccess(
-            memberID = "23341077",
-            memberName = "Aadit",
-            memberDepartment = "R&D",
-            memberDesignation = "AD"
-        )
+        scope.launch{
+//            delay(200)
+//            isLoading = false
+            loginVM.getSessionSnapshot { list ->
+                if (list.isEmpty()){
+                    loginVM.loginSuccess(
+                        memberID = "23341077",
+                        memberName = "Aadit",
+                        memberDepartment = "R&D",
+                        memberDesignation = "AD"
+                    )
+                }
+            }
+        }
         
     }
 
-    val sessionData by loginVM.allSessions.collectAsState()
+
+    permissionLauncher(context, Manifest.permission.POST_NOTIFICATIONS)
 
 
 
     //-------------------------------
 
-    
     ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerContent = { ModalDrawerSheet {
-            NavDrawer(
-                scrollState = scrollState,
-                selectedIndex = selectedIndexDrawer,
-                onClick = {item ->
-                    selectedIndexDrawer = navDrawerItems.indexOf(item)
-                    navController.navigate(item.title)
-                    selectedIndexBotNav = -1
-                    scope.launch {
-                        drawerState.close()
-                    }
-                },
-                
-            )
+        drawerContent = {
+            ModalDrawerSheet {
+                NavDrawer(
+                    scrollState = scrollState,
+                    selectedIndex = selectedIndexDrawer,
+                    onClick = { item ->
+                        selectedIndexDrawer = navDrawerItems.indexOf(item)
+                        navController.navigate(item.title)
+                        selectedIndexBotNav = -1
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+
+                    )
             }
         },
         gesturesEnabled = true
@@ -123,22 +132,22 @@ fun Main(){
 //                }
 //            },
             topBar = {
-                    TopActionBar(drawerState = drawerState, scope = scope )
-                    },
+                TopActionBar(drawerState = drawerState, scope = scope)
+            },
 
-        ){
-            NavHost(navController = navController, startDestination = "About BUCC" ){
+            ) {
+            NavHost(navController = navController, startDestination = "About BUCC") {
                 // Routes
-                composable("Profile"){
-                    Profile()
+                composable("Profile") {
+                    Profile(sessionData)
                 }
-                composable("SE Dashboard"){
+                composable("SE Dashboard") {
                     SEDashboard()
                 }
-                composable("About Us"){
+                composable("About Us") {
                     AboutUs(sessionData[0])
                 }
-                composable("About BUCC"){
+                composable("About BUCC") {
                     AboutClub()
                 }
                 composable("Login") {
@@ -147,8 +156,14 @@ fun Main(){
 
             }
         }
-        
+
     }
+//    if (isSessionReady){
+//
+//    }
+//    else{
+//        CircularLoadingBasic("Please wait...")
+//    }
 }
 
 

@@ -21,12 +21,12 @@ fun Profile(sessionData: List<Session>) {
         contentAlignment = Alignment.Center
     ){
         Text(
-            text = "${sessionData.size}"
+            text = session.name
         )
         createNotification(
             context,
             title = "BRAC University Computer Club",
-            bodyText = "Welcome ${session.name}"
+            bodyText = "Welcome ${session.name} - ${session.department} - ${session.designation}"
         )
 
     }

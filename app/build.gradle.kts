@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.animation.graphics.android)
+    implementation(libs.ui.test.junit4)
+    implementation(libs.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

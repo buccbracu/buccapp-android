@@ -13,7 +13,7 @@ object NotificationMan {
         val notificationChannel = NotificationChannel(
             "bucc_notification",
             "bucc",
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = "BRAC University Computer Club"
             enableVibration(true)

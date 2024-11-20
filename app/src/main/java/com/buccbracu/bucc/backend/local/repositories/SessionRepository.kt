@@ -1,12 +1,16 @@
 package com.buccbracu.bucc.backend.local.repositories
 
 import com.buccbracu.bucc.backend.local.models.Session
+import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.fleeksoft.ksoup.Ksoup
+import com.fleeksoft.ksoup.nodes.Document
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class SessionRepository @Inject constructor(
@@ -36,6 +40,8 @@ class SessionRepository @Inject constructor(
                 results.list.toList()
             }
     }
+
+
     suspend fun getAllSessionSnapshot() : List<Session> {
         return realm
             .query<Session>()
@@ -45,6 +51,5 @@ class SessionRepository @Inject constructor(
             }
             .first()
     }
-
 
 }

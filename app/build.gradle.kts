@@ -1,4 +1,6 @@
 import com.android.build.api.dsl.Packaging
+import java.util.Properties
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -10,6 +12,20 @@ plugins {
 }
 
 android {
+
+    val remoteProperties = Properties()
+    val remotePropertiesFile = rootProject.file("remote.properties")
+    if (remotePropertiesFile.exists()) {
+        remoteProperties.load(remotePropertiesFile.inputStream())
+    }
+
+    buildTypes.forEach { buildType ->
+        remoteProperties.forEach { key, value ->
+            buildType.buildConfigField("String", key.toString(), "\"$value\"")
+        }
+    }
+
+
     namespace = "com.buccbracu.bucc"
     compileSdk = 34
 
@@ -44,6 +60,11 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    android{
+        buildFeatures{
+            buildConfig = true
+        }
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.13"
@@ -96,10 +117,14 @@ dependencies {
     implementation("androidx.media3:media3-ui:1.4.1")
     implementation("androidx.media3:media3-common:1.4.1")
 
-
-//    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.2.0")
     implementation("org.mongodb:bson-kotlin:5.2.0")
     implementation("io.realm.kotlin:library-base:1.16.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.fleeksoft.ksoup:ksoup:0.2.0")
+
 
 
     ksp("com.google.dagger:hilt-compiler:2.49")

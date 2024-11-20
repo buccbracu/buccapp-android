@@ -16,6 +16,7 @@ class BUCCApp : Application() {
         super.onCreate()
         LocalServer.initializeRealm()
         NotificationMan.initializeNotificationChannel(this)
+        RetrofitServer.initializeRetrofit()
     }
 }
 

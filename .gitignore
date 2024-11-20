@@ -1,6 +1,7 @@
 *.iml
 .gradle
 /local.properties
+/remote.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -14,3 +15,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+remote.properties
+/app/src/main/java/com/buccbracu/bucc/backend/remote/endpoints.kt

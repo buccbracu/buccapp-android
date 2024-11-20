@@ -31,7 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.local.viewmodels.LoginVM
+import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.CircularLoadingBasic
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
@@ -62,6 +62,11 @@ fun Main(){
     // server check
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.allSessions.collectAsState()
+    LaunchedEffect(Unit) {
+        scope.launch {
+            loginVM.remoteLogin()
+        }
+    }
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {

@@ -34,6 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.AnimatedVector
 import com.buccbracu.bucc.ui.theme.Navy
 import kotlinx.coroutines.launch
@@ -44,7 +47,7 @@ val logoImg = R.drawable.bucc
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPage() {
+fun LandingPage(navController: NavHostController) {
     var isSwipedUp by remember { mutableStateOf(false) }
     var swipeProgress by remember { mutableFloatStateOf(0f) } // Track the swipe progress (0 to 1)
     val scope = rememberCoroutineScope()
@@ -55,6 +58,8 @@ fun LandingPage() {
     val imageScale by animateFloatAsState(targetValue = 1.2f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.8
     val contentOpacity by animateFloatAsState(targetValue = 1f - swipeProgress) // Opacity from 1 to 0
     val reverseContentOpacity by animateFloatAsState(targetValue = swipeProgress) // Reverse opacity
+
+    val loginVM: LoginVM = hiltViewModel()
 
     Box(
         modifier = Modifier
@@ -133,7 +138,7 @@ fun LandingPage() {
                         .fillMaxWidth()
                         .alpha(reverseContentOpacity),
                 ) {
-                    LoginScreen()
+                    LoginScreen(loginVM, navController)
                 }
             }
         }

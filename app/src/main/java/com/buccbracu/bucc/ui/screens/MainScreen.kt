@@ -35,6 +35,7 @@ import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.CircularLoadingBasic
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
+import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 
@@ -62,11 +63,6 @@ fun Main(){
     // server check
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.allSessions.collectAsState()
-    LaunchedEffect(Unit) {
-        scope.launch {
-            loginVM.remoteLogin()
-        }
-    }
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
@@ -79,24 +75,6 @@ fun Main(){
         }
     }
 
-    LaunchedEffect(Unit) {
-        scope.launch{
-//            delay(200)
-//            isLoading = false
-            loginVM.getSessionSnapshot { list ->
-                sessionSnapshot = list
-                if (list.isEmpty()){
-                    loginVM.loginSuccess(
-                        memberID = "23341077",
-                        memberName = "Aadit",
-                        memberDepartment = "R&D",
-                        memberDesignation = "AD"
-                    )
-                }
-            }
-        }
-        
-    }
 
 
     permissionLauncher(context, Manifest.permission.POST_NOTIFICATIONS)
@@ -148,7 +126,9 @@ fun Main(){
             NavHost(navController = navController, startDestination = "About BUCC") {
                 // Routes
                 composable("Profile") {
-                    Profile(sessionSnapshot)
+                    Profile(
+                        sessionData.ifEmpty { sessionSnapshot }
+                    )
                 }
                 composable("SE Dashboard") {
                     SEDashboard()
@@ -160,7 +140,7 @@ fun Main(){
                     AboutClub()
                 }
                 composable("Login") {
-                    Login()
+                    LandingPage(navController)
                 }
 
             }

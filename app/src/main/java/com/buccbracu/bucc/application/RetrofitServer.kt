@@ -1,6 +1,7 @@
 package com.buccbracu.bucc.application
 
 import com.buccbracu.bucc.backend.remote.BASE_URL
+import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
 
 import com.squareup.moshi.Moshi
@@ -16,12 +17,15 @@ object RetrofitServer {
 
     lateinit var retrofit: Retrofit
     private lateinit var moshi: Moshi
+    lateinit var cookieMap: MutableMap<String, String>
     lateinit var Auth: AuthService
         private set
 
     fun initializeRetrofit() {
+        cookieMap = mutableMapOf()
         val cookieJar = object : CookieJar {
-            private val cookies = mutableListOf<Cookie>()
+            val cookies = mutableListOf<Cookie>()
+
 
             override fun loadForRequest(url: HttpUrl): List<Cookie> {
                 return cookies.filter { it.matches(url) }
@@ -29,6 +33,18 @@ object RetrofitServer {
 
             override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
                 this.cookies.addAll(cookies)
+                cookies.filter { it.name == TOKEN_KEY }.let { filtered ->
+                   filtered.forEach{ cookie ->
+                       val value = "${cookie.name}=${cookie.value};${cookie.expiresAt};${cookie.domain}"
+                       cookieMap[cookie.name] = value
+                   }
+                }
+            }
+
+            fun getCookies(){
+                cookies.forEach{
+                    println("Cookie: $it")
+                }
             }
         }
 
@@ -48,4 +64,5 @@ object RetrofitServer {
 
         Auth = retrofit.create(AuthService::class.java)
     }
+
 }

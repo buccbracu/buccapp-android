@@ -1,16 +1,13 @@
 package com.buccbracu.bucc.backend.local.repositories
 
 import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.remote.api.AuthService
-import com.fleeksoft.ksoup.Ksoup
-import com.fleeksoft.ksoup.nodes.Document
+import com.buccbracu.bucc.backend.remote.models.SessionResponse
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class SessionRepository @Inject constructor(
@@ -18,19 +15,23 @@ class SessionRepository @Inject constructor(
 ) {
 
 
-    suspend fun createSession(session: List<String>){
+    suspend fun createSession(session: SessionResponse, token: String) {
         realm.write {
-            val sessionData = Session().apply{
-                studentID = session[0]
-                name = session[1]
-                designation = session[2]
-                department = session[3]
-
+            val sessionData = Session().apply {
+                name = session.user.name
+                email = session.user.email
+                image = session.user.image
+                id = session.user.id
+                designation = session.user.designation
+                buccDepartment = session.user.buccDepartment
+                expires = session.expires
+                authJsToken = token
             }
             copyToRealm(sessionData, updatePolicy = UpdatePolicy.ALL)
         }
         println("DATA WRITTEN TO SESSION")
     }
+
 
     fun getAllSession() : Flow<List<Session>> {
         return realm

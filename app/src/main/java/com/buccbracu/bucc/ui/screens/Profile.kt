@@ -23,11 +23,10 @@ fun Profile(sessionData: List<Session>) {
         Text(
             text = session.name
         )
-        createNotification(
-            context,
-            title = "BRAC University Computer Club",
-            bodyText = "Welcome ${session.name} - ${session.department} - ${session.designation}"
-        )
-
+//        createNotification(
+//            context,
+//            title = "BRAC University Computer Club",
+//            bodyText = "Welcome ${session.name} - ${session.buccDepartment} - ${session.designation}"
+//        )
     }
 }

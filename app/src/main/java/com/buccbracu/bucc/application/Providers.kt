@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.realm.kotlin.Realm
+import okhttp3.CookieJar
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -29,5 +30,10 @@ object Providers {
     @Singleton
     fun provideRetrofitAuth(): AuthService {
         return RetrofitServer.Auth
+    }
+    @Provides
+    @Singleton
+    fun provideRetrofitCookieMap(): Map<String, String> {
+        return RetrofitServer.cookieMap
     }
 }

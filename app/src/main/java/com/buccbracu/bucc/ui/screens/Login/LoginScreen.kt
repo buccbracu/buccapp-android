@@ -1,15 +1,11 @@
 package com.buccbracu.bucc.ui.screens.Login
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -19,18 +15,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.buccbracu.bucc.R
+import androidx.navigation.NavHostController
+import com.buccbracu.bucc.backend.viewmodels.LoginVM
+import com.buccbracu.bucc.components.createNotification
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
 
     var email by remember {
         mutableStateOf("")
@@ -38,6 +38,11 @@ fun LoginScreen() {
 
     var password by remember {
         mutableStateOf("")
+    }
+    val context = LocalContext.current.applicationContext
+    val scope = rememberCoroutineScope()
+    var loginStatus by remember{
+        mutableStateOf(false)
     }
 
     Column(
@@ -87,7 +92,22 @@ fun LoginScreen() {
         )
         Button(
             onClick = {
-
+                scope.launch {
+                    loginVM.remoteLogin(
+                        email = email,
+                        password = password,
+                        loginStatus = { status, user ->
+                            if(status){
+                                navController.navigate("Profile")
+                                createNotification(
+                                    context,
+                                    title = "BRAC University Computer Club",
+                                    bodyText = "Welcome ${user.name} - ${user.buccDepartment} - ${user.designation}"
+                                )
+                            }
+                        }
+                    )
+                }
             },
             shape = RoundedCornerShape(5.dp)
         ) {
@@ -98,12 +118,14 @@ fun LoginScreen() {
 
         TextButton(
             onClick = {
-
             }
         ) {
             Text(text = "Forgot Password?")
         }
 
+    }
+    if (loginStatus){
+        navController.navigate("Profile")
     }
 
 }

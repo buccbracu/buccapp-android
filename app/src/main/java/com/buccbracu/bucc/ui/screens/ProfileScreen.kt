@@ -64,7 +64,6 @@ fun Profile(session: Session) {
     var (memberStatus, setMemberStatus) = rememberSaveable { mutableStateOf("") }
 
     val (memberSkills, setMemberSkills) = remember { mutableStateOf(realmListOf<String>()) }
-    val (memberSocials, setMemberSocials) = remember { mutableStateOf<ProfileSocial?>(null) }
 
     val (facebook, setFacebook) = remember { mutableStateOf("") }
     val (linkedin, setLinkedin) = remember { mutableStateOf("") }
@@ -109,7 +108,7 @@ fun Profile(session: Session) {
         if(profileData != null){
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 30.dp)
+                    .padding(top = 70.dp)
             ){
                 item {
                     Box(modifier = Modifier

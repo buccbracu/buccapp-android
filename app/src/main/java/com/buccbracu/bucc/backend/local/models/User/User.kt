@@ -1,11 +1,11 @@
-package com.buccbracu.bucc.backend.local.models.Profile
+package com.buccbracu.bucc.backend.local.models.User
 
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-class Profile : RealmObject {
+class User : RealmObject {
     @PrimaryKey var objectid: Int = 1
     var _id: String = ""
     var name: String = ""
@@ -26,6 +26,6 @@ class Profile : RealmObject {
     var lastPromotion: String = ""
     var memberStatus: String = ""
     var memberSkills: RealmList<String> = realmListOf()
-    var memberSocials: ProfileSocial? = null
+    var memberSocials: UserSocial? = null
 }
 

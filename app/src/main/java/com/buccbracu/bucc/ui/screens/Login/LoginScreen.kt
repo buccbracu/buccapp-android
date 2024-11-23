@@ -31,11 +31,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
-
     var email by remember {
         mutableStateOf("")
     }
-
     var password by remember {
         mutableStateOf("")
     }
@@ -94,11 +92,12 @@ fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
         Button(
             onClick = {
                 scope.launch {
-                    loginVM.remoteLogin(
+                    loginVM.login(
                         email = email,
                         password = password,
                         loginStatus = { status, user ->
                             if(status){
+
                                 navController.navigate("Profile")
                                 createNotification(
                                     context,

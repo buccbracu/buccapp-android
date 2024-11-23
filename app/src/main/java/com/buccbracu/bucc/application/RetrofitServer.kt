@@ -3,6 +3,7 @@ package com.buccbracu.bucc.application
 import com.buccbracu.bucc.backend.remote.BASE_URL
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.UserService
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -19,13 +20,13 @@ object RetrofitServer {
     private lateinit var moshi: Moshi
     lateinit var cookieMap: MutableMap<String, String>
     lateinit var Auth: AuthService
+    lateinit var User: UserService
         private set
 
     fun initializeRetrofit() {
         cookieMap = mutableMapOf()
         val cookieJar = object : CookieJar {
             val cookies = mutableListOf<Cookie>()
-
 
             override fun loadForRequest(url: HttpUrl): List<Cookie> {
                 return cookies.filter { it.matches(url) }
@@ -63,6 +64,7 @@ object RetrofitServer {
 
 
         Auth = retrofit.create(AuthService::class.java)
+        User = retrofit.create(UserService::class.java)
     }
 
 }

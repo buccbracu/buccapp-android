@@ -1,5 +1,9 @@
 package com.buccbracu.bucc.backend.remote.models
 
+data class MemberResponse(
+    val user: Member
+)
+
 data class Member(
     val _id: String,
     val name: String,

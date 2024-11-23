@@ -29,7 +29,6 @@ class SessionRepository @Inject constructor(
             }
             copyToRealm(sessionData, updatePolicy = UpdatePolicy.ALL)
         }
-        println("DATA WRITTEN TO SESSION")
     }
 
     suspend fun createEmptySession(sessionData: Session) {
@@ -54,8 +53,12 @@ class SessionRepository @Inject constructor(
                 results.list.toList()
             }
     }
-    suspend fun getSession(): Session? {
-        return realm.query<Session>().find().firstOrNull()
+    fun getSession(): Flow<Session?> {
+        return realm.
+        query<Session>("objectid = 1")
+            .first()
+            .asFlow()
+            .map { it.obj }
     }
 
 

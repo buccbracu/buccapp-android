@@ -1,22 +1,26 @@
 package com.buccbracu.bucc.backend.local.repositories
 
-import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.local.models.User.User
-import com.buccbracu.bucc.backend.local.models.User.UserSocial
+import com.buccbracu.bucc.backend.local.models.User.Profile
+import com.buccbracu.bucc.backend.local.models.User.ProfileSocial
+import com.buccbracu.bucc.backend.local.models.emptyProfile
+import com.buccbracu.bucc.backend.remote.api.UserService
 import com.buccbracu.bucc.backend.remote.models.Member
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val realm: Realm
+    private val realm: Realm,
+    private val User: UserService
 ) {
-    suspend fun saveProfile(user: Member) {
+
+    private suspend fun saveProfile(user: Member) {
         realm.write {
-            val userData = User().apply {
+            val userData = Profile().apply {
                 objectid = 1
                 _id = user._id
                 name = user.name
@@ -38,7 +42,7 @@ class UserRepository @Inject constructor(
                 memberStatus = user.memberStatus
                 memberSkills.addAll(user.memberSkills)
                 // Convert the MemberSocials object to a RealmList of ProfileSocial
-                memberSocials = UserSocial().apply {
+                memberSocials = ProfileSocial().apply {
                     Facebook = user.memberSocials.Facebook
                     Github = user.memberSocials.Github
                     LinkedIn = user.memberSocials.LinkedIn
@@ -49,16 +53,25 @@ class UserRepository @Inject constructor(
         println("Profile saved to Realm.")
     }
 
-    suspend fun createEmptyProfile(user: User){
+
+    suspend fun getRemoteProfileAndSave(cookie: String){
+        val response = User.getUserProfile(cookie).awaitResponse()
+        response.body()?.let {
+            saveProfile(response.body()!!.user)
+        }
+
+    }
+
+    suspend fun createEmptyProfile(){
         realm.write {
-            copyToRealm(user, updatePolicy = UpdatePolicy.ALL)
+            copyToRealm(emptyProfile, updatePolicy = UpdatePolicy.ALL)
         }
     }
 
 
-    fun getProfile(): Flow<User?> {
+    fun getProfile(): Flow<Profile?> {
         return realm.
-        query<User>("objectid = 1")
+        query<Profile>("objectid = 1")
             .first()
             .asFlow()
             .map { it.obj }
@@ -66,20 +79,11 @@ class UserRepository @Inject constructor(
 
     suspend fun deleteProfile() {
         realm.write {
-            val users = query<User>().find()
+            val users = query<Profile>().find()
             delete(users)
         }
-        println("Profile deleted from Realm.")
     }
 
-    fun getAllProfiles(): Flow<List<User>> {
-        return realm
-            .query<User>()
-            .asFlow()
-            .map { results ->
-                results.list.toList()
-            }
-    }
 
 }
 

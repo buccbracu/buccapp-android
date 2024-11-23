@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
+import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.models.User
@@ -18,6 +19,7 @@ import javax.inject.Inject
 open class LoginVM @Inject constructor(
     private val sessionR: SessionRepository,
     private val sharedR: SharedRepository,
+    private val userR: UserRepository,
     private val cookieMap: Map<String, String>,
     private val Auth: AuthService
     ): ViewModel() {
@@ -33,7 +35,7 @@ open class LoginVM @Inject constructor(
         val paragraphs = doc.select("p").text()
         return !paragraphs.contains(signInError)
     }
-    suspend fun login(email: String, password: String, loginStatus: (Boolean, User) -> Unit) {
+    fun login(email: String, password: String, loginStatus: (Boolean, User) -> Unit) {
         val emptyUser = User("", "", "", "", "", "")
         viewModelScope.launch {
             try {
@@ -47,10 +49,12 @@ open class LoginVM @Inject constructor(
                         if (session.isSuccessful) {
                             session.body()?.let { sessionData ->
                                 println("Sign in Successful")
+                                val cookie = cookieMap[TOKEN_KEY]!!.trim()
                                 sessionR.createSession(
                                     session = sessionData,
-                                    token = cookieMap[TOKEN_KEY]!!.trim()
+                                    token = cookie
                                 )
+                                userR.getRemoteProfileAndSave(cookie)
                                 loginStatus(true, sessionData.user)
                             }
                         } else {

@@ -5,7 +5,7 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-class User : RealmObject {
+class Profile : RealmObject {
     @PrimaryKey var objectid: Int = 1
     var _id: String = ""
     var name: String = ""
@@ -26,6 +26,6 @@ class User : RealmObject {
     var lastPromotion: String = ""
     var memberStatus: String = ""
     var memberSkills: RealmList<String> = realmListOf()
-    var memberSocials: UserSocial? = null
+    var memberSocials: ProfileSocial? = null
 }
 

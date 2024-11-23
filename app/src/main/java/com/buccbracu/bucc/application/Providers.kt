@@ -1,6 +1,7 @@
 package com.buccbracu.bucc.application
 
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +31,11 @@ object Providers {
     @Singleton
     fun provideRetrofitAuth(): AuthService {
         return RetrofitServer.Auth
+    }
+    @Provides
+    @Singleton
+    fun provideRetrofitUser(): UserService {
+        return RetrofitServer.User
     }
     @Provides
     @Singleton

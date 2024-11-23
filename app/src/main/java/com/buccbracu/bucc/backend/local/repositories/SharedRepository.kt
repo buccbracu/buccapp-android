@@ -1,11 +1,12 @@
 package com.buccbracu.bucc.backend.local.repositories
 
-import com.buccbracu.bucc.backend.local.models.User.User
+import com.buccbracu.bucc.backend.local.models.User.Profile
 import com.buccbracu.bucc.backend.local.models.Session
+import com.buccbracu.bucc.backend.local.models.emptySession
+import com.buccbracu.bucc.backend.local.models.emptyProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -19,17 +20,12 @@ class SharedRepository @Inject constructor(
     private val profileR: UserRepository,
 ) {
 
-    private val emptySession = Session().apply {
-        objectid = 1
-    }
-    private val emptyUser = User().apply {
-        objectid = 1
-    }
+
     private val _session: MutableStateFlow<Session?> = MutableStateFlow(emptySession)
     val session: StateFlow<Session?> = _session
 
-    private val _profile: MutableStateFlow<User?> = MutableStateFlow(emptyUser)
-    val profile: StateFlow<User?> = _profile
+    private val _profile: MutableStateFlow<Profile?> = MutableStateFlow(emptyProfile)
+    val profile: StateFlow<Profile?> = _profile
 
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 

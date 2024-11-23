@@ -14,10 +14,10 @@ class SessionRepository @Inject constructor(
     private val realm: Realm
 ) {
 
-
     suspend fun createSession(session: SessionResponse, token: String) {
         realm.write {
             val sessionData = Session().apply {
+                objectid = 1
                 name = session.user.name
                 email = session.user.email
                 image = session.user.image
@@ -32,6 +32,19 @@ class SessionRepository @Inject constructor(
         println("DATA WRITTEN TO SESSION")
     }
 
+    suspend fun createEmptySession(sessionData: Session) {
+        realm.write {
+            copyToRealm(sessionData, updatePolicy = UpdatePolicy.ALL)
+        }
+    }
+
+    suspend fun deleteSession() {
+        realm.write {
+            val sessions = query<Session>().find() // Find all Session objects
+            delete(sessions) // Delete all found Session objects
+        }
+    }
+
 
     fun getAllSession() : Flow<List<Session>> {
         return realm
@@ -40,6 +53,9 @@ class SessionRepository @Inject constructor(
             .map { results ->
                 results.list.toList()
             }
+    }
+    suspend fun getSession(): Session? {
+        return realm.query<Session>().find().firstOrNull()
     }
 
 

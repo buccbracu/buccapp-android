@@ -2,6 +2,7 @@ package com.buccbracu.bucc.backend.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.buccbracu.bucc.backend.local.models.Profile.Profile
 import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
@@ -10,7 +11,9 @@ import com.buccbracu.bucc.backend.remote.models.User
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
@@ -23,6 +26,22 @@ open class LoginVM @Inject constructor(
     private val Auth: AuthService
     ): ViewModel() {
 
+    val emptySession = Session().apply {
+        objectid = 1
+    }
+
+    private val _session = MutableStateFlow<Session?>(emptySession)
+
+        init{
+            viewModelScope.launch {
+                fetchSession()
+            }
+
+        }
+
+
+    val session: StateFlow<Session?> get() = _session
+
     val allSessions = sessionR.getAllSession()
         .stateIn(
             viewModelScope,
@@ -30,12 +49,14 @@ open class LoginVM @Inject constructor(
             emptyList()
         )
 
-
-    fun getSessionSnapshot(setValue: (List<Session>) -> Unit){
+    private fun fetchSession() {
         viewModelScope.launch {
-            setValue(sessionR.getAllSessionSnapshot())
+            val sessionData = sessionR.getSession()
+            if(sessionData == null) sessionR.createEmptySession(emptySession)
+            _session.value = sessionData ?: emptySession
         }
     }
+
 
     private val signInError = "Sign in failed. Check the details you provided are correct."
     private fun signInSuccess(html: String): Boolean{

@@ -12,9 +12,8 @@ import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.components.createNotification
 
 @Composable
-fun Profile(sessionData: List<Session>) {
+fun Profile(session: Session) {
     val context = LocalContext.current
-    val session = sessionData[0]
     Box(
         modifier = Modifier
             .fillMaxSize(),

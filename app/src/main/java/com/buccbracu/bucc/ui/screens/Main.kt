@@ -32,12 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
-import com.buccbracu.bucc.components.CircularLoadingBasic
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -50,9 +47,7 @@ fun Main(){
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
     }
-    var sessionSnapshot by remember{
-        mutableStateOf(listOf<Session>())
-    }
+
     val navController = rememberNavController()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
@@ -60,9 +55,8 @@ fun Main(){
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val context = LocalContext.current
 
-    // server check
     val loginVM: LoginVM = hiltViewModel()
-    val sessionData by loginVM.allSessions.collectAsState()
+    val sessionData by loginVM.session.collectAsState()
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
@@ -126,15 +120,13 @@ fun Main(){
             NavHost(navController = navController, startDestination = "About BUCC") {
                 // Routes
                 composable("Profile") {
-                    Profile(
-                        sessionData.ifEmpty { sessionSnapshot }
-                    )
+                    Profile(sessionData!!)
                 }
                 composable("SE Dashboard") {
                     SEDashboard()
                 }
                 composable("About Us") {
-                    AboutUs(sessionData[0])
+                    AboutUs(sessionData!!)
                 }
                 composable("About BUCC") {
                     AboutClub()

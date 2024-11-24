@@ -22,12 +22,16 @@ open class DeptMemVM @Inject constructor(
 
     val session = sharedR.session
 
-    fun getMembers(setMembers: (List<Member>) -> Unit){
+    fun getMembers(
+        setMembers: (List<Member>) -> Unit,
+        setLoading: (Boolean) -> Unit
+    ){
         viewModelScope.launch {
             session.value?.let {
                 val response = DeptMem.getUserProfile(session.value!!.authJsToken).awaitResponse()
                 response.body()?.let {
                     setMembers(response.body()!!.users)
+                    setLoading(false)
                 }
             }
         }

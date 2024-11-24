@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
+import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import kotlinx.coroutines.launch
 
 @Composable
@@ -23,19 +24,40 @@ fun DeptMemScreen(){
         mutableStateOf(listOf<Member>())
     }
     val scope = rememberCoroutineScope()
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
 
     LaunchedEffect(memberList) {
-        scope.launch {
-            deptMemVM.getMembers { list ->
-                memberList = list
+        if(memberList.isEmpty()){
+            scope.launch {
+                isLoading = true
+                deptMemVM.getMembers(
+                    setMembers = { list ->
+                        memberList = list
+                    },
+                    setLoading = { loading ->
+                        isLoading = loading
+
+                    }
+                )
+
             }
         }
     }
 
-    if(memberList.isNotEmpty()){
-        LazyColumn {
-            items(memberList){ member ->
-                Text(member.name)
+    if(isLoading){
+        NoButtonCircularLoadingDialog(
+            title = "Loading Department Members",
+            message = "Please wait..."
+        )
+    }
+    else{
+        if(memberList.isNotEmpty()){
+            LazyColumn {
+                items(memberList){ member ->
+                    Text(member.name)
+                }
             }
         }
     }

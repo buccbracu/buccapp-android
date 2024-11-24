@@ -11,6 +11,7 @@ import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -48,9 +49,13 @@ object RetrofitServer {
                 }
             }
         }
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
         val client = OkHttpClient.Builder()
             .cookieJar(cookieJar)
+//            .addInterceptor(loggingInterceptor)       // use if need logs. else no.
             .build()
         moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())

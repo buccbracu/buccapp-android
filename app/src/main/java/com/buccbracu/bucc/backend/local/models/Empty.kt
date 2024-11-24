@@ -41,7 +41,7 @@ val emptyMember = Member(
     memberSkills = emptyList(),
     memberSocials = MemberSocials(
         Facebook = "",
-        LinkedIn = "",
+        Linkedin = "",
         Github = ""
     )
 )

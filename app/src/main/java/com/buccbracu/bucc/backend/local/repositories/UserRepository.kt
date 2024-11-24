@@ -5,11 +5,17 @@ import com.buccbracu.bucc.backend.local.models.User.ProfileSocial
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.remote.api.UserService
 import com.buccbracu.bucc.backend.remote.models.Member
+import com.buccbracu.bucc.backend.remote.models.MemberResponse
+import com.buccbracu.bucc.backend.remote.models.PatchMember
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -18,7 +24,7 @@ class UserRepository @Inject constructor(
     private val User: UserService
 ) {
 
-    private suspend fun saveProfile(user: Member) {
+    suspend fun saveProfile(user: Member) {
         realm.write {
             val userData = Profile().apply {
                 objectid = 1
@@ -45,12 +51,20 @@ class UserRepository @Inject constructor(
                 memberSocials = ProfileSocial().apply {
                     Facebook = user.memberSocials.Facebook
                     Github = user.memberSocials.Github
-                    LinkedIn = user.memberSocials.LinkedIn
+                    LinkedIn = user.memberSocials.Linkedin
                 }
             }
             copyToRealm(userData, updatePolicy = UpdatePolicy.ALL)
         }
         println("Profile saved to Realm.")
+    }
+
+    suspend fun updateProfile(profileData: PatchMember, cookie: String): MemberResponse? {
+        val response = User.updateUserProfile(
+            cookie = cookie,
+            user = profileData,
+        ).awaitResponse()
+        return response.body()
     }
 
 

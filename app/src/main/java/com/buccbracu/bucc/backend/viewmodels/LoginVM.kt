@@ -38,41 +38,35 @@ open class LoginVM @Inject constructor(
     fun login(email: String, password: String, loginStatus: (Boolean, User) -> Unit) {
         val emptyUser = User("", "", "", "", "", "")
         viewModelScope.launch {
-            try {
-                val csrf = Auth.getCsrfToken().awaitResponse()
-                csrf.body()?.let {
-                    val token = it.csrfToken
-                    val signIn = Auth.signIn(token, email.trim(), password.trim()).awaitResponse()
-                    val signInResult = signInSuccess(signIn.body()!!.string())
-                    if (signInResult) {
-                        val session = Auth.getSession().awaitResponse()
-                        if (session.isSuccessful) {
-                            session.body()?.let { sessionData ->
-                                println("Sign in Successful")
-                                val cookie = cookieMap[TOKEN_KEY]!!.trim()
-                                sessionR.createSession(
-                                    session = sessionData,
-                                    token = cookie
-                                )
-                                userR.getRemoteProfileAndSave(cookie)
-                                loginStatus(true, sessionData.user)
-                            }
-                        } else {
-                            println("Session error: ${session.errorBody()}")
-                            loginStatus(false, emptyUser)
+            val csrf = Auth.getCsrfToken().awaitResponse()
+            csrf.body()?.let {
+                val token = it.csrfToken
+                val signIn = Auth.signIn(token, email.trim(), password.trim()).awaitResponse()
+                val signInResult = signInSuccess(signIn.body()!!.string())
+                if (signInResult) {
+                    val session = Auth.getSession().awaitResponse()
+                    if (session.isSuccessful) {
+                        session.body()?.let { sessionData ->
+                            println("Sign in Successful")
+                            val cookie = cookieMap[TOKEN_KEY]!!.trim()
+                            sessionR.createSession(
+                                session = sessionData,
+                                token = cookie
+                            )
+                            userR.getRemoteProfileAndSave(cookie)
+                            loginStatus(true, sessionData.user)
                         }
                     } else {
-                        println("Sign In failed: $signInError")
+                        println("Session error: ${session.errorBody()}")
                         loginStatus(false, emptyUser)
                     }
+                } else {
+                    println("Sign In failed: $signInError")
+                    loginStatus(false, emptyUser)
                 }
-            } catch (e: Exception) {
-                println("Error during login: ${e.message}")
-                loginStatus(false, emptyUser)
             }
         }
     }
-
 
 
 }

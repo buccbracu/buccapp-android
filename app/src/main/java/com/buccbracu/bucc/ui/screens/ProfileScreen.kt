@@ -2,7 +2,6 @@ package com.buccbracu.bucc.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,11 +22,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.local.models.User.ProfileSocial
-import com.buccbracu.bucc.backend.local.models.emptyMember
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.EditableTextField
-import io.realm.kotlin.ext.realmListOf
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -43,7 +39,9 @@ fun Profile(session: Session) {
     var edit by remember{
         mutableStateOf(false)
     }
-
+    val tempMember by remember{
+        mutableStateOf(profileData?.let { uservm.patchMemberFromProfile(it) })
+    }
 
     var (name, setName) = rememberSaveable { mutableStateOf("") }
     var (studentId, setStudentId) = rememberSaveable { mutableStateOf("") }
@@ -63,7 +61,7 @@ fun Profile(session: Session) {
     var (lastPromotion, setLastPromotion) = rememberSaveable { mutableStateOf("") }
     var (memberStatus, setMemberStatus) = rememberSaveable { mutableStateOf("") }
 
-    val (memberSkills, setMemberSkills) = remember { mutableStateOf(realmListOf<String>()) }
+    val (memberSkills, setMemberSkills) = remember { mutableStateOf(listOf<String>()) }
 
     val (facebook, setFacebook) = remember { mutableStateOf("") }
     val (linkedin, setLinkedin) = remember { mutableStateOf("") }
@@ -73,7 +71,7 @@ fun Profile(session: Session) {
 
         if(profileData != null){
             val data = profileData!!
-            val socials = data.memberSocials!!
+            val socials = data.memberSocials
 
             setName(data.name)
             setStudentId(data.studentId)
@@ -93,7 +91,7 @@ fun Profile(session: Session) {
             setLastPromotion(data.lastPromotion)
             setMemberStatus(data.memberStatus)
 
-            setFacebook(socials.Facebook)
+            setFacebook(socials!!.Facebook)
             setGithub(socials.Github)
             setLinkedin(socials.LinkedIn)
         }
@@ -117,6 +115,15 @@ fun Profile(session: Session) {
                     ){
                         Button(
                             onClick = {
+                                if(edit){
+                                    scope.launch {
+                                        tempMember?.let {
+                                            uservm.updateUserProfile(
+                                                profileData = it,
+                                            )
+                                        }
+                                    }
+                                }
                                 edit = !edit
                             },
 
@@ -127,135 +134,184 @@ fun Profile(session: Session) {
                     EditableTextField(
                         text = name,
                         label = "Name",
-                        isEditable = edit,
-                        onEdit = { value -> setName(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = studentId,
                         label = "Student ID",
-                        isEditable = edit,
-                        onEdit = { value -> setStudentId(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = email,
                         label = "Email",
-                        isEditable = edit,
-                        onEdit = { value -> setEmail(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = buccDepartment,
                         label = "BUCC Department",
-                        isEditable = edit,
-                        onEdit = { value -> setBuccDepartment(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = designation,
                         label = "Designation",
-                        isEditable = edit,
-                        onEdit = { value -> setDesignation(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = personalEmail,
                         label = "Personal Email",
                         isEditable = edit,
-                        onEdit = { value -> setPersonalEmail(value) }
+                        onEdit = { value ->
+                            setPersonalEmail(value)
+                            tempMember!!.personalEmail = value
+                        }
                     )
 
                     EditableTextField(
                         text = contactNumber,
                         label = "Contact Number",
                         isEditable = edit,
-                        onEdit = { value -> setContactNumber(value) }
+                        onEdit = { value ->
+                            setContactNumber(value)
+                            tempMember!!.contactNumber = value
+                        }
                     )
 
                     EditableTextField(
                         text = joinedBracu,
-                        label = "Joined Bracu",
-                        isEditable = edit,
-                        onEdit = { value -> setJoinedBracu(value) }
+                        label = "Joined BRACU",
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = departmentBracu,
-                        label = "Department at Bracu",
-                        isEditable = edit,
-                        onEdit = { value -> setDepartmentBracu(value) }
+                        label = "Department BRACU",
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
+
 
                     EditableTextField(
                         text = birthDate,
                         label = "Birth Date",
                         isEditable = edit,
-                        onEdit = { value -> setBirthDate(value) }
+                        onEdit = { value ->
+                            setBirthDate(value)
+                            tempMember!!.birthDate = value
+                        }
                     )
 
                     EditableTextField(
                         text = bloodGroup,
                         label = "Blood Group",
                         isEditable = edit,
-                        onEdit = { value -> setBloodGroup(value) }
+                        onEdit = { value ->
+                            setBloodGroup(value)
+                            tempMember!!.bloodGroup = value
+                        }
                     )
 
                     EditableTextField(
                         text = gender,
                         label = "Gender",
                         isEditable = edit,
-                        onEdit = { value -> setGender(value) }
+                        onEdit = { value ->
+                            setGender(value)
+                            tempMember!!.gender = value
+                        }
                     )
 
                     EditableTextField(
                         text = emergencyContact,
                         label = "Emergency Contact",
                         isEditable = edit,
-                        onEdit = { value -> setEmergencyContact(value) }
+                        onEdit = { value ->
+                            setEmergencyContact(value)
+                            tempMember!!.emergencyContact = value
+                        }
                     )
 
                     EditableTextField(
                         text = joinedBucc,
                         label = "Joined BUCC",
-                        isEditable = edit,
-                        onEdit = { value -> setJoinedBucc(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = lastPromotion,
                         label = "Last Promotion",
-                        isEditable = edit,
-                        onEdit = { value -> setLastPromotion(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
                         text = memberStatus,
                         label = "Member Status",
-                        isEditable = edit,
-                        onEdit = { value -> setMemberStatus(value) }
+                        isEditable = false,
+                        onEdit = { value ->
+
+                        }
                     )
 
                     EditableTextField(
-                        text = facebook,
-                        label = "Facebook",
-                        isEditable = edit, // Set based on your edit condition
-                        onEdit = { setFacebook(it) }
+                        text = github,
+                        label = "Github",
+                        isEditable = edit,
+                        onEdit = { value ->
+                            setGithub(value)
+                            tempMember!!.memberSocials.Github = value
+                        }
                     )
 
                     EditableTextField(
                         text = linkedin,
                         label = "LinkedIn",
-                        isEditable = edit, // Set based on your edit condition
-                        onEdit = { setLinkedin(it) }
+                        isEditable = edit,
+                        onEdit = { value ->
+                            setLinkedin(value)
+                            tempMember!!.memberSocials.Linkedin = value
+                        }
                     )
 
                     EditableTextField(
-                        text = github,
-                        label = "GitHub",
-                        isEditable = edit, // Set based on your edit condition
-                        onEdit = { setGithub(it) }
+                        text = facebook,
+                        label = "Facebook",
+                        isEditable = edit,
+                        onEdit = { value ->
+                            setFacebook(value)
+                            tempMember!!.memberSocials.Facebook = value
+                        }
                     )
+
 
                 }
             }

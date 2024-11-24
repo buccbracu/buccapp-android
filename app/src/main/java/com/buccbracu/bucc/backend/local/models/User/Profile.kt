@@ -26,6 +26,6 @@ class Profile : RealmObject {
     var lastPromotion: String = ""
     var memberStatus: String = ""
     var memberSkills: RealmList<String> = realmListOf()
-    var memberSocials: ProfileSocial? = null
+    var memberSocials: ProfileSocial? = ProfileSocial()
 }
 

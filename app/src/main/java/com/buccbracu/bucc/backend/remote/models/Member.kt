@@ -1,35 +1,50 @@
 package com.buccbracu.bucc.backend.remote.models
 
+import com.squareup.moshi.Json
+
 data class MemberResponse(
     val user: Member
 )
 
 data class Member(
-    val _id: String,
-    val name: String,
-    val studentId: String,
-    val email: String,
-    val buccDepartment: String,
-    val designation: String,
-    val personalEmail: String,
-    val contactNumber: String,
-    val joinedBracu: String,
-    val departmentBracu: String,
-    val profileImage: String,
-    val birthDate: String,
-    val bloodGroup: String,
-    val gender: String,
-    val emergencyContact: String,
-    val joinedBucc: String,
-    val lastPromotion: String,
-    val memberStatus: String,
-    val memberSkills: List<String>,
-    val memberSocials: MemberSocials
+    var _id: String,
+    var name: String,
+    var studentId: String,
+    var email: String,
+    var buccDepartment: String,
+    var designation: String,
+    var personalEmail: String,
+    var contactNumber: String,
+    var joinedBracu: String,
+    var departmentBracu: String,
+    var profileImage: String,
+    var birthDate: String,
+    var bloodGroup: String,
+    var gender: String,
+    var emergencyContact: String,
+    var joinedBucc: String,
+    var lastPromotion: String,
+    var memberStatus: String,
+    var memberSkills: List<String>,
+    var memberSocials: MemberSocials
+)
+
+data class PatchMember(
+    @Json(name = "personalEmail")
+    var personalEmail: String,
+    var contactNumber: String,
+    var profileImage: String,
+    var birthDate: String,
+    var bloodGroup: String,
+    var gender: String,
+    var emergencyContact: String,
+    var memberSkills: List<String>,
+    var memberSocials: MemberSocials
 )
 
 data class MemberSocials(
-    val Facebook: String ="",
-    val LinkedIn: String ="",
-    val Github: String =""
+    var Facebook: String ="",
+    var Linkedin: String ="",
+    var Github: String =""
 
 )

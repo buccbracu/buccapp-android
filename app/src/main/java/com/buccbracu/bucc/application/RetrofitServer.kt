@@ -1,8 +1,10 @@
 package com.buccbracu.bucc.application
 
+import com.buccbracu.bucc.backend.adapters.MemberAdapter
 import com.buccbracu.bucc.backend.remote.BASE_URL
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.api.UserService
 
 import com.squareup.moshi.Moshi
@@ -22,6 +24,7 @@ object RetrofitServer {
     lateinit var cookieMap: MutableMap<String, String>
     lateinit var Auth: AuthService
     lateinit var User: UserService
+    lateinit var DeptMember: DeptMemberService
         private set
 
     fun initializeRetrofit() {
@@ -58,6 +61,7 @@ object RetrofitServer {
 //            .addInterceptor(loggingInterceptor)       // use if need logs. else no.
             .build()
         moshi = Moshi.Builder()
+            .add(MemberAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
 
@@ -70,6 +74,7 @@ object RetrofitServer {
 
         Auth = retrofit.create(AuthService::class.java)
         User = retrofit.create(UserService::class.java)
+        DeptMember = retrofit.create(DeptMemberService::class.java)
     }
 
 }

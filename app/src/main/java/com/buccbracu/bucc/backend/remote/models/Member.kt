@@ -1,9 +1,14 @@
 package com.buccbracu.bucc.backend.remote.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 data class MemberResponse(
     val user: Member
+)
+
+data class MembersResponse(
+    val users: List<Member>
 )
 
 data class Member(
@@ -30,7 +35,6 @@ data class Member(
 )
 
 data class PatchMember(
-    @Json(name = "personalEmail")
     var personalEmail: String,
     var contactNumber: String,
     var profileImage: String,
@@ -43,8 +47,8 @@ data class PatchMember(
 )
 
 data class MemberSocials(
-    var Facebook: String ="",
-    var Linkedin: String ="",
-    var Github: String =""
+    var Facebook: String = "",
+    var Linkedin: String = "",
+    var Github: String = ""
 
 )

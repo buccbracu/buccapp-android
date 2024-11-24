@@ -147,6 +147,9 @@ fun Main(){
                 composable("Login Landing") {
                     LandingPage(loginVM, navController)
                 }
+                composable("Department Members"){
+                    DeptMemScreen()
+                }
 
             }
         }

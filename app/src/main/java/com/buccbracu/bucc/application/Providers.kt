@@ -1,13 +1,13 @@
 package com.buccbracu.bucc.application
 
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.api.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.realm.kotlin.Realm
-import okhttp3.CookieJar
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -36,6 +36,11 @@ object Providers {
     @Singleton
     fun provideRetrofitUser(): UserService {
         return RetrofitServer.User
+    }
+    @Provides
+    @Singleton
+    fun provideRetrofitMember(): DeptMemberService {
+        return RetrofitServer.DeptMember
     }
     @Provides
     @Singleton

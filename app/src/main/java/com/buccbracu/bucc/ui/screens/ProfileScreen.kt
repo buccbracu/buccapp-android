@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.UserVM
+import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.EditableTextField
 import kotlinx.coroutines.launch
 
@@ -43,6 +44,9 @@ fun Profile(session: Session) {
     }
     val tempMember by remember{
         mutableStateOf(uservm.patchMemberFromProfile(profileData!!))
+    }
+    var isLoading by remember{
+        mutableStateOf(false)
     }
 
     var (name, setName) = rememberSaveable { mutableStateOf("") }
@@ -130,8 +134,12 @@ fun Profile(session: Session) {
                                 onClick = {
                                     if(edit){
                                         scope.launch {
+                                            isLoading = true
                                             uservm.updateUserProfile(
                                                 profileData = tempMember,
+                                                setLoading = { loading ->
+                                                    isLoading = loading
+                                                }
                                             )
                                         }
                                     }
@@ -139,7 +147,12 @@ fun Profile(session: Session) {
                                 },
 
                             ) {
-                                Text(if (edit) "Save" else "Edit")
+                                if(isLoading){
+                                    ButtonLoading()
+                                }
+                                else{
+                                    Text(if (edit) "Save" else "Edit")
+                                }
                             }
 
                             if(edit){

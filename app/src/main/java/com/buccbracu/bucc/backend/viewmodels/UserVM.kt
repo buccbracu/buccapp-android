@@ -40,7 +40,10 @@ open class UserVM @Inject constructor(
         )
     }
 
-    fun updateUserProfile(profileData: PatchMember){
+    fun updateUserProfile(
+        profileData: PatchMember,
+        setLoading: (Boolean) -> Unit
+    ){
         viewModelScope.launch {
             session.value?.let {
                 val cookie = session.value!!.authJsToken
@@ -55,6 +58,7 @@ open class UserVM @Inject constructor(
                     println("User profile updated")
                     sharedR.printProfile()
                 }
+                setLoading(false)
 
             }
         }

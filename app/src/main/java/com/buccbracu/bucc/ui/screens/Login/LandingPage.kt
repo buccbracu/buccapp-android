@@ -19,6 +19,7 @@ import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.AnimatedVector
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 var darkMode = false
 
@@ -51,9 +54,19 @@ fun LandingPage(
     var swipeProgress by remember { mutableFloatStateOf(0f) } // Track the swipe progress (0 to 1)
     val scope = rememberCoroutineScope()
 
-    if(showLogin){
-        isSwipedUp = true
-        swipeProgress = 1f
+    LaunchedEffect(showLogin) {
+        if(showLogin){
+            scope.launch {
+                delay(600)
+                while(swipeProgress < 1.0){
+                    swipeProgress+=(0.01.toFloat())
+                    delay(1)
+                }
+                if(swipeProgress == 1.0.toFloat()){
+                    isSwipedUp = true
+                }
+            }
+        }
     }
 
     val swipeThreshold = 1000f
@@ -67,24 +80,26 @@ fun LandingPage(
         modifier = Modifier
             .fillMaxWidth()
             .pointerInput(Unit) {
-                detectVerticalDragGestures(
-                    onVerticalDrag = { _, dragAmount ->
-                        // Update the swipe offset based on the drag amount
-                        swipeProgress = (swipeProgress - (dragAmount / swipeThreshold)).coerceIn(0f, 1f)
-                    },
-                    onDragEnd = {
-                        // When the user releases the swipe
-                        if (swipeProgress >= minSwipeToShow) {
-                            // If swipe progress is greater than the threshold, complete the swipe
-                            swipeProgress = 1f
-                            isSwipedUp = true
-                        } else {
-                            // If swipe progress is less than the threshold, reset the swipe
-                            swipeProgress = 0f
-                            isSwipedUp = false
+                if(!showLogin){
+                    detectVerticalDragGestures(
+                        onVerticalDrag = { _, dragAmount ->
+                            // Update the swipe offset based on the drag amount
+                            swipeProgress = (swipeProgress - (dragAmount / swipeThreshold)).coerceIn(0f, 1f)
+                        },
+                        onDragEnd = {
+                            // When the user releases the swipe
+                            if (swipeProgress >= minSwipeToShow) {
+                                // If swipe progress is greater than the threshold, complete the swipe
+                                swipeProgress = 1f
+                                isSwipedUp = true
+                            } else {
+                                // If swipe progress is less than the threshold, reset the swipe
+                                swipeProgress = 0f
+                                isSwipedUp = false
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
     ) {
         Column(
@@ -122,18 +137,20 @@ fun LandingPage(
                     )
                     Spacer(modifier = Modifier.height(150.dp))
                     AnimatedVector("up_new.json")
-                    Text(
-                        text = "Swipe Up to",
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Gray
-                    )
-                    Text(
-                        text = "Upgrade Yourself",
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Gray
-                    )
+                    if(!showLogin){
+                        Text(
+                            text = "Swipe Up to",
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray
+                        )
+                        Text(
+                            text = "Upgrade Yourself",
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray
+                        )
+                    }
                 }
                 Box(
                     modifier = Modifier

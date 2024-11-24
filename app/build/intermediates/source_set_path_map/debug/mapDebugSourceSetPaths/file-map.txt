@@ -1,0 +1,58 @@
+com.buccbracu.bucc.app-runtime-saveable-release-0 C:\Users\Lenovo\.gradle\caches\transforms-4\0309ece99992bad50231430d2e867576\transformed\runtime-saveable-release\res
+com.buccbracu.bucc.app-hilt-navigation-1.0.0-1 C:\Users\Lenovo\.gradle\caches\transforms-4\05847d9bdf5c02b4ba94cb0cb2decee0\transformed\hilt-navigation-1.0.0\res
+com.buccbracu.bucc.app-navigation-runtime-ktx-2.7.7-2 C:\Users\Lenovo\.gradle\caches\transforms-4\0ac96d1deed21cd966e01b64385da8af\transformed\navigation-runtime-ktx-2.7.7\res
+com.buccbracu.bucc.app-lifecycle-livedata-core-ktx-2.8.2-3 C:\Users\Lenovo\.gradle\caches\transforms-4\0cf046b8191fe276514950af725f2938\transformed\lifecycle-livedata-core-ktx-2.8.2\res
+com.buccbracu.bucc.app-lifecycle-viewmodel-ktx-2.8.2-4 C:\Users\Lenovo\.gradle\caches\transforms-4\1c10cd4f5e0a1f6bd64b054dfde454ec\transformed\lifecycle-viewmodel-ktx-2.8.2\res
+com.buccbracu.bucc.app-activity-ktx-1.8.0-5 C:\Users\Lenovo\.gradle\caches\transforms-4\2056e630fb8a745c1fbc59bb5fe5df64\transformed\activity-ktx-1.8.0\res
+com.buccbracu.bucc.app-animation-release-6 C:\Users\Lenovo\.gradle\caches\transforms-4\22122a269cfa09c719d071a19f32e795\transformed\animation-release\res
+com.buccbracu.bucc.app-lifecycle-viewmodel-savedstate-2.8.2-7 C:\Users\Lenovo\.gradle\caches\transforms-4\2912cf1cd97cfbf835aa017d2aac87fd\transformed\lifecycle-viewmodel-savedstate-2.8.2\res
+com.buccbracu.bucc.app-lifecycle-livedata-core-2.8.2-8 C:\Users\Lenovo\.gradle\caches\transforms-4\2bdf93c6d649a868e490a01f5ecc46a7\transformed\lifecycle-livedata-core-2.8.2\res
+com.buccbracu.bucc.app-navigation-compose-2.7.7-9 C:\Users\Lenovo\.gradle\caches\transforms-4\2daeec62b332b9bac78329060c3e029b\transformed\navigation-compose-2.7.7\res
+com.buccbracu.bucc.app-foundation-release-10 C:\Users\Lenovo\.gradle\caches\transforms-4\31d13b2b99a049962184721b703502da\transformed\foundation-release\res
+com.buccbracu.bucc.app-material-icons-extended-release-11 C:\Users\Lenovo\.gradle\caches\transforms-4\3ad92fa90a527858fef7e350f4dc26d5\transformed\material-icons-extended-release\res
+com.buccbracu.bucc.app-ui-text-release-12 C:\Users\Lenovo\.gradle\caches\transforms-4\3d2626334e5c445d896e515939323832\transformed\ui-text-release\res
+com.buccbracu.bucc.app-lifecycle-runtime-ktx-release-13 C:\Users\Lenovo\.gradle\caches\transforms-4\40fbc5a69e8951144e7793a60e345e70\transformed\lifecycle-runtime-ktx-release\res
+com.buccbracu.bucc.app-ui-tooling-release-14 C:\Users\Lenovo\.gradle\caches\transforms-4\4328a749c1bb5c901c9fcbde8a24438f\transformed\ui-tooling-release\res
+com.buccbracu.bucc.app-savedstate-ktx-1.2.1-15 C:\Users\Lenovo\.gradle\caches\transforms-4\4810e398cf96fa2060e3881a214f9fee\transformed\savedstate-ktx-1.2.1\res
+com.buccbracu.bucc.app-material-ripple-release-16 C:\Users\Lenovo\.gradle\caches\transforms-4\4ae1773b41255b8759bc5b999a3f941d\transformed\material-ripple-release\res
+com.buccbracu.bucc.app-ui-release-17 C:\Users\Lenovo\.gradle\caches\transforms-4\4f0b11073b07b0e446e9dd95965a4705\transformed\ui-release\res
+com.buccbracu.bucc.app-lifecycle-viewmodel-release-18 C:\Users\Lenovo\.gradle\caches\transforms-4\5350d541bc6bf9d44cce52c7028f1b89\transformed\lifecycle-viewmodel-release\res
+com.buccbracu.bucc.app-ui-graphics-release-19 C:\Users\Lenovo\.gradle\caches\transforms-4\5391fc22431fbcc810f34caba14c1b76\transformed\ui-graphics-release\res
+com.buccbracu.bucc.app-fragment-1.5.1-20 C:\Users\Lenovo\.gradle\caches\transforms-4\5b51eefcb56dc5bed989a205e87006b8\transformed\fragment-1.5.1\res
+com.buccbracu.bucc.app-activity-1.8.0-21 C:\Users\Lenovo\.gradle\caches\transforms-4\74ae6f1d43fc8dc63b0954d2eafbb58b\transformed\activity-1.8.0\res
+com.buccbracu.bucc.app-core-runtime-2.2.0-22 C:\Users\Lenovo\.gradle\caches\transforms-4\74e708d91cd976ff3bbd5028daa1b95d\transformed\core-runtime-2.2.0\res
+com.buccbracu.bucc.app-core-1.12.0-23 C:\Users\Lenovo\.gradle\caches\transforms-4\77838bf7b97b0ca5c85a89a5e8d2a1d4\transformed\core-1.12.0\res
+com.buccbracu.bucc.app-ui-test-manifest-1.6.5-24 C:\Users\Lenovo\.gradle\caches\transforms-4\77d613e29d15f54874a80749cc49405f\transformed\ui-test-manifest-1.6.5\res
+com.buccbracu.bucc.app-lifecycle-process-2.8.2-25 C:\Users\Lenovo\.gradle\caches\transforms-4\854325121450f34eaa77214da9d26ba8\transformed\lifecycle-process-2.8.2\res
+com.buccbracu.bucc.app-foundation-layout-release-26 C:\Users\Lenovo\.gradle\caches\transforms-4\8764447f374c8ccda960a6903927371d\transformed\foundation-layout-release\res
+com.buccbracu.bucc.app-navigation-common-2.7.7-27 C:\Users\Lenovo\.gradle\caches\transforms-4\8a9e50f67515e0cb86fd6f08a9b9b256\transformed\navigation-common-2.7.7\res
+com.buccbracu.bucc.app-navigation-common-ktx-2.7.7-28 C:\Users\Lenovo\.gradle\caches\transforms-4\aa0df175a84ff78aafa3cc076c04c5f6\transformed\navigation-common-ktx-2.7.7\res
+com.buccbracu.bucc.app-startup-runtime-1.1.1-29 C:\Users\Lenovo\.gradle\caches\transforms-4\acac67fec44f43704df375ab1806b4d6\transformed\startup-runtime-1.1.1\res
+com.buccbracu.bucc.app-profileinstaller-1.3.1-30 C:\Users\Lenovo\.gradle\caches\transforms-4\b182417a8b54cca2d90ef6889b42cb0c\transformed\profileinstaller-1.3.1\res
+com.buccbracu.bucc.app-core-ktx-1.12.0-31 C:\Users\Lenovo\.gradle\caches\transforms-4\b3932f3b0248802c9cde376c8ddd195d\transformed\core-ktx-1.12.0\res
+com.buccbracu.bucc.app-material3-release-32 C:\Users\Lenovo\.gradle\caches\transforms-4\b6d84a1238b581ae61ccc9f8186fc3f5\transformed\material3-release\res
+com.buccbracu.bucc.app-runtime-release-33 C:\Users\Lenovo\.gradle\caches\transforms-4\bdc0f623a6710c34deffc228b57a9a6b\transformed\runtime-release\res
+com.buccbracu.bucc.app-lifecycle-livedata-2.8.2-34 C:\Users\Lenovo\.gradle\caches\transforms-4\c1c7491218c9b950d399be4fca18ee3f\transformed\lifecycle-livedata-2.8.2\res
+com.buccbracu.bucc.app-ui-geometry-release-35 C:\Users\Lenovo\.gradle\caches\transforms-4\c447419f1d84d68152361ca940a0b07e\transformed\ui-geometry-release\res
+com.buccbracu.bucc.app-ui-tooling-preview-release-36 C:\Users\Lenovo\.gradle\caches\transforms-4\cb3d47621e9db1575abae25693be9f9e\transformed\ui-tooling-preview-release\res
+com.buccbracu.bucc.app-ui-unit-release-37 C:\Users\Lenovo\.gradle\caches\transforms-4\cd40be11d31557597019751aa61ff25f\transformed\ui-unit-release\res
+com.buccbracu.bucc.app-ui-util-release-38 C:\Users\Lenovo\.gradle\caches\transforms-4\d205def7722cffdf26e4d2b241be87fa\transformed\ui-util-release\res
+com.buccbracu.bucc.app-annotation-experimental-1.4.0-39 C:\Users\Lenovo\.gradle\caches\transforms-4\d5d27cdd9689dc86f349897dc9068ce6\transformed\annotation-experimental-1.4.0\res
+com.buccbracu.bucc.app-lifecycle-runtime-release-40 C:\Users\Lenovo\.gradle\caches\transforms-4\d6f2acb853e30a1d64c213849f5bba7b\transformed\lifecycle-runtime-release\res
+com.buccbracu.bucc.app-lifecycle-viewmodel-compose-release-41 C:\Users\Lenovo\.gradle\caches\transforms-4\dad16bb902c06fe16d61afd66a7e60db\transformed\lifecycle-viewmodel-compose-release\res
+com.buccbracu.bucc.app-customview-poolingcontainer-1.0.0-42 C:\Users\Lenovo\.gradle\caches\transforms-4\dd42240322e15574d83f7bad4a9dcb7f\transformed\customview-poolingcontainer-1.0.0\res
+com.buccbracu.bucc.app-savedstate-1.2.1-43 C:\Users\Lenovo\.gradle\caches\transforms-4\e310b87a5a1ff2dba2060140a0c76790\transformed\savedstate-1.2.1\res
+com.buccbracu.bucc.app-material-release-44 C:\Users\Lenovo\.gradle\caches\transforms-4\e392787b25b938d54abba589d4ae89e7\transformed\material-release\res
+com.buccbracu.bucc.app-navigation-runtime-2.7.7-45 C:\Users\Lenovo\.gradle\caches\transforms-4\e43b6d748bce3ad0c2038c0664a9e273\transformed\navigation-runtime-2.7.7\res
+com.buccbracu.bucc.app-hilt-navigation-compose-1.0.0-46 C:\Users\Lenovo\.gradle\caches\transforms-4\e830a8c2934a31071d976b1d7401183a\transformed\hilt-navigation-compose-1.0.0\res
+com.buccbracu.bucc.app-material-icons-core-release-47 C:\Users\Lenovo\.gradle\caches\transforms-4\edfb05e93a43608aa0c38242e62612d7\transformed\material-icons-core-release\res
+com.buccbracu.bucc.app-emoji2-1.3.0-48 C:\Users\Lenovo\.gradle\caches\transforms-4\f1cc67c3889bddb593090578aac70b2c\transformed\emoji2-1.3.0\res
+com.buccbracu.bucc.app-animation-core-release-49 C:\Users\Lenovo\.gradle\caches\transforms-4\f3aa28377c1ba239246825e83241a918\transformed\animation-core-release\res
+com.buccbracu.bucc.app-activity-compose-1.8.0-50 C:\Users\Lenovo\.gradle\caches\transforms-4\f4779bd4e464c7417a27901ff2a5a87a\transformed\activity-compose-1.8.0\res
+com.buccbracu.bucc.app-ui-tooling-data-release-51 C:\Users\Lenovo\.gradle\caches\transforms-4\f7bb88b2e2e2bb24b6070cee54013be7\transformed\ui-tooling-data-release\res
+com.buccbracu.bucc.app-resValues-52 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\build\generated\res\resValues\debug
+com.buccbracu.bucc.app-packageDebugResources-53 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.buccbracu.bucc.app-packageDebugResources-54 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.buccbracu.bucc.app-debug-55 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.buccbracu.bucc.app-debug-56 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\src\debug\res
+com.buccbracu.bucc.app-main-57 C:\Users\Lenovo\Downloads\BUCC project\buccapp-android\app\src\main\res

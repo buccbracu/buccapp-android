@@ -39,7 +39,12 @@ open class LoginVM @Inject constructor(
         val paragraphs = doc.select("p").text()
         return !paragraphs.contains(signInError)
     }
-    fun login(email: String, password: String, loginStatus: (Boolean, User) -> Unit) {
+    fun login(
+        email: String,
+        password: String,
+        loginStatus: (Boolean, User) -> Unit,
+        setLoading: (Boolean) -> Unit
+    ) {
         val emptyUser = User("", "", "", "", "", "")
         viewModelScope.launch {
             val csrf = Auth.getCsrfToken().awaitResponse()
@@ -68,6 +73,7 @@ open class LoginVM @Inject constructor(
                     println("Sign In failed: $signInError")
                     loginStatus(false, emptyUser)
                 }
+                setLoading(false)
             }
         }
     }

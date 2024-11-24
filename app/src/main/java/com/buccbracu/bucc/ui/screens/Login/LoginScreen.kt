@@ -114,7 +114,7 @@ fun LoginScreen(
                         password = password,
                         loginStatus = { status, user ->
                             if(status){
-                                navController.navigate("Profile")
+//                                navController.navigate("About BUCC")
                                 createNotification(
                                     context,
                                     title = "BRAC University Computer Club",
@@ -146,7 +146,8 @@ fun LoginScreen(
 
         TextButton(
             onClick = {
-            }
+            },
+            enabled = !isLoading
         ) {
             Text(text = "Forgot Password?")
         }
@@ -154,7 +155,8 @@ fun LoginScreen(
         TextButton(
             onClick = {
                 loginLater = true
-            }
+            },
+            enabled = !isLoading
         ) {
             Text("Login Later")
         }

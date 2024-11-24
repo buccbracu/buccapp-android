@@ -2,7 +2,9 @@ package com.buccbracu.bucc.components.models
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.outlined.Login
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
@@ -32,10 +34,15 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.Apartment,
         title = "About BUCC",
     )
-    object LoginScreen: NavDrawerItem(
+    object Login: NavDrawerItem(
         selectedIcon = Icons.AutoMirrored.Filled.Login,
         unselectedIcon = Icons.AutoMirrored.Outlined.Login,
         title = "Login",
+    )
+    object Logout: NavDrawerItem(
+        selectedIcon = Icons.AutoMirrored.Filled.Logout,
+        unselectedIcon = Icons.AutoMirrored.Outlined.Logout,
+        title = "Logout",
     )
     object SEDashboard: NavDrawerItem(
         selectedIcon = Icons.Filled.GroupWork,
@@ -65,7 +72,7 @@ sealed class NavDrawerItem(
             Divider,
             AboutUs,
             AboutClub,
-            LoginScreen
+            Login
         )
 
         val navDrawerItemsLogin = listOf(
@@ -75,12 +82,12 @@ sealed class NavDrawerItem(
             Divider,
             AboutUs,
             AboutClub,
-            LoginScreen
+            Logout
         )
         val navDrawerItemsGuest = listOf(
             AboutUs,
             AboutClub,
-            LoginScreen
+            Login
         )
     }
 }

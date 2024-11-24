@@ -151,6 +151,7 @@ fun Profile(session: Session) {
                                         }
                                         edit = !edit
                                     },
+                                    enabled = !isLoading
 
                                     ) {
                                     if(isLoading){

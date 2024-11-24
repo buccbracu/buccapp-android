@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.R
+import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.models.NavDrawerItem
 
 
@@ -31,7 +31,8 @@ fun NavDrawer(
     scrollState: ScrollState,
     selectedIndex: Int,
     onClick: (item: NavDrawerItem) -> Unit,
-    login: Boolean
+    login: Boolean,
+    loginvm: LoginVM
 ){
     val items = if(login) NavDrawerItem.navDrawerItemsLogin else NavDrawerItem.navDrawerItemsGuest
     Column(
@@ -40,7 +41,7 @@ fun NavDrawer(
             .width(250.dp)
     ) {
 
-        MiniProfile()
+        MiniProfile(loginvm)
 
         Text(
             text = "BUCC",
@@ -92,7 +93,8 @@ fun NavDrawer(
 }
 
 @Composable
-fun MiniProfile(){
+fun MiniProfile(loginvm: LoginVM) {
+
     Column(
         modifier = Modifier
             .padding(start = 16.dp)

@@ -16,12 +16,9 @@ fun EditableTextField(
     isEditable: Boolean,
     onEdit: (String) -> Unit
 ){
-    var value by rememberSaveable { mutableStateOf(text) }
-    LaunchedEffect(text) {
-        value = text
-    }
+
     OutlinedTextField(
-        value = value,
+        value = text,
         onValueChange = {
             onEdit(it)
         },

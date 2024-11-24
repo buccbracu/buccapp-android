@@ -16,7 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun TopActionBar(drawerState: DrawerState, scope: CoroutineScope){
+fun TopActionBar(
+    drawerState: DrawerState,
+    scope: CoroutineScope
+){
     Box(
         modifier = Modifier.padding(top = 20.dp)
     ){

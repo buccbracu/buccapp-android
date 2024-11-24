@@ -25,6 +25,8 @@ import com.buccbracu.bucc.components.TopActionBar
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,7 +34,8 @@ import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
-import com.buccbracu.bucc.ui.screens.Login.LoginScreen
+import com.buccbracu.bucc.ui.screens.Login.Logout
+import kotlinx.coroutines.delay
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -44,6 +47,17 @@ fun Main(){
     }
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
+    }
+
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+    var logoutComplete by remember {
+        mutableStateOf(false)
+    }
+
+    var loggingOut by remember {
+        mutableStateOf(false)
     }
 
     val navController = rememberNavController()
@@ -60,6 +74,18 @@ fun Main(){
         if(sessionData == null){
             scope.launch {
                 loginVM.createEmptySession()
+            }
+        }
+    }
+
+    LaunchedEffect(loggingOut) {
+        if(loggingOut){
+            scope.launch {
+                isLoading = true
+                loginVM.logout()
+                delay(500)
+                isLoading = false
+                logoutComplete = true
             }
         }
     }
@@ -98,10 +124,8 @@ fun Main(){
                             drawerState.close()
                         }
                     },
-                    login =
-                    if(sessionData == null) false
-                    else if (sessionData!!.name == "") false
-                    else true
+                    login = !(sessionData == null || sessionData!!.name == ""),
+                    loginvm= loginVM
 
                     )
             }
@@ -127,7 +151,10 @@ fun Main(){
             },
 
             ) {
-            NavHost(navController = navController, startDestination = "Login Landing") {
+            NavHost(navController = navController, startDestination =
+            if(sessionData == null || sessionData!!.name == "") "Login Landing"
+            else "About BUCC"
+            ) {
                 // Routes
                 composable("Profile") {
                     Profile(sessionData!!)
@@ -149,6 +176,9 @@ fun Main(){
                 }
                 composable("Department Members"){
                     DeptMemScreen()
+                }
+                composable("Logout"){
+                    Logout(loginVM, navController)
                 }
 
             }

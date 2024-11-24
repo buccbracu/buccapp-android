@@ -78,11 +78,16 @@ open class LoginVM @Inject constructor(
         }
     }
 
-    fun logout(){
+    suspend fun logout(){
         viewModelScope.launch {
-            userR.deleteProfile()
-            sessionR.deleteSession()
-            sharedR.fetchAll()
+            session.value?.let {
+                val response = Auth.signOut(session.value!!.authJsToken).awaitResponse()
+                response.body()?.let {
+                    userR.createEmptyProfile()
+                    sessionR.createEmptySession()
+                    sharedR.fetchAll()
+                }
+            }
         }
     }
 

@@ -42,10 +42,19 @@ val logoImg = R.drawable.bucc
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPage(loginVM: LoginVM, navController: NavHostController) {
+fun LandingPage(
+    loginVM: LoginVM,
+    navController: NavHostController,
+    showLogin: Boolean = false
+) {
     var isSwipedUp by remember { mutableStateOf(false) }
     var swipeProgress by remember { mutableFloatStateOf(0f) } // Track the swipe progress (0 to 1)
     val scope = rememberCoroutineScope()
+
+    if(showLogin){
+        isSwipedUp = true
+        swipeProgress = 1f
+    }
 
     val swipeThreshold = 1000f
     val minSwipeToShow = 0.5f

@@ -142,7 +142,7 @@ fun Main(){
                     AboutClub()
                 }
                 composable("Login") {
-                    LoginScreen(loginVM, navController)
+                    LandingPage(loginVM, navController, true)
                 }
                 composable("Login Landing") {
                     LandingPage(loginVM, navController)

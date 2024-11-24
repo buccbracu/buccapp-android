@@ -74,7 +74,9 @@ open class LoginVM @Inject constructor(
 
     fun logout(){
         viewModelScope.launch {
-
+            userR.deleteProfile()
+            sessionR.deleteSession()
+            sharedR.fetchAll()
         }
     }
 

@@ -125,6 +125,7 @@ fun Profile(session: Session) {
                             ) {
                                 Text("Refresh")
                             }
+
                             Button(
                                 onClick = {
                                     if(edit){
@@ -137,8 +138,18 @@ fun Profile(session: Session) {
                                     edit = !edit
                                 },
 
-                                ) {
+                            ) {
                                 Text(if (edit) "Save" else "Edit")
+                            }
+
+                            if(edit){
+                                Button(
+                                    onClick = {
+                                        edit = !edit
+                                    }
+                                ) {
+                                    Text("Cancel")
+                                }
                             }
                         }
                     }

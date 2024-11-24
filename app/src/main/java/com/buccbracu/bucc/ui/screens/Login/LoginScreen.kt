@@ -27,10 +27,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.createNotification
+import com.dotlottie.dlplayer.Event
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
+fun LoginScreen(
+    loginVM: LoginVM,
+    navController: NavHostController,
+    fromLanding: Boolean = false
+) {
     var email by remember {
         mutableStateOf("")
     }
@@ -40,6 +45,9 @@ fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
     val context = LocalContext.current.applicationContext
     val scope = rememberCoroutineScope()
     var loginStatus by remember{
+        mutableStateOf(false)
+    }
+    var loginLater by remember{
         mutableStateOf(false)
     }
 
@@ -123,9 +131,20 @@ fun LoginScreen(loginVM: LoginVM, navController: NavHostController) {
             Text(text = "Forgot Password?")
         }
 
+        TextButton(
+            onClick = {
+                loginLater = true
+            }
+        ) {
+            Text("Login Later")
+        }
+
     }
     if (loginStatus){
         navController.navigate("Profile")
+    }
+    if(loginLater){
+        navController.navigate("About BUCC")
     }
 
 }

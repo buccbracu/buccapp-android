@@ -25,16 +25,14 @@ import com.buccbracu.bucc.components.TopActionBar
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
+import com.buccbracu.bucc.ui.screens.Login.LoginScreen
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -129,7 +127,7 @@ fun Main(){
             },
 
             ) {
-            NavHost(navController = navController, startDestination = "About BUCC") {
+            NavHost(navController = navController, startDestination = "Login Landing") {
                 // Routes
                 composable("Profile") {
                     Profile(sessionData!!)
@@ -144,7 +142,10 @@ fun Main(){
                     AboutClub()
                 }
                 composable("Login") {
-                    LandingPage(navController)
+                    LoginScreen(loginVM, navController)
+                }
+                composable("Login Landing") {
+                    LandingPage(loginVM, navController)
                 }
 
             }

@@ -125,8 +125,6 @@ fun Main(){
                         }
                     },
                     login = !(sessionData == null || sessionData!!.name == ""),
-                    loginvm= loginVM
-
                     )
             }
         },

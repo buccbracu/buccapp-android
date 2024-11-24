@@ -1,5 +1,6 @@
 package com.buccbracu.bucc.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,8 +26,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
+import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.models.NavDrawerItem
 
 
@@ -32,7 +39,6 @@ fun NavDrawer(
     selectedIndex: Int,
     onClick: (item: NavDrawerItem) -> Unit,
     login: Boolean,
-    loginvm: LoginVM
 ){
     val items = if(login) NavDrawerItem.navDrawerItemsLogin else NavDrawerItem.navDrawerItemsGuest
     Column(
@@ -41,7 +47,7 @@ fun NavDrawer(
             .width(250.dp)
     ) {
 
-        MiniProfile(loginvm)
+        MiniProfile()
 
         Text(
             text = "BUCC",
@@ -92,15 +98,24 @@ fun NavDrawer(
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun MiniProfile(loginvm: LoginVM) {
+fun MiniProfile() {
+
+    val uservm: UserVM = hiltViewModel()
+    val dataTemp = uservm.profileData.value
+    val profileData by uservm.profileData.collectAsState(initial = dataTemp)
 
     Column(
         modifier = Modifier
             .padding(start = 16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.nanami),
+            painter = painterResource(
+                id =
+                if(profileData == null || profileData!!.profileImage == "") R.drawable.empty_person
+                else R.drawable.empty_person // has to be changed for online image
+            ),
             contentDescription = "Profile",
             modifier = Modifier
                 .size(70.dp)
@@ -108,13 +123,17 @@ fun MiniProfile(loginvm: LoginVM) {
             contentScale = ContentScale.FillWidth
         )
         Text(
-            text = "Nafis Sadique Niloy",
+            text =
+            if(profileData == null || profileData!!.name == "") "Login to See Profile"
+            else profileData!!.name,
             modifier = Modifier
                 .padding(top = 10.dp),
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "General Member",
+            text =
+            if(profileData == null || profileData!!.buccDepartment == "") "Login to See BUCC Department"
+            else profileData!!.buccDepartment,
             modifier = Modifier
                 .padding(top = 5.dp),
             fontWeight = FontWeight.SemiBold,
@@ -125,4 +144,5 @@ fun MiniProfile(loginvm: LoginVM) {
         modifier = Modifier
             .padding(bottom = 20.dp, top = 20.dp)
     )
+
 }

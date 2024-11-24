@@ -31,8 +31,11 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    suspend fun createEmptySession(sessionData: Session) {
+    suspend fun createEmptySession() {
         realm.write {
+            val sessionData = Session().apply {
+                objectid = 1
+            }
             copyToRealm(sessionData, updatePolicy = UpdatePolicy.ALL)
         }
     }

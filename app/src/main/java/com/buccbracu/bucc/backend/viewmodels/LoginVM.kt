@@ -27,7 +27,11 @@ open class LoginVM @Inject constructor(
 
     val session = sharedR.session
 
-
+    suspend fun createEmptySession(){
+        viewModelScope.launch {
+            sessionR.createEmptySession()
+        }
+    }
 
     private val signInError = "Sign in failed. Check the details you provided are correct."
     private fun signInSuccess(html: String): Boolean{
@@ -65,6 +69,12 @@ open class LoginVM @Inject constructor(
                     loginStatus(false, emptyUser)
                 }
             }
+        }
+    }
+
+    fun logout(){
+        viewModelScope.launch {
+
         }
     }
 

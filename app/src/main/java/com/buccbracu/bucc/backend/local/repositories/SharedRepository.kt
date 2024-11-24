@@ -30,8 +30,16 @@ class SharedRepository @Inject constructor(
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init{
+        fetchAll()
+    }
+
+    fun fetchAll(){
         observeSession()
         observeProfile()
+    }
+
+    fun printProfile(){
+        println("PRINT PROFILE ${_profile.value!!.personalEmail}")
     }
 
     private fun observeSession() {

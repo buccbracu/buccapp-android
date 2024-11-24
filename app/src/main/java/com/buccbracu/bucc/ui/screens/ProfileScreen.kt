@@ -2,6 +2,7 @@ package com.buccbracu.bucc.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,25 +24,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.models.Session
+import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.EditableTextField
 import kotlinx.coroutines.launch
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun Profile(session: Session) {
     val context = LocalContext.current
     val uservm: UserVM = hiltViewModel()
     val scope = rememberCoroutineScope()
 
-    var profileData by remember {
-        mutableStateOf(uservm.profileData.value)
-    }
+    val dataTemp = uservm.profileData.value
+    val profileData by uservm.profileData.collectAsState(initial = dataTemp)
     var edit by remember{
         mutableStateOf(false)
     }
     val tempMember by remember{
-        mutableStateOf(profileData?.let { uservm.patchMemberFromProfile(it) })
+        mutableStateOf(uservm.patchMemberFromProfile(profileData!!))
     }
 
     var (name, setName) = rememberSaveable { mutableStateOf("") }
@@ -68,7 +70,7 @@ fun Profile(session: Session) {
     val (github, setGithub) = remember { mutableStateOf("") }
 
     LaunchedEffect(profileData) {
-
+        println("LAUNCHED EFFECT ${profileData?.personalEmail}")
         if(profileData != null){
             val data = profileData!!
             val socials = data.memberSocials
@@ -113,22 +115,31 @@ fun Profile(session: Session) {
                         .fillMaxWidth(),
                         contentAlignment = Alignment.TopEnd
                     ){
-                        Button(
-                            onClick = {
-                                if(edit){
+                        Row {
+                            Button(
+                                onClick ={
                                     scope.launch {
-                                        tempMember?.let {
+                                        uservm.refreshProfile()
+                                    }
+                                }
+                            ) {
+                                Text("Refresh")
+                            }
+                            Button(
+                                onClick = {
+                                    if(edit){
+                                        scope.launch {
                                             uservm.updateUserProfile(
-                                                profileData = it,
+                                                profileData = tempMember,
                                             )
                                         }
                                     }
-                                }
-                                edit = !edit
-                            },
+                                    edit = !edit
+                                },
 
-                            ) {
-                            Text(if (edit) "Save" else "Edit")
+                                ) {
+                                Text(if (edit) "Save" else "Edit")
+                            }
                         }
                     }
                     EditableTextField(

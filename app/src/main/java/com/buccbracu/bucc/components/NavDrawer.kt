@@ -30,9 +30,10 @@ import com.buccbracu.bucc.components.models.NavDrawerItem
 fun NavDrawer(
     scrollState: ScrollState,
     selectedIndex: Int,
-    onClick: (item: NavDrawerItem) -> Unit
+    onClick: (item: NavDrawerItem) -> Unit,
+    login: Boolean
 ){
-    val items = NavDrawerItem.navDrawerItems
+    val items = if(login) NavDrawerItem.navDrawerItemsLogin else NavDrawerItem.navDrawerItemsGuest
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -82,7 +83,7 @@ fun NavDrawer(
                                 Icon(imageVector = item.unselectedIcon!!, contentDescription = item.title)
                             }
                         }
-                        )
+                    )
                 }
             }
 

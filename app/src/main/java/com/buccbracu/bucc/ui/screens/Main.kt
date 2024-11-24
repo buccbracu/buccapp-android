@@ -58,6 +58,14 @@ fun Main(){
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.session.collectAsState()
 
+    LaunchedEffect(sessionData) {
+        if(sessionData == null){
+            scope.launch {
+                loginVM.createEmptySession()
+            }
+        }
+    }
+
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
             "Profile" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Profile" }
@@ -92,6 +100,10 @@ fun Main(){
                             drawerState.close()
                         }
                     },
+                    login =
+                    if(sessionData == null) false
+                    else if (sessionData!!.name == "") false
+                    else true
 
                     )
             }

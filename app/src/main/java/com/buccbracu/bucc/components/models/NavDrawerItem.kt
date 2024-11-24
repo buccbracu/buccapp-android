@@ -60,5 +60,19 @@ sealed class NavDrawerItem(
             AboutClub,
             LoginScreen
         )
+
+        val navDrawerItemsLogin = listOf(
+            Profile,
+            SEDashboard,
+            Divider,
+            AboutUs,
+            AboutClub,
+            LoginScreen
+        )
+        val navDrawerItemsGuest = listOf(
+            AboutUs,
+            AboutClub,
+            LoginScreen
+        )
     }
 }

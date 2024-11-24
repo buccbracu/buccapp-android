@@ -51,11 +51,20 @@ open class UserVM @Inject constructor(
                 response?.let {
                     val user = response.user
                     userR.saveProfile(user)
+                    sharedR.fetchAll()
                     println("User profile updated")
+                    sharedR.printProfile()
                 }
 
             }
+        }
+    }
 
+    fun refreshProfile(){
+        viewModelScope.launch {
+            session.value?.let {
+                userR.getRemoteProfileAndSave(session.value!!.authJsToken)
+            }
         }
     }
 

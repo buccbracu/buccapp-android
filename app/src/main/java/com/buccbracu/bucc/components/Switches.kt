@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material.icons.outlined.DarkMode
@@ -59,7 +60,7 @@ fun DarkModeToggle(
                 else{
                     GradientBGButton(
                         bgColor = GradientColors.SunGradient,
-                        imageVector = Icons.Filled.Lightbulb,
+                        imageVector = Icons.Filled.LightMode,
                         contentDescription = "Light Mode",
                         tint = Color.Yellow
                     )

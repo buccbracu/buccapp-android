@@ -90,6 +90,7 @@ fun Main(darkModeEnabled: Boolean) {
             }
         }
     }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
@@ -113,24 +114,26 @@ fun Main(darkModeEnabled: Boolean) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
-                NavDrawer(
-                    scrollState = scrollState,
-                    selectedIndex = selectedIndexDrawer,
-                    onClick = { item ->
-                        selectedIndexDrawer = navDrawerItems.indexOf(item)
-                        navController.navigate(item.title)
-                        selectedIndexBotNav = -1
-                        scope.launch {
-                            drawerState.close()
-                        }
-                    },
-                    login = !(sessionData == null || sessionData!!.name == ""),
-                    darkMode = darkModeEnabled
+            if(currentRoute != "Login Landing" && currentRoute != "Login"){
+                ModalDrawerSheet {
+                    NavDrawer(
+                        scrollState = scrollState,
+                        selectedIndex = selectedIndexDrawer,
+                        onClick = { item ->
+                            selectedIndexDrawer = navDrawerItems.indexOf(item)
+                            navController.navigate(item.title)
+                            selectedIndexBotNav = -1
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        },
+                        login = !(sessionData == null || sessionData!!.name == ""),
+                        darkMode = darkModeEnabled
                     )
+                }
             }
         },
-        gesturesEnabled = true
+        gesturesEnabled = (currentRoute != "Login Landing" && currentRoute != "Login")
     ) {
 
         Scaffold(
@@ -147,7 +150,10 @@ fun Main(darkModeEnabled: Boolean) {
 //                }
 //            },
             topBar = {
-                TopActionBar(drawerState = drawerState, scope = scope)
+                if(currentRoute != "Login Landing" && currentRoute != "Login"){
+                    TopActionBar(drawerState = drawerState, scope = scope)
+                }
+
             },
 
             ) {

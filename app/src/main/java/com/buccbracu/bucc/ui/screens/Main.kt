@@ -41,7 +41,7 @@ import kotlinx.coroutines.delay
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Main(){
+fun Main(darkModeEnabled: Boolean) {
     var selectedIndexBotNav by rememberSaveable {
         mutableIntStateOf(0)
     }
@@ -59,6 +59,7 @@ fun Main(){
     var loggingOut by remember {
         mutableStateOf(false)
     }
+
 
     val navController = rememberNavController()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -125,6 +126,7 @@ fun Main(){
                         }
                     },
                     login = !(sessionData == null || sessionData!!.name == ""),
+                    darkMode = darkModeEnabled
                     )
             }
         },

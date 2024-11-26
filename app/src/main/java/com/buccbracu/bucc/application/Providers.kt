@@ -1,5 +1,6 @@
 package com.buccbracu.bucc.application
 
+import androidx.datastore.core.DataStore
 import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.api.UserService
@@ -9,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.realm.kotlin.Realm
 import retrofit2.Retrofit
+import java.util.prefs.Preferences
 import javax.inject.Singleton
 
 @Module
@@ -47,4 +49,5 @@ object Providers {
     fun provideRetrofitCookieMap(): Map<String, String> {
         return RetrofitServer.cookieMap
     }
+
 }

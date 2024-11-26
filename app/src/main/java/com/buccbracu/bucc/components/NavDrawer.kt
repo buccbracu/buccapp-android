@@ -3,7 +3,10 @@ package com.buccbracu.bucc.components
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,9 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.R
+import com.buccbracu.bucc.backend.local.preferences.Preferences
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.models.NavDrawerItem
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -39,8 +45,10 @@ fun NavDrawer(
     selectedIndex: Int,
     onClick: (item: NavDrawerItem) -> Unit,
     login: Boolean,
+    darkMode: Boolean
 ){
     val items = if(login) NavDrawerItem.navDrawerItemsLogin else NavDrawerItem.navDrawerItemsGuest
+    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -49,14 +57,30 @@ fun NavDrawer(
 
         MiniProfile()
 
-        Text(
-            text = "BUCC",
-            color = Color(28, 48, 92),
+        Row(
             modifier = Modifier
-                .padding(start = 16.dp, end = 20.dp, bottom = 10.dp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
+                .fillMaxWidth(0.85f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "BUCC",
+                color = Color(28, 48, 92),
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 20.dp, bottom = 10.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            DarkModeToggle(
+                darkModeEnabled = darkMode,
+                onChange = {
+                    scope.launch {
+                        Preferences.get().setDarkMode(!darkMode)
+                    }
+                }
+            )
+
+        }
 
 
         items.forEachIndexed{ index, item ->

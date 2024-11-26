@@ -107,24 +107,31 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
 
+    // dependency injection
     implementation("com.google.dagger:hilt-android:2.49")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
 //    implementation("com.airbnb.android:lottie-compose:5.0.3")
     implementation("com.github.LottieFiles:dotlottie-android:0.5.0")
 
+    // viewing lottie animation
     implementation("androidx.media3:media3-exoplayer:1.4.1")
     implementation("androidx.media3:media3-ui:1.4.1")
     implementation("androidx.media3:media3-common:1.4.1")
 
+    // realm databsae
     implementation("org.mongodb:bson-kotlin:5.2.0")
     implementation("io.realm.kotlin:library-base:1.16.0")
 
+    // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
-    implementation("com.fleeksoft.ksoup:ksoup:0.2.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.fleeksoft.ksoup:ksoup:0.2.0")
+
+    // preferences
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
 
 

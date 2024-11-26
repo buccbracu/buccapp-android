@@ -1,9 +1,11 @@
 package com.buccbracu.bucc.backend.local.repositories
 
+import androidx.compose.runtime.collectAsState
 import com.buccbracu.bucc.backend.local.models.User.Profile
 import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.models.emptySession
 import com.buccbracu.bucc.backend.local.models.emptyProfile
+import com.buccbracu.bucc.backend.local.preferences.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -19,7 +21,6 @@ class SharedRepository @Inject constructor(
     private val sessionR: SessionRepository,
     private val profileR: UserRepository,
 ) {
-
 
     private val _session: MutableStateFlow<Session?> = MutableStateFlow(emptySession)
     val session: StateFlow<Session?> = _session

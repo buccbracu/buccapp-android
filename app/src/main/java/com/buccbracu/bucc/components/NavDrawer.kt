@@ -59,7 +59,7 @@ fun NavDrawer(
 
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.85f),
+                .fillMaxWidth(1f),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(

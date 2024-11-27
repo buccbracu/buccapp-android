@@ -8,10 +8,10 @@ object Preferences {
     @Volatile
     private var instance: PreferencesDataStore? = null
 
-    fun initialize(context: Context) {
+    fun initialize(context: Context, systemDarkMode: Boolean) {
         synchronized(this) {
             if (instance == null) {
-                instance = PreferencesDataStore(context)
+                instance = PreferencesDataStore(context, systemDarkMode)
             }
         }
     }

@@ -8,7 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PreferencesDataStore(context: Context) {
+class PreferencesDataStore(context: Context, systemInDarkMode: Boolean) {
 
     // DataStore instance
     private val Context.dataStore by preferencesDataStore(name = "preferences")
@@ -22,7 +22,7 @@ class PreferencesDataStore(context: Context) {
         }
     }
     val darkModeEnabled: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[DARK_MODE]?: false
+        preferences[DARK_MODE]?: systemInDarkMode
 
     }
 

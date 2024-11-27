@@ -79,17 +79,6 @@ fun Main(darkModeEnabled: Boolean) {
         }
     }
 
-    LaunchedEffect(loggingOut) {
-        if(loggingOut){
-            scope.launch {
-                isLoading = true
-                loginVM.logout()
-                delay(500)
-                isLoading = false
-                logoutComplete = true
-            }
-        }
-    }
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     LaunchedEffect(navBackStackEntry?.destination) {
@@ -127,7 +116,7 @@ fun Main(darkModeEnabled: Boolean) {
                                 drawerState.close()
                             }
                         },
-                        login = !(sessionData == null || sessionData!!.name == ""),
+                        login = !(sessionData == null || sessionData!!.email == ""),
                         darkMode = darkModeEnabled
                     )
                 }
@@ -158,7 +147,7 @@ fun Main(darkModeEnabled: Boolean) {
 
             ) {
             NavHost(navController = navController, startDestination =
-            if(sessionData == null || sessionData!!.name == "") "Login Landing"
+            if(sessionData == null || sessionData!!.email == "") "Login Landing"
             else "About BUCC"
             ) {
                 // Routes

@@ -7,7 +7,6 @@ import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
-import com.buccbracu.bucc.backend.remote.models.User
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +23,11 @@ open class LoginVM @Inject constructor(
     private val Auth: AuthService
     ): ViewModel() {
 
+    /*
+    TODO
+    1. Do not store session. instead store email and password for auto login
+    2. Do not hit session. redundant call.
+     */
 
     val session = sharedR.session
 
@@ -33,45 +37,44 @@ open class LoginVM @Inject constructor(
         }
     }
 
-    private val signInError = "Sign in failed. Check the details you provided are correct."
-    private fun signInSuccess(html: String): Boolean{
-        val doc: Document = Ksoup.parse(html = html)
-        val paragraphs = doc.select("p").text()
-        return !paragraphs.contains(signInError)
+    private fun signInResult(html: String): List<Any> {
+        val doc: Document = Ksoup.parse(html)
+        val errorDiv = doc.selectFirst("div.error")
+        return if (errorDiv != null) {
+            val errorMessage = errorDiv.selectFirst("p")?.text() ?: "Unknown error"
+            listOf(false, errorMessage)
+        } else {
+            listOf(true, "Signin successful")
+        }
     }
+
     fun login(
         email: String,
         password: String,
-        loginStatus: (Boolean, User) -> Unit,
+        loginStatus: (Boolean) -> Unit,
         setLoading: (Boolean) -> Unit
     ) {
-        val emptyUser = User("", "", "", "", "", "")
         viewModelScope.launch {
             val csrf = Auth.getCsrfToken().awaitResponse()
             csrf.body()?.let {
                 val token = it.csrfToken
                 val signIn = Auth.signIn(token, email.trim(), password.trim()).awaitResponse()
-                val signInResult = signInSuccess(signIn.body()!!.string())
-                if (signInResult) {
-                    val session = Auth.getSession().awaitResponse()
-                    if (session.isSuccessful) {
-                        session.body()?.let { sessionData ->
-                            println("Sign in Successful")
-                            val cookie = cookieMap[TOKEN_KEY]!!.trim()
-                            sessionR.createSession(
-                                session = sessionData,
-                                token = cookie
-                            )
-                            userR.getRemoteProfileAndSave(cookie)
-                            loginStatus(true, sessionData.user)
-                        }
-                    } else {
-                        println("Session error: ${session.errorBody()}")
-                        loginStatus(false, emptyUser)
-                    }
+                val signInResult = signInResult(signIn.body()!!.string())
+                val status = signInResult[0] as Boolean
+                val message = signInResult[1] as String
+                if (status) {
+                    println("Sign in Successful")
+                    val cookie = cookieMap[TOKEN_KEY]!!.trim()
+                    sessionR.createSession(
+                        emailData = email,
+                        passwordData = password,
+                        token = cookie
+                    )
+                    userR.getRemoteProfileAndSave(cookie)
+                    loginStatus(true)
                 } else {
-                    println("Sign In failed: $signInError")
-                    loginStatus(false, emptyUser)
+                    println("Sign In failed: $message")
+                    loginStatus(false)
                 }
                 setLoading(false)
             }

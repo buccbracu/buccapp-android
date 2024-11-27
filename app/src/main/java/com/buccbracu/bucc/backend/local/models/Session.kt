@@ -5,12 +5,8 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 
 class Session : RealmObject {
     @PrimaryKey var objectid: Int = 1
-    var name: String = ""
     var email: String = ""
-    var image: String? = ""
-    var id: String = ""
-    var designation: String = ""
-    var buccDepartment: String = ""
+    var password: String = ""
     var expires: String = ""
     var authJsToken: String = ""
 }

@@ -31,7 +31,7 @@ fun AboutUs(s: Session){
         modifier = Modifier
             .padding(top = 20.dp)
     ) {
-        Text(text = "${s.name}")
+        Text(text = "${s.email}")
     }
 }
 

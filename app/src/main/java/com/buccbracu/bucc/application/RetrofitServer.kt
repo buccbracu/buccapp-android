@@ -41,6 +41,7 @@ object RetrofitServer {
                 cookies.filter { it.name == TOKEN_KEY }.let { filtered ->
                    filtered.forEach{ cookie ->
                        val value = "${cookie.name}=${cookie.value};${cookie.expiresAt};${cookie.domain}"
+                       println("${cookies.size} Cookie $value")
                        cookieMap[cookie.name] = value
                    }
                 }

@@ -2,6 +2,7 @@ package com.buccbracu.bucc.application
 
 import androidx.datastore.core.DataStore
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.BlogService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.api.UserService
 import dagger.Module
@@ -43,6 +44,11 @@ object Providers {
     @Singleton
     fun provideRetrofitMember(): DeptMemberService {
         return RetrofitServer.DeptMember
+    }
+    @Provides
+    @Singleton
+    fun provideRetrofitBlog(): BlogService {
+        return RetrofitServer.Blog
     }
     @Provides
     @Singleton

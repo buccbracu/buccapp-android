@@ -31,8 +31,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
+import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.models.NavDrawerItem
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
+import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
 import kotlinx.coroutines.delay
@@ -42,21 +45,11 @@ import kotlinx.coroutines.delay
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Main(darkModeEnabled: Boolean) {
-    var selectedIndexBotNav by rememberSaveable {
-        mutableIntStateOf(0)
-    }
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
     }
 
     var isLoading by remember {
-        mutableStateOf(false)
-    }
-    var logoutComplete by remember {
-        mutableStateOf(false)
-    }
-
-    var loggingOut by remember {
         mutableStateOf(false)
     }
 
@@ -70,6 +63,8 @@ fun Main(darkModeEnabled: Boolean) {
 
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.session.collectAsState()
+
+    
 
     LaunchedEffect(sessionData) {
         if(sessionData == null){
@@ -100,85 +95,80 @@ fun Main(darkModeEnabled: Boolean) {
 
     //-------------------------------
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            if(currentRoute != "Login Landing" && currentRoute != "Login"){
-                ModalDrawerSheet {
-                    NavDrawer(
-                        scrollState = scrollState,
-                        selectedIndex = selectedIndexDrawer,
-                        onClick = { item ->
-                            selectedIndexDrawer = navDrawerItems.indexOf(item)
-                            navController.navigate(item.title)
-                            selectedIndexBotNav = -1
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        login = !(sessionData == null || sessionData!!.email == ""),
-                        darkMode = darkModeEnabled
-                    )
-                }
-            }
-        },
-        gesturesEnabled = (currentRoute != "Login Landing" && currentRoute != "Login")
-    ) {
-
-        Scaffold(
-//            bottomBar = {
-//                BottomNavigation(selectedIndex = selectedIndexBotNav) { index ->
-//                    selectedIndexBotNav = index
-//                    selectedIndexDrawer = -1
-//                    println("$selectedIndexDrawer $selectedIndexBotNav")
-//                    when (index) {
-//                        0 -> navController.navigate("Profile")
-//                        1 -> navController.navigate("Dashboard")
-//                    }
-//
-//                }
-//            },
-            topBar = {
+    if(sessionData == null){
+        NoButtonCircularLoadingDialog("Loading", "Please wait...")
+    }
+    else{
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
                 if(currentRoute != "Login Landing" && currentRoute != "Login"){
-                    TopActionBar(drawerState = drawerState, scope = scope)
+                    ModalDrawerSheet {
+                        NavDrawer(
+                            scrollState = scrollState,
+                            selectedIndex = selectedIndexDrawer,
+                            onClick = { item ->
+                                selectedIndexDrawer = navDrawerItems.indexOf(item)
+                                navController.navigate(item.title)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            },
+                            login = !(sessionData == null || sessionData!!.email == ""),
+                            darkMode = darkModeEnabled
+                        )
+                    }
                 }
-
             },
+            gesturesEnabled = (currentRoute != "Login Landing" && currentRoute != "Login")
+        ) {
 
-            ) {
-            NavHost(navController = navController, startDestination =
-            if(sessionData == null || sessionData!!.email == "") "Login Landing"
-            else "About BUCC"
-            ) {
-                // Routes
-                composable("Profile") {
-                    Profile(sessionData!!)
-                }
-                composable("SE Dashboard") {
-                    SEDashboard()
-                }
-                composable("About Us") {
-                    AboutUs(sessionData!!)
-                }
-                composable("About BUCC") {
-                    AboutClub()
-                }
-                composable("Login") {
-                    LandingPage(loginVM, navController, true)
-                }
-                composable("Login Landing") {
-                    LandingPage(loginVM, navController)
-                }
-                composable("Department Members"){
-                    DeptMemScreen()
-                }
-                composable("Logout"){
-                    Logout(loginVM, navController)
-                }
+            Scaffold(
+                topBar = {
+                    if(currentRoute != "Login Landing" && currentRoute != "Login"){
+                        TopActionBar(drawerState = drawerState, scope = scope)
+                    }
 
+                },
+
+                ) {
+                NavHost(navController = navController, startDestination =
+                if(sessionData!!.email == "") "Login Landing"
+                else "About BUCC"
+                ) {
+                    // Routes
+                    composable("Profile") {
+                        Profile(sessionData!!)
+                    }
+                    composable("SE Dashboard") {
+                        SEDashboard()
+                    }
+                    composable("About Us") {
+                        AboutUs(sessionData!!)
+                    }
+                    composable("About BUCC") {
+                        AboutClub()
+                    }
+                    composable("Login") {
+                        LandingPage(loginVM, navController, true)
+                    }
+                    composable("Login Landing") {
+                        LandingPage(loginVM, navController)
+                    }
+                    composable("Department Members"){
+                        DeptMemScreen()
+                    }
+                    composable("Logout"){
+                        Logout(loginVM, navController)
+                    }
+                    composable("Blogs"){
+                        ViewBlogs()
+                    }
+
+                }
             }
-        }
 
+        }
     }
 //    if (isSessionReady){
 //

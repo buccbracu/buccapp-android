@@ -6,11 +6,13 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.Apartment
+import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
 import androidx.compose.material.icons.outlined.GroupWork
 import androidx.compose.material.icons.outlined.Person
@@ -54,6 +56,11 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.EmojiPeople,
         title = "Department Members",
     )
+    object Blogs: NavDrawerItem(
+        selectedIcon = Icons.Filled.EditNote,
+        unselectedIcon = Icons.Outlined.EditNote,
+        title = "Blogs",
+    )
     object Profile: NavDrawerItem(
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person,
@@ -79,12 +86,14 @@ sealed class NavDrawerItem(
             Profile,
             SEDashboard,
             DepartmentMembers,
+            Blogs,
             Divider,
             AboutUs,
             AboutClub,
             Logout
         )
         val navDrawerItemsGuest = listOf(
+            Blogs,
             AboutUs,
             AboutClub,
             Login

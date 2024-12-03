@@ -140,7 +140,7 @@ fun Main(darkModeEnabled: Boolean) {
                 ) {
                     // Routes
                     composable("Profile") {
-                        Profile(sessionData!!)
+                        Profile()
                     }
                     composable("Task Dashboard") {
                         TaskDashboard()

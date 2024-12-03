@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.preferences.Preferences
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
@@ -134,35 +137,52 @@ fun MiniProfile() {
         modifier = Modifier
             .padding(start = 16.dp)
     ) {
-        Image(
-            painter = painterResource(
-                id =
-                if(profileData == null || profileData!!.profileImage == "") R.drawable.empty_person
-                else R.drawable.empty_person // has to be changed for online image
-            ),
-            contentDescription = "Profile",
+
+        Column(
             modifier = Modifier
-                .size(70.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.FillWidth
-        )
-        Text(
-            text =
-            if(profileData == null || profileData!!.name == "") "Login to See Profile"
-            else profileData!!.name,
-            modifier = Modifier
-                .padding(top = 10.dp),
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            text =
-            if(profileData == null || profileData!!.buccDepartment == "") "Login to See BUCC Department"
-            else profileData!!.buccDepartment,
-            modifier = Modifier
-                .padding(top = 5.dp),
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 12.sp
-        )
+                .fillMaxWidth(0.87f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            AsyncImage(
+                model =
+                if (profileData == null || profileData!!.profileImage == "") R.drawable.empty_person
+                else profileData!!.profileImage,
+                contentDescription = "Profile image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(10.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.FillWidth
+            )
+            Text(
+                text =
+                if (profileData == null || profileData!!.name == "") "Login to See Profile"
+                else profileData!!.name,
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                fontWeight = FontWeight.W900,
+            )
+            Text(
+                text =
+                if (profileData == null || profileData!!.buccDepartment == "") "Login to See BUCC Designation"
+                else profileData!!.designation,
+                modifier = Modifier
+                    .padding(top = 5.dp),
+                fontWeight = FontWeight.W700,
+                fontSize = 12.sp
+            )
+            Text(
+                text =
+                if (profileData == null || profileData!!.buccDepartment == "") "Login to See BUCC Department"
+                else profileData!!.buccDepartment,
+                modifier = Modifier
+                    .padding(top = 0.dp),
+                fontWeight = FontWeight.W500,
+                fontSize = 10.sp
+            )
+        }
+
+
     }
     HorizontalDivider(
         modifier = Modifier

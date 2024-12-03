@@ -4,7 +4,9 @@ import com.buccbracu.bucc.backend.adapters.MemberAdapter
 import com.buccbracu.bucc.backend.remote.BASE_URL
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.api.BlogService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
+import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.api.UserService
 
 import com.squareup.moshi.Moshi
@@ -25,6 +27,8 @@ object RetrofitServer {
     lateinit var Auth: AuthService
     lateinit var User: UserService
     lateinit var DeptMember: DeptMemberService
+    lateinit var Blog: BlogService
+    lateinit var Task: TaskService
         private set
 
     fun initializeRetrofit() {
@@ -41,6 +45,7 @@ object RetrofitServer {
                 cookies.filter { it.name == TOKEN_KEY }.let { filtered ->
                    filtered.forEach{ cookie ->
                        val value = "${cookie.name}=${cookie.value};${cookie.expiresAt};${cookie.domain}"
+                       println("${cookies.size} Cookie $value")
                        cookieMap[cookie.name] = value
                    }
                 }
@@ -75,6 +80,8 @@ object RetrofitServer {
         Auth = retrofit.create(AuthService::class.java)
         User = retrofit.create(UserService::class.java)
         DeptMember = retrofit.create(DeptMemberService::class.java)
+        Blog = retrofit.create(BlogService::class.java)
+        Task = retrofit.create(TaskService::class.java)
     }
 
 }

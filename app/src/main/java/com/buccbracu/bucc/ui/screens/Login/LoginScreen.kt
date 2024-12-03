@@ -112,13 +112,13 @@ fun LoginScreen(
                     loginVM.login(
                         email = email,
                         password = password,
-                        loginStatus = { status, user ->
+                        loginStatus = { status ->
                             if(status){
 //                                navController.navigate("About BUCC")
                                 createNotification(
                                     context,
                                     title = "BRAC University Computer Club",
-                                    bodyText = "Welcome ${user.name} - ${user.buccDepartment} - ${user.designation}"
+                                    bodyText = "Welcome"
                                 )
                             }
                         },

@@ -1,7 +1,6 @@
 package com.buccbracu.bucc.backend.local.repositories
 
 import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.remote.models.SessionResponse
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
@@ -14,21 +13,25 @@ class SessionRepository @Inject constructor(
     private val realm: Realm
 ) {
 
-    suspend fun createSession(session: SessionResponse, token: String) {
+    suspend fun createSession(
+        emailData: String,
+        passwordData: String,
+        token: String
+    ) {
         realm.write {
             val sessionData = Session().apply {
                 objectid = 1
-                name = session.user.name
-                email = session.user.email
-                image = session.user.image
-                id = session.user.id
-                designation = session.user.designation
-                buccDepartment = session.user.buccDepartment
-                expires = session.expires
+                email = emailData
+                password = passwordData
+                expires = getCookieExpiry(token)
                 authJsToken = token
             }
             copyToRealm(sessionData, updatePolicy = UpdatePolicy.ALL)
         }
+    }
+    private fun getCookieExpiry(cookieString: String): String {
+        val parts = cookieString.split(";")
+        return parts[1]
     }
 
     suspend fun createEmptySession() {

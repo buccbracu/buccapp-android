@@ -9,8 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,7 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -50,6 +60,9 @@ fun LoginScreen(
     val context = LocalContext.current.applicationContext
     val scope = rememberCoroutineScope()
     var loginStatus by remember{
+        mutableStateOf(false)
+    }
+    var passwordVisible by remember {
         mutableStateOf(false)
     }
     var loginLater by remember{
@@ -85,7 +98,12 @@ fun LoginScreen(
             },
             label = {
                 Text(text = "Email address")
-            }
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email
+            ),
+            shape = MaterialTheme.shapes.medium
         )
         Spacer(
             modifier = Modifier.
@@ -98,7 +116,19 @@ fun LoginScreen(
                 password = it
             },
             label = { Text(text = "Password") },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.VisibilityOff
+                else Icons.Filled.Visibility
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, contentDescription = null)
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            shape = MaterialTheme.shapes.medium
+
         )
         Spacer(
             modifier = Modifier

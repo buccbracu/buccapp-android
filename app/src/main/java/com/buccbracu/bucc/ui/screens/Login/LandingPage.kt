@@ -60,7 +60,7 @@ fun LandingPage(
     LaunchedEffect(showLogin) {
         if(showLogin){
             scope.launch {
-                delay(400)
+                delay(550)
                 while(swipeProgress < 1.0){
                     swipeProgress+=(0.01.toFloat())
                     delay(1)

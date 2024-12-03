@@ -32,13 +32,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
-import com.buccbracu.bucc.components.models.NavDrawerItem
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
-import kotlinx.coroutines.delay
+import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -82,7 +81,7 @@ fun Main(darkModeEnabled: Boolean) {
             "About BUCC" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About BUCC" }
             "About Us" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About Us" }
             "Login" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Login" }
-            "SE Dashboard" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "SE Dashboard" }
+            "Task Dashboard" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Task Dashboard" }
             // Add other routes here if needed
         }
     }
@@ -140,8 +139,8 @@ fun Main(darkModeEnabled: Boolean) {
                     composable("Profile") {
                         Profile(sessionData!!)
                     }
-                    composable("SE Dashboard") {
-                        SEDashboard()
+                    composable("Task Dashboard") {
+                        TaskDashboard()
                     }
                     composable("About Us") {
                         AboutUs(sessionData!!)

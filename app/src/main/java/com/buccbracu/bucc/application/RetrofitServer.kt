@@ -6,6 +6,7 @@ import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.api.BlogService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
+import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.api.UserService
 
 import com.squareup.moshi.Moshi
@@ -27,6 +28,7 @@ object RetrofitServer {
     lateinit var User: UserService
     lateinit var DeptMember: DeptMemberService
     lateinit var Blog: BlogService
+    lateinit var Task: TaskService
         private set
 
     fun initializeRetrofit() {
@@ -79,6 +81,7 @@ object RetrofitServer {
         User = retrofit.create(UserService::class.java)
         DeptMember = retrofit.create(DeptMemberService::class.java)
         Blog = retrofit.create(BlogService::class.java)
+        Task = retrofit.create(TaskService::class.java)
     }
 
 }

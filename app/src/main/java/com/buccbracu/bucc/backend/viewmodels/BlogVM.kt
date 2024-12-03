@@ -42,4 +42,18 @@ open class BlogVM @Inject constructor(
             }
         }
     }
+    fun getBlog(
+        id: String,
+        setBlog: (Blog) -> Unit
+    ){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Blog.getBlog(session.value!!.authJsToken, id).awaitResponse()
+                val body = response.body()
+                body?.let {
+                    setBlog(it)
+                }
+            }
+        }
+    }
 }

@@ -29,9 +29,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.blogs.BlogView
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
@@ -161,7 +164,16 @@ fun Main(darkModeEnabled: Boolean) {
                         Logout(loginVM, navController)
                     }
                     composable("Blogs"){
-                        ViewBlogs()
+                        ViewBlogs(navController)
+                    }
+                    composable(
+                        "BlogDetail/{blogId}",
+                        arguments = listOf(navArgument("blogId") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val blogId = backStackEntry.arguments?.getString("blogId")
+                        BlogView(blogId) {
+                            navController.popBackStack()
+                        }
                     }
 
                 }

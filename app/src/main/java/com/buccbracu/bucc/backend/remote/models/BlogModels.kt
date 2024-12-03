@@ -43,5 +43,14 @@ data class ContentAttributes(
 )
 
 data class ContentMark(
-    val type: String
+    val type: String,
+    val attrs: ContentMarkAttributes? = null
 )
+
+data class ContentMarkAttributes(
+    val href: String? = null,
+    val target: String? = null,
+    val rel: String? = null,
+    val `class`: String? = null
+)
+

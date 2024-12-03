@@ -6,12 +6,20 @@ data class Blog(
     val description: String,
     val featuredImage: String,
     val content: List<Content>,
-    val category: String,
-    val tags: List<String>,
-    val author: String,
+    val category: String?,
+    val tags: List<String> = listOf(),
+    val author: Author,
     val createdDate: String,
-    val status: String,
+    val status: String = "draft",
     val lastUpdate: String
+)
+
+data class Author(
+    val authorId: String?,
+    val authorName: String?,
+    val authorEmail: String?,
+    val authorDesignation: String?,
+    val authorDepartment: String?
 )
 
 data class Content(

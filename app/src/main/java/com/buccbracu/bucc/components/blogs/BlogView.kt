@@ -41,7 +41,7 @@ fun BlogView(blog: Blog) {
 
         // Author
         Text(
-            text = "By ${blog.author}",
+            text = "By ${blog.author.authorName}",
             style = MaterialTheme.typography.labelMedium,
             color = Color.Gray
         )

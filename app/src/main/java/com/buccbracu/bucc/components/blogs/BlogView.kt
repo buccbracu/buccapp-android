@@ -28,8 +28,6 @@ import kotlinx.coroutines.launch
 
 /*
 1. Image view
-2. Proper Formatting of heading and subheading
-3. Anchor texts fix
  */
 
 @Composable

@@ -1,7 +1,9 @@
 package com.buccbracu.bucc.ui.screens.Login
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,6 +45,7 @@ var darkMode = false
 
 val logoImg = R.drawable.bucc
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandingPage(
@@ -57,7 +60,7 @@ fun LandingPage(
     LaunchedEffect(showLogin) {
         if(showLogin){
             scope.launch {
-                delay(600)
+                delay(400)
                 while(swipeProgress < 1.0){
                     swipeProgress+=(0.01.toFloat())
                     delay(1)
@@ -72,9 +75,10 @@ fun LandingPage(
     val swipeThreshold = 1000f
     val minSwipeToShow = 0.5f
 
-    val imageScale by animateFloatAsState(targetValue = 1.2f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.8
+    val imageScale by animateFloatAsState(targetValue = 1.2f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.4
     val contentOpacity by animateFloatAsState(targetValue = 1f - swipeProgress) // Opacity from 1 to 0
     val reverseContentOpacity by animateFloatAsState(targetValue = swipeProgress) // Reverse opacity
+    val logoOffsetY by animateFloatAsState(targetValue = -70.dp.value * swipeProgress) // Move logo up as you swipe
 
     Box(
         modifier = Modifier
@@ -118,9 +122,13 @@ fun LandingPage(
                         scaleX = imageScale,
                         scaleY = imageScale
                     )
+                    .offset(y = logoOffsetY.dp) // Move the logo up as you swipe
             )
 
-            Box {
+            Box(
+                modifier = Modifier
+                    .offset(y = logoOffsetY.dp) // Move the logo up as you swipe
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -155,7 +163,7 @@ fun LandingPage(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .alpha(reverseContentOpacity),
+                        .alpha(reverseContentOpacity)
                 ) {
                     LoginScreen(loginVM, navController)
                 }

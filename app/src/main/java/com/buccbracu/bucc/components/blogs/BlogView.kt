@@ -1,6 +1,7 @@
 package com.buccbracu.bucc.components.blogs
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
@@ -77,31 +78,35 @@ fun BlogView(
                         contentDescription = "Back"
                     )
                 }
-                // Title
-                Text(
-                    text = blog!!.title,
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                LazyColumn {
+                    item{
+                        // Title
+                        Text(
+                            text = blog!!.title,
+                            style = MaterialTheme.typography.headlineLarge,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
 
-                // Description
-                Text(
-                    text = blog!!.description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray
-                )
+                        // Description
+                        Text(
+                            text = blog!!.description,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Gray
+                        )
 
-                // Author
-                Text(
-                    text = "By ${blog!!.author.authorName}",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Color.Gray
-                )
+                        // Author
+                        Text(
+                            text = "By ${blog!!.author.authorName}",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Color.Gray
+                        )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
-                // Content
-                RenderContent(blog!!.content)
+                        // Content
+                        RenderContent(blog!!.content)
+                    }
+                }
             }
         }
     }

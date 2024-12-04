@@ -53,6 +53,9 @@ val palette6PalePink = Color(217, 183, 183) // #D9B7B7
 
 val Cyan = Color(0xFF39ABF6)
 val Navy = Color(0xFF111827)
+val LighterNavy = Color(0xFF2C3E55)
+
+
 
 
 val primaryLight = Color(0xFF38608F)
@@ -90,6 +93,7 @@ val surfaceContainerLowLight = Color(0xFFF3F3FA)
 val surfaceContainerLight = Color(0xFFEEEDF4)
 val surfaceContainerHighLight = Color(0xFFE8E7EF)
 val surfaceContainerHighestLight = Color(0xFFE2E2E9)
+
 
 val primaryDark = Color(0xFFA2C9FD)
 val onPrimaryDark = Color(0xFF00325A)

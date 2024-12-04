@@ -36,6 +36,9 @@ import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.blogs.BlogView
+import com.buccbracu.bucc.ui.theme.BuccTheme
+import com.buccbracu.bucc.ui.theme.Cyan
+import com.buccbracu.bucc.ui.theme.Navy
 import kotlinx.coroutines.launch
 
 @Composable
@@ -124,18 +127,17 @@ fun BlogListView(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        brush = Brush.horizontalGradient(
+                        brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Transparent.copy(alpha = 0.5f),
-                                MaterialTheme.colorScheme.surface,
+                                Color.Transparent.copy(alpha = 0.4f),
+                                Color.Black.copy(alpha = 1f),
 
                             ),
-                            startX = Float.POSITIVE_INFINITY,
-                            endX = 0f
+
                         )
                     )
                     .padding(10.dp),
-                verticalArrangement = Arrangement.SpaceAround
+                verticalArrangement = Arrangement.Bottom
             ) {
                 Text(
                     text = title,

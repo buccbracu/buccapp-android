@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -150,17 +151,14 @@ fun BlogListView(
                     text = description,
                     color = Color.White.copy(alpha = 0.8f),
                     fontWeight = FontWeight.W600, // Medium bold
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    maxLines = 2, // Limit to 2 lines
+                    overflow = TextOverflow.Ellipsis // Show "..." if text overflows
                 )
+
                 Text(
-                    text = category,
-                    color = Color.White.copy(alpha = 0.6f),
-                    fontWeight = FontWeight.W400, // Regular weight
-                    fontSize = 12.sp
-                )
-                Text(
-                    text = author,
-                    color = Color.White.copy(alpha = 0.6f),
+                    text = "By $author",
+                    color = Color.White.copy(alpha = 0.8f),
                     fontWeight = FontWeight.W300, // Lighter weight
                     fontSize = 12.sp
                 )

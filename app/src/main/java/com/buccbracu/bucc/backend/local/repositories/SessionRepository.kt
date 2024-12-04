@@ -36,6 +36,7 @@ class SessionRepository @Inject constructor(
 
     suspend fun createEmptySession() {
         realm.write {
+            deleteAll()
             val sessionData = Session().apply {
                 objectid = 1
             }

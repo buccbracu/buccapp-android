@@ -36,7 +36,7 @@ fun Logout(loginVM: LoginVM, navController: NavHostController) {
         scope.launch {
             isLoading = true
             loginVM.logout()
-            delay(500)
+//            delay(500)
 
             isLoading = false
             logoutComplete = true

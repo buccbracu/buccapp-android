@@ -27,11 +27,14 @@ val bucc_desc = "A community for tech enthusiasts from BRAC University, where we
 
 @Composable
 fun AboutUs(s: Session){
-    Row(
+    Column(
         modifier = Modifier
             .padding(top = 20.dp)
     ) {
-        Text(text = "${s.email}")
+        Text(text = s.email)
+        Text(text = s.objectid.toString())
+        Text(text = s.expires)
+        Text(text = s.password)
     }
 }
 

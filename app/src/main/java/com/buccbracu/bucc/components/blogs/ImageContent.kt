@@ -1,5 +1,6 @@
 package com.buccbracu.bucc.components.blogs
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ fun ImageContent(url: String){
         model = src,
         contentDescription = "Blog Image",
         modifier = Modifier
+            .fillMaxWidth()
             .padding(10.dp)
             .clip(RoundedCornerShape(10.dp)),
         contentScale = ContentScale.FillWidth,

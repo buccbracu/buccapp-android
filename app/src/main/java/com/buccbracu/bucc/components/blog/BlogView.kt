@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components.blogs
+package com.buccbracu.bucc.components.blog
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

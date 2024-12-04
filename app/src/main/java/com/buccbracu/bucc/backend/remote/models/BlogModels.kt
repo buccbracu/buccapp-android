@@ -32,7 +32,8 @@ data class ContentItem(
     val type: String,
     val text: String? = null,
     val marks: List<ContentMark>? = null,
-    val href: String? = null // For links
+    val href: String? = null,
+    val content: List<Content>? = null
 )
 
 data class ContentAttributes(

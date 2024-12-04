@@ -34,7 +34,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
-import com.buccbracu.bucc.components.blogs.BlogView
+import com.buccbracu.bucc.components.blog.BlogView
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs

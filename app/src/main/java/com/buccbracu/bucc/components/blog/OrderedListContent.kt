@@ -1,5 +1,7 @@
-package com.buccbracu.bucc.components.blogs
+package com.buccbracu.bucc.components.blog
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -13,10 +15,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.buccbracu.bucc.backend.remote.models.Content
 import com.buccbracu.bucc.backend.remote.models.ContentItem
 
 @Composable
-fun ParagraphContent(contentItems: List<ContentItem>) {
+fun OrderedListContent(content: Content) {
+    val items = content.content.orEmpty()
+    val startIndex = content.attrs?.start ?: 1 // Default start index is 1
+
+    Column(modifier = Modifier.padding(start = 16.dp)) {
+        items.forEachIndexed { index, listItem ->
+            if (listItem.type == "listItem") {
+                // Display the list number
+                Row{
+                    Text(
+                        text = "${startIndex + index}.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 5.dp, end = 8.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    // Render the content of the listItem
+                    listItem.content?.forEach { paragraph ->
+                        if (paragraph.type == "paragraph") {
+                            RenderParagraph(paragraph.content.orEmpty())
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+private fun RenderParagraph(contentItems: List<ContentItem>) {
     val color = MaterialTheme.colorScheme.primary
     Text(
         text = buildAnnotatedString {
@@ -24,13 +55,8 @@ fun ParagraphContent(contentItems: List<ContentItem>) {
                 when {
                     contentItem.marks?.any { it.type == "link" } == true -> {
                         val linkAttrs = contentItem.marks.find { it.type == "link" }?.attrs
-                        linkAttrs?.let { attr ->
-                            attr.href?.let {
-                                pushStringAnnotation(
-                                    tag = "URL",
-                                    annotation = it
-                                )
-                            }
+                        linkAttrs?.href?.let { href ->
+                            pushStringAnnotation(tag = "URL", annotation = href)
                             withStyle(
                                 style = SpanStyle(
                                     color = color,
@@ -42,24 +68,22 @@ fun ParagraphContent(contentItems: List<ContentItem>) {
                             pop()
                         }
                     }
-
                     contentItem.marks?.any { it.type == "bold" } == true -> {
-                        // Handle bold text
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.W900
-                            )
-                        ) {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(contentItem.text.orEmpty())
                         }
                     }
-
+                    contentItem.type == "hardBreak" -> {
+                        append("\n")
+                    }
                     else -> append(contentItem.text.orEmpty())
                 }
             }
         },
         style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .fillMaxWidth(),
         textAlign = TextAlign.Justify
     )
 }

@@ -123,6 +123,9 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
 
+    // youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.1")
+
     // realm databsae
     implementation("org.mongodb:bson-kotlin:5.2.0")
     implementation("io.realm.kotlin:library-base:1.16.0")

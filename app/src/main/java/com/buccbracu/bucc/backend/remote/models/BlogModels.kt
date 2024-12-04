@@ -39,7 +39,10 @@ data class ContentAttributes(
     val level: Int? = null,
     val src: String? = null,
     val alt: String? = null,
-    val title: String? = null
+    val title: String? = null,
+    val width: Int? = null,
+    val height: Int? = null,
+    val start: Int? = null
 )
 
 data class ContentMark(

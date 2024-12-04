@@ -1,6 +1,7 @@
 package com.buccbracu.bucc.ui.screens.Blog
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -110,18 +116,13 @@ fun BlogListView(
                 contentDescription = "Blog Image",
                 modifier = Modifier
                     .fillMaxSize()
-                    .graphicsLayer{
+                    .graphicsLayer {
                         alpha = 1f
                     },
                 contentScale = ContentScale.Crop
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
 
-            ){
 
-            }
 
             Column(
                 modifier = Modifier
@@ -129,12 +130,12 @@ fun BlogListView(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Transparent.copy(alpha = 0.4f),
+                                Color.Transparent.copy(alpha = 0.3f),
                                 Color.Black.copy(alpha = 1f),
 
-                            ),
+                                ),
 
-                        )
+                            )
                     )
                     .padding(10.dp),
                 verticalArrangement = Arrangement.Bottom
@@ -163,6 +164,26 @@ fun BlogListView(
                     fontWeight = FontWeight.W300, // Lighter weight
                     fontSize = 12.sp
                 )
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                contentAlignment = Alignment.TopEnd
+
+            ){
+                ElevatedCard(
+                    colors = CardDefaults.cardColors(Color(123, 31, 162)),
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = CardDefaults.cardElevation(10.dp)
+                ){
+                    Text(
+                        text = category,
+                        fontSize = 10.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                }
             }
 
         }

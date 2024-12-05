@@ -40,6 +40,7 @@ import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
+import com.buccbracu.bucc.ui.screens.Tasks.CreateTask
 import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 
 
@@ -143,7 +144,10 @@ fun Main(darkModeEnabled: Boolean) {
                         Profile()
                     }
                     composable("Task Dashboard") {
-                        TaskDashboard()
+                        TaskDashboard(navController)
+                    }
+                    composable("Create Task"){
+                        CreateTask(navController)
                     }
                     composable("About Us") {
                         AboutUs(sessionData!!)

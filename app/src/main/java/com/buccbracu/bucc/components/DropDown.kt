@@ -50,12 +50,12 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun OutlinedDropDownMenu(
     dropdownItems: List<String>,
+    selectedText: String,
     parentHorizontalPadding: Int,
     onItemClick: (String) -> Unit,
-    label: String
+    label: String,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(dropdownItems[0]) }
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -94,7 +94,6 @@ fun OutlinedDropDownMenu(
             dropdownItems.forEach { item ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedText = item
                         isMenuExpanded = false
                         onItemClick(item)
                     },

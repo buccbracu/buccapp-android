@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components.blogs
+package com.buccbracu.bucc.components.blog
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,8 +28,6 @@ import kotlinx.coroutines.launch
 
 /*
 1. Image view
-2. Proper Formatting of heading and subheading
-3. Anchor texts fix
  */
 
 @Composable

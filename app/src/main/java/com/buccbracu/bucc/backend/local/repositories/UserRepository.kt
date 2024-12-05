@@ -70,16 +70,24 @@ class UserRepository @Inject constructor(
 
     suspend fun getRemoteProfileAndSave(cookie: String){
         val response = User.getUserProfile(cookie).awaitResponse()
-        response.body()?.let {
-            saveProfile(response.body()!!.user)
+        val body = response.body()
+        body?.let {
+            println("REMOTE PROFILE ${body.user.name}")
+            saveProfile(body.user)
         }
 
     }
 
     suspend fun createEmptyProfile(){
         realm.write {
+            deleteAll()
+
+            val emptyProfile = Profile().apply {
+                objectid = 1
+            }
             copyToRealm(emptyProfile, updatePolicy = UpdatePolicy.ALL)
         }
+        println("Profile has been reset.")
     }
 
 

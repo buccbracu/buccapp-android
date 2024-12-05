@@ -3,6 +3,7 @@ package com.buccbracu.bucc.ui.screens.Tasks
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,13 +21,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.remote.models.TaskData
 import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.ExpandableCard
+import com.buccbracu.bucc.components.MovableFloatingActionButton
 import kotlinx.coroutines.launch
 
 @Composable
-fun TaskDashboard(){
+fun TaskDashboard(navController:  NavHostController){
     val taskvm: TaskVM = hiltViewModel()
     val scope = rememberCoroutineScope()
     var allTasks by remember{
@@ -43,14 +47,21 @@ fun TaskDashboard(){
     }
     Box(
         modifier = Modifier
+            .fillMaxSize()
 //            .padding(horizontal = 10.dp)
-            .padding(top = 70.dp, bottom = 110.dp)
+            .padding(top = 70.dp)
     ){
-        LazyColumn {
-            items(allTasks){ task ->
-                TaskCard(task)
+
+
+            LazyColumn {
+                items(allTasks) { task ->
+                    TaskCard(task)
+                }
             }
+        MovableFloatingActionButton {
+            navController.navigate("Create Task")
         }
+
     }
 }
 

@@ -6,33 +6,31 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDownCircle
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.remote.models.NewTask
+import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.DatePickerModal
-import com.buccbracu.bucc.components.DropDownCard
+import com.buccbracu.bucc.components.OutlinedDropDownMenu
+import kotlinx.coroutines.launch
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTask(
     navController: NavHostController
 ) {
+    val taskvm: TaskVM = hiltViewModel()
+    val scope = rememberCoroutineScope()
     // Using rememberSaveable for state persistence
     var (taskTitle, setTaskTitle) = rememberSaveable { mutableStateOf("") }
     var (taskDescription, setTaskDescription) = rememberSaveable { mutableStateOf("") }
@@ -44,15 +42,31 @@ fun CreateTask(
         mutableStateOf(false)
     }
     val departments = listOf(
-        "Creative", "HR", "R&D", "EM"
+        "Governing Body",
+        "Communication and Marketing",
+        "Creative",
+        "Event Management",
+        "Finance",
+        "Human Resources",
+        "Press Release and Publications",
+        "Research and Development"
     )
     val designations = listOf(
-        "SE", "EB"
+        "President",
+        "Vice President",
+        "General Secretary",
+        "Treasurer",
+        "Director",
+        "Assistant Director",
+        "Senior Executive",
+        "Executive",
+        "General Member",
     )
+    val horizontalPadding = 50
     Column(
-        modifier = Modifier.
-        fillMaxWidth()
-            .padding(horizontal = 50.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = horizontalPadding.dp)
             .padding(top = 70.dp)
     ) {
         OutlinedTextField(
@@ -73,17 +87,23 @@ fun CreateTask(
             minLines = 3,  // Ensures the text field has at least 3 lines visible
         )
 
-        DropDownCard(
+        OutlinedDropDownMenu(
             dropdownItems = departments,
-        ) { setToDept(it) }
+            onItemClick = {
+                setToDept(it)
+            },
+            parentHorizontalPadding = horizontalPadding,
+            label = "Department"
+        )
+        OutlinedDropDownMenu(
+            dropdownItems = designations,
+            onItemClick = {
+                setToDesignation(it)
+            },
+            label = "Designation",
+            parentHorizontalPadding = horizontalPadding
+        )
 
-
-
-        DropDownCard(
-            dropdownItems = designations
-        ) {
-            setToDesignation(it)
-        }
 
         DateField(
             value = deadline,
@@ -94,17 +114,22 @@ fun CreateTask(
 
         Button(
             onClick = {
-                // When the form is submitted, create a NewTask object
-                val newTask = NewTask(
-                    taskTitle = taskTitle,
-                    taskDescription = taskDescription,
-                    toDept = toDept,
-                    toDesignation = toDesignation,
-                    deadline = deadline
-                )
-                // Navigate or handle the task creation logic here
+
+                scope.launch{
+                    val newTask = NewTask(
+                        taskTitle = taskTitle,
+                        taskDescription = taskDescription,
+                        toDept = toDept,
+                        toDesignation = toDesignation,
+                        deadline = "2024"
+                    )
+
+                    taskvm.createTask(newTask)
+                }
+
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = taskTitle != "" && taskDescription != "" && toDept != "" && toDesignation != "" && deadline != ""
         ) {
             Text("Create Task")
         }

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -35,6 +37,7 @@ import com.buccbracu.bucc.backend.remote.models.NewTask
 import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.DatePickerModal
+import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.OutlinedDropDownMenu
 import kotlinx.coroutines.launch
 import java.time.format.TextStyle
@@ -220,6 +223,12 @@ fun CreateTask(
             }
         )
     }
+    MovableFloatingActionButton(
+        onClick = {
+            navController.navigate("Task Dashboard")
+        },
+        icon = Icons.Filled.ArrowBackIosNew
+    )
 }
 
 

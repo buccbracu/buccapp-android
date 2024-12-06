@@ -120,9 +120,11 @@ fun TaskDashboard(navController:  NavHostController){
                     }
                 }
             }
-        MovableFloatingActionButton {
-            navController.navigate("Create Task")
-        }
+        MovableFloatingActionButton(
+            onClick = {
+                navController.navigate("Create Task")
+            }
+        )
 
     }
 }

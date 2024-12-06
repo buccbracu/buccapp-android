@@ -56,7 +56,8 @@ open class TaskVM @Inject constructor(
                 ).awaitResponse()
                 val body = response.body()
                 body?.let {
-                    println("Setn descrittoin: ${task.description}")
+                    println("Setn descrittoin: ${task.taskDescription}")
+                    println(response.errorBody())
                     println(body.taskDescription)
                     onSuccess()
                 }

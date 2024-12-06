@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -73,12 +74,13 @@ fun ExpandableCard(
         shape = RoundedCornerShape(20.dp),
         onClick = {
             expand = !expand
-        }
+        },
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
 
     ) {
         Column(
             modifier = Modifier
-                .padding(15.dp)
+                .padding(10.dp)
                 .fillMaxSize()
         ) {
             Row(
@@ -92,24 +94,31 @@ fun ExpandableCard(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
-                        Row(
-                            horizontalArrangement = Arrangement.Start
+                        Card(
+                            modifier = Modifier,
+//                            elevation = CardDefaults.cardElevation(1.dp),
+                            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.inverseOnSurface)
                         ){
-                            Icon(
-                                imageVector = Icons.Filled.CalendarMonth,
-                                contentDescription = "Deadline",
-                                tint = MaterialTheme.colorScheme.errorContainer,
-                                modifier = Modifier
-                                    .padding(top = 2.dp)
-                                    .size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "Due By: $deadline",
-                                fontWeight = FontWeight.W400,
-                                fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.tertiary
-                            )
+                            Row(
+                                modifier = Modifier.padding(5.dp),
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarMonth,
+                                    contentDescription = "Deadline",
+                                    tint = Color(0xFFEF5350),
+                                    modifier = Modifier
+                                        .padding(top = 2.dp)
+                                        .size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = "Due By: $deadline",
+                                    fontWeight = FontWeight.W400,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFFEF5350)
+                                )
+                            }
                         }
                         Icon(
                             imageVector = Icons.Filled.Circle,
@@ -125,7 +134,7 @@ fun ExpandableCard(
                                 .size(20.dp)
                         )
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
                     Text(
                         text = task.taskTitle,
                         fontSize = 25.sp,
@@ -133,11 +142,13 @@ fun ExpandableCard(
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(horizontal = 2.dp)
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(horizontal = 2.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
                         Row(

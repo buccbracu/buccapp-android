@@ -25,9 +25,12 @@ import androidx.compose.material.icons.filled.EditOff
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.GroupRemove
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
@@ -35,9 +38,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.colorspace.ColorSpace
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -87,7 +92,10 @@ fun TaskDashboard(navController:  NavHostController){
     ){
 
 
-            LazyColumn {
+            LazyColumn(
+                modifier =Modifier
+                    .padding(bottom = 30.dp)
+            ) {
                 items(allTasks) { task ->
                     profile?.let{
                         TaskCard(
@@ -164,33 +172,47 @@ fun TaskCard(
     ) {
         Column{
             Spacer(modifier = Modifier.height(10.dp))
-            if(isEditable){
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = {
-                        setDescription(it)
-                        println("Setting description: $description")
-                    },
-                    label = { Text("Description") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 100.dp), // Adjust the height to make the text field bigger
-                    maxLines = 5,  // Allows up to 5 lines of text
-                    minLines = 3,  // Ensures the text field has at least 3 lines visible
-                )
-            }
-            else{
-                Text(
-                    text = description,
-                    style = TextStyle(
-                        textAlign = TextAlign.Justify,
+            Card(
+                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            ){
+                if (isEditable) {
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = {
+                            setDescription(it)
+                            println("Setting description: $description")
+                        },
+                        label = { Text("Description") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 100.dp)
+                            .padding(10.dp), // Adjust the height to make the text field bigger
+                        maxLines = 5,  // Allows up to 5 lines of text
+                        minLines = 3,  // Ensures the text field has at least 3 lines visible
+                    )
+                } else {
+                    Text(
+                        "Description",
+                        fontWeight = FontWeight.W500,
                         fontSize = 16.sp,
-                        lineHeight = 24.sp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                )
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .padding(top = 5.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = description,
+                        style = TextStyle(
+                            textAlign = TextAlign.Justify,
+                            fontSize = 15.sp,
+                            lineHeight = 24.sp
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
             }
             if(isEditable){
                 DateField(
@@ -298,7 +320,7 @@ fun TaskCard(
                             println("IN BUTTON $description")
                             val update = UpdateTask(
                                 _id = task._id!!,
-                                description = description,
+                                taskDescription = description,
                                 deadline = deadline,
                                 acceptedBy = accept,
                                 comment = comment,

@@ -25,7 +25,9 @@ data class NewTask(
 )
 
 data class UpdateTask(
-    val deadline: String,
+    val _id: String,
+    val description: String? = null,
+    val deadline: String? = null,
     val acceptedBy: List<String> = emptyList(),
     val dateCompleted: String? = null,
     val comment: String = "",

@@ -100,6 +100,15 @@ val allDesignations = listOf(
     "General Member",
 )
 
+val ebgb = listOf(
+    "President",
+    "Vice President",
+    "General Secretary",
+    "Treasurer",
+    "Director",
+    "Assistant Director",
+)
+
 fun shortForm(abbrv: String): String {
     val deptMap = mapOf(
         "Governing Body" to "GB",
@@ -113,10 +122,10 @@ fun shortForm(abbrv: String): String {
     )
 
     val designationMap = mapOf(
-        "President" to "GB",
-        "Vice President" to "GB",
-        "General Secretary" to "GB",
-        "Treasurer" to "GB",
+        "President" to "P",
+        "Vice President" to "VP",
+        "General Secretary" to "GS",
+        "Treasurer" to "TR",
         "Director" to "EB",
         "Assistant Director" to "EB",
         "Senior Executive" to "SE",

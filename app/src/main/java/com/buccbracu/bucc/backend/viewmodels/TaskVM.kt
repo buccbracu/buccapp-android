@@ -6,6 +6,7 @@ import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.models.NewTask
 import com.buccbracu.bucc.backend.remote.models.TaskData
+import com.buccbracu.bucc.backend.remote.models.UpdateTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
@@ -34,12 +35,29 @@ open class TaskVM @Inject constructor(
     }
 
     fun createTask(task: NewTask, onSuccess: () -> Unit){
-        println("Started")
         viewModelScope.launch {
             session.value?.let {
                 val response = Task.createTask(session.value!!.authJsToken, task).awaitResponse()
                 val body = response.body()
                 body?.let {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun updateTask(task: UpdateTask, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.updateTask(
+                    cookie = session.value!!.authJsToken,
+                    task = task,
+                    id = task._id
+                ).awaitResponse()
+                val body = response.body()
+                body?.let {
+                    println("Setn descrittoin: ${task.description}")
+                    println(body.taskDescription)
                     onSuccess()
                 }
             }

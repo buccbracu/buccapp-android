@@ -52,6 +52,8 @@ import com.buccbracu.bucc.ui.theme.paletteGreen
 @Composable
 fun ExpandableCard(
     task: TaskData,
+    status: String,
+    deadline: String,
     content: @Composable () -> Unit
 ){
 
@@ -103,7 +105,7 @@ fun ExpandableCard(
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                text = "Due By: ${task.deadline!!.slice(0..9)}",
+                                text = "Due By: $deadline",
                                 fontWeight = FontWeight.W400,
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.tertiary
@@ -113,7 +115,7 @@ fun ExpandableCard(
                             imageVector = Icons.Filled.Circle,
                             contentDescription = "Status",
                             tint =
-                                when(task.status){
+                                when(status){
                                     "pending" -> Color(0xFFEF5350) // Red 400
                                     "accepted" -> Color(0xFF29B6F6) // Light Blue 400
                                     "completed" -> Color(0xFF66BB6A) // Green 400
@@ -142,7 +144,7 @@ fun ExpandableCard(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Text(
-                                text = "${shortForm(task.fromDept!!)} (${shortForm(task.fromDesignation!!)})",
+                                text = "${shortForm(task.fromDept!!)} || ${shortForm(task.fromDesignation!!)}",
                                 fontWeight = FontWeight.W500
                             )
                             AnimatedIcon(
@@ -153,7 +155,7 @@ fun ExpandableCard(
                                     .padding(horizontal = 10.dp)
                             )
                             Text(
-                                text = "${shortForm(task.toDept!!)} (${shortForm(task.toDesignation!!)})",
+                                text = "${shortForm(task.toDept!!)} || ${shortForm(task.toDesignation!!)}",
                                 fontWeight = FontWeight.W500
                             )
                         }

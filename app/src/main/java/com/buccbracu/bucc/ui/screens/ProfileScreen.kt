@@ -176,7 +176,7 @@ fun Profile() {
 
                         AsyncImage(
                             model =
-                            if (profileData == null || profileData!!.profileImage == "") R.drawable.empty_person
+                            if (profileData!!.profileImage == "") R.drawable.empty_person
                             else profileData!!.profileImage,
                             contentDescription = "Profile image",
                             modifier = Modifier

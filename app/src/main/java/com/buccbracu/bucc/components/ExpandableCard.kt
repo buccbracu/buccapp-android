@@ -71,10 +71,6 @@ fun ExpandableCard(
     val rotation by animateFloatAsState(
         targetValue = if (expand) 180f else 0f
     )
-    val cardHeight by animateDpAsState(
-        targetValue = if (expand) 500.dp else 130.dp, // Change the height range as needed
-        animationSpec = tween(durationMillis = 300), label = ""
-    )
 
     ElevatedCard(
         modifier = Modifier

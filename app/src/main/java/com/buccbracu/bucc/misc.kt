@@ -1,5 +1,8 @@
 package com.buccbracu.bucc
 
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 val skills = listOf(
     "Android Development",
     "iOS Development",
@@ -138,4 +141,21 @@ fun shortForm(abbrv: String): String {
 
     // Check the maps for the short form
     return deptMap[abbrv] ?: designationMap[abbrv] ?: "UNKNOWN"
+}
+
+
+
+fun formatDate(inputDate: String): String {
+    // Define the input and output date formats
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+
+    return try {
+        // Parse the input date and format it to the desired output format
+        val date = inputFormat.parse(inputDate)
+        outputFormat.format(date!!)
+    } catch (e: Exception) {
+        // Return a default value or handle the error if parsing fails
+        "Invalid date"
+    }
 }

@@ -77,3 +77,25 @@ val skills = listOf(
     "WebSockets",
     "WebRTC"
 )
+
+val allDepartments = listOf(
+    "Governing Body",
+    "Communication and Marketing",
+    "Creative",
+    "Event Management",
+    "Finance",
+    "Human Resources",
+    "Press Release and Publications",
+    "Research and Development"
+)
+val allDesignations = listOf(
+    "President",
+    "Vice President",
+    "General Secretary",
+    "Treasurer",
+    "Director",
+    "Assistant Director",
+    "Senior Executive",
+    "Executive",
+    "General Member",
+)

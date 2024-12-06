@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.remote.api.TaskService
+import com.buccbracu.bucc.backend.remote.models.NewTask
 import com.buccbracu.bucc.backend.remote.models.TaskData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ open class TaskVM @Inject constructor(
 ): ViewModel() {
 
     val session = sharedR.session
+    val profile = sharedR.profile
 
     fun getAllTasks(setTasks: (List<TaskData>) -> Unit){
         viewModelScope.launch {
@@ -26,6 +28,19 @@ open class TaskVM @Inject constructor(
                 val body = response.body()
                 body?.let {
                     setTasks(body)
+                }
+            }
+        }
+    }
+
+    fun createTask(task: NewTask, onSuccess: () -> Unit){
+        println("Started")
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.createTask(session.value!!.authJsToken, task).awaitResponse()
+                val body = response.body()
+                body?.let {
+                    onSuccess()
                 }
             }
         }

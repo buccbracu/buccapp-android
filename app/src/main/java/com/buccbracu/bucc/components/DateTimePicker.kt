@@ -33,6 +33,7 @@ fun DatePickerModal(
 }
 
 fun Long.toDateString(): String {
-    val formatter = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+    val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+    formatter.timeZone = java.util.TimeZone.getTimeZone("UTC")
     return formatter.format(java.util.Date(this))
 }

@@ -39,6 +39,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpace
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.text.TextStyle
@@ -75,6 +76,9 @@ fun TaskDashboard(navController:  NavHostController){
     var taskUpdateStatus by remember{
         mutableStateOf(false)
     }
+    var taskCompleteStatus by remember{
+        mutableStateOf(false)
+    }
     var isLoading by remember {
         mutableStateOf(true)
     }
@@ -102,35 +106,47 @@ fun TaskDashboard(navController:  NavHostController){
             modifier = Modifier
                 .fillMaxSize()
 //            .padding(horizontal = 10.dp)
-                .padding(top = 70.dp)
+                .padding(top = 70.dp),
+            contentAlignment = Alignment.Center
         ) {
 
 
-            LazyColumn(
-                modifier = Modifier
-                    .padding(bottom = 30.dp)
-            ) {
-                items(allTasks) { task ->
-                    profile?.let {
-                        TaskCard(
-                            task = task,
-                            userName = profile!!.name,
-                            userDept = profile!!.buccDepartment,
-                            userDesignation = profile!!.designation,
-                            onUpdate = { task ->
-                                scope.launch {
-                                    taskUpdateStatus = true
-                                    taskvm.updateTask(task) {
-                                        taskUpdateStatus = false
+            if(allTasks.isEmpty()){
+                Text("No tasks has been assigned to your department")
+            }
+            else{
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(bottom = 30.dp)
+                ) {
+                    items(allTasks) { task ->
+                        profile?.let {
+                            TaskCard(
+                                task = task,
+                                userName = profile!!.name,
+                                userDept = profile!!.buccDepartment,
+                                userDesignation = profile!!.designation,
+                                onUpdate = { task ->
+                                    scope.launch {
+                                        taskUpdateStatus = true
+                                        taskvm.updateTask(task) {
+                                            taskUpdateStatus = false
+                                        }
                                     }
-                                }
 
-                            },
-                            onDone = { task ->
-
-                            },
-                            updateLoading = taskUpdateStatus
-                        )
+                                },
+                                onDone = { task ->
+                                    scope.launch {
+                                        taskCompleteStatus = true
+                                        taskvm.updateTask(task){
+                                            taskCompleteStatus = false
+                                        }
+                                    }
+                                },
+                                updateLoading = taskUpdateStatus,
+                                completeLoading = taskCompleteStatus
+                            )
+                        }
                     }
                 }
             }
@@ -153,7 +169,8 @@ fun TaskCard(
     userDesignation: String,
     onUpdate: (UpdateTask) -> Unit,
     onDone: (UpdateTask) -> Unit,
-    updateLoading: Boolean
+    updateLoading: Boolean,
+    completeLoading: Boolean
 ){
 
     val editPermission = ebgb.contains(userDesignation)
@@ -176,11 +193,13 @@ fun TaskCard(
     val (comment, setComment) = remember{ mutableStateOf(task.comment) }
     val (description, setDescription) = remember { mutableStateOf(task.taskDescription!!) }
 
-    updateStatus = if(accept.isEmpty()){
-        "pending"
-    }
-    else{
-        "accepted"
+    if(updateStatus!= "completed"){
+        updateStatus =
+            if (accept.isEmpty()) {
+                "pending"
+            } else {
+                "accepted"
+            }
     }
     ExpandableCard(
         task = task,
@@ -252,34 +271,35 @@ fun TaskCard(
                     .fillMaxWidth()
                     .padding(vertical = 10.dp),
                 trailingIcon = {
-                    if(accept.contains(userName)){
-                        IconButton(
-                            onClick = {
-                                accept.remove(userName)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.GroupRemove,
-                                contentDescription = "Leave",
-                                tint = palette2DarkRed
-                            )
-                        }
-                    }
-                    else{
-                        IconButton(
-                            onClick = {
-                                accept = accept.apply {
-                                    add(userName)
+                    if(updateStatus!= "completed"){
+                        if (accept.contains(userName)) {
+                            IconButton(
+                                onClick = {
+                                    accept.remove(userName)
                                 }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.GroupRemove,
+                                    contentDescription = "Leave",
+                                    tint = palette2DarkRed
+                                )
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.GroupAdd,
-                                contentDescription = "Join",
-                                tint = paletteGreen
-                            )
-                        }
+                        } else {
+                            IconButton(
+                                onClick = {
+                                    accept = accept.apply {
+                                        add(userName)
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.GroupAdd,
+                                    contentDescription = "Join",
+                                    tint = paletteGreen
+                                )
+                            }
 
+                        }
                     }
                 }
             )
@@ -291,6 +311,7 @@ fun TaskCard(
                 label = {
                     Text("Comment")
                 },
+                readOnly = updateStatus == "completed",
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -302,95 +323,121 @@ fun TaskCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if(editPermission){
+                if(updateStatus != "completed"){
+                    if(editPermission){
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            IconButton(
+                                onClick = {
+                                    isEditable = !isEditable
+                                }
+                            ) {
+                                Icon(
+                                    imageVector =
+                                    if(isEditable) Icons.Filled.Done
+                                    else Icons.Filled.EditNote,
+                                    contentDescription = "Edit",
+                                    tint = paletteGreen,
+                                    modifier = Modifier
+                                        .padding(vertical = 5.dp)
+                                        .size(20.dp)
+
+                                )
+                            }
+                            Text(
+                                "Edit",
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         IconButton(
                             onClick = {
-                                isEditable = !isEditable
+                                val update = UpdateTask(
+                                    _id = task._id!!,
+                                    taskDescription = description,
+                                    deadline = deadline,
+                                    acceptedBy = accept,
+                                    comment = comment,
+                                    status = updateStatus
+                                )
+                                onUpdate(update)
+
                             }
                         ) {
-                            Icon(
-                                imageVector =
-                                if(isEditable) Icons.Filled.Done
-                                else Icons.Filled.EditNote,
-                                contentDescription = "Edit",
-                                tint = paletteGreen,
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                                    .size(20.dp)
-
-                            )
+                            if(updateLoading){
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(20.dp),
+                                    color = paletteGreen
+                                )
+                            }
+                            else{
+                                Icon(
+                                    imageVector = Icons.Filled.CloudUpload,
+                                    contentDescription = "Update",
+                                    tint = paletteGreen,
+                                    modifier = Modifier
+                                        .padding(vertical = 5.dp)
+                                        .size(20.dp)
+                                )
+                            }
                         }
                         Text(
-                            "Edit",
+                            "Update",
                             fontSize = 12.sp
                         )
                     }
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    IconButton(
-                        onClick = {
-                            println("IN BUTTON $description")
-                            val update = UpdateTask(
-                                _id = task._id!!,
-                                taskDescription = description,
-                                deadline = deadline,
-                                acceptedBy = accept,
-                                comment = comment,
-                                status = updateStatus
-                            )
-                            onUpdate(update)
 
-                        }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if(updateLoading){
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .size(20.dp),
-                                color = paletteGreen
-                            )
-                        }
-                        else{
-                            Icon(
-                                imageVector = Icons.Filled.CloudUpload,
-                                contentDescription = "Update",
-                                tint = paletteGreen,
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                                    .size(20.dp)
-                            )
-                        }
-                    }
-                    Text(
-                        "Update",
-                        fontSize = 12.sp
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
 
-                    IconButton(
-                        onClick = {}
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.DoneAll,
-                            contentDescription = "Done",
-                            tint = paletteGreen,
-                            modifier = Modifier
-                                .padding(vertical = 5.dp)
-                                .size(20.dp)
+                        IconButton(
+                            onClick = {
+                                val update = UpdateTask(
+                                    _id = task._id!!,
+                                    taskDescription = description,
+                                    deadline = deadline,
+                                    acceptedBy = accept,
+                                    comment = comment,
+                                    status = "completed"
+                                )
+                                onDone(update)
+                                updateStatus = "completed"
+                            },
+                            enabled = accept.isNotEmpty()
+                        ) {
+                            if(completeLoading){
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(20.dp),
+                                    color = paletteGreen
+                                )
+                            }
+                            else{
+                                Icon(
+                                    imageVector = Icons.Filled.DoneAll,
+                                    contentDescription = "Done",
+                                    tint =
+                                    if (accept.isEmpty()) Color.Gray
+                                    else paletteGreen,
+                                    modifier = Modifier
+                                        .padding(vertical = 5.dp)
+                                        .size(20.dp),
 
+                                    )
+                            }
+                        }
+                        Text(
+                            "Completed",
+                            fontSize = 12.sp
                         )
                     }
-                    Text(
-                        "Completed",
-                        fontSize = 12.sp
-                        )
                 }
             }
 

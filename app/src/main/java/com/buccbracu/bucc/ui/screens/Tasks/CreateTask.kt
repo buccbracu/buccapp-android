@@ -39,6 +39,7 @@ import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.DatePickerModal
 import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.OutlinedDropDownMenu
+import com.buccbracu.bucc.ebgb
 import kotlinx.coroutines.launch
 import java.time.format.TextStyle
 import java.util.Locale
@@ -67,23 +68,32 @@ fun CreateTask(
             profile?.let {
                 val des = profile!!.designation
                 val dep = profile!!.buccDepartment
-                departments =
-                    if(dep.lowercase() != allDepartments[0].lowercase()) {
-                        allDepartments.slice(1..<allDepartments.size)
-                    }
-                    else {
-                        allDepartments
-                    }.toList()
-                designations =
-                    if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
-                        allDesignations.slice(0..3)
-                    }
-                    else if(des.lowercase() == "senior executive"){
-                        allDesignations.slice(6..<allDesignations.size)
-                    }
-                    else{
-                        allDesignations.slice(4..<allDesignations.size)
-                    }.toList()
+//                departments =
+//                    if(dep.lowercase() != allDepartments[0].lowercase()) {
+//                        allDepartments.slice(1..<allDepartments.size)
+//                    }
+//                    else {
+//                        allDepartments
+//                    }.toList()
+//                designations =
+//                    if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
+//                        allDesignations.slice(0..3)
+//                    }
+//                    else if(des.lowercase() == "senior executive"){
+//                        allDesignations.slice(6..<allDesignations.size)
+//                    }
+//                    else{
+//                        allDesignations.slice(4..<allDesignations.size)
+//                    }.toList()
+
+                if(!ebgb.contains(des)){
+                    departments = allDepartments.slice(1..<allDepartments.size)
+                    designations = allDesignations.slice(6..<allDesignations.size)
+                }
+                if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
+                    designations = allDesignations.slice(0..3)
+                }
+
                 println("Departments: $departments")
                 println("Designations: $designations")
                 setToDept(departments[0])

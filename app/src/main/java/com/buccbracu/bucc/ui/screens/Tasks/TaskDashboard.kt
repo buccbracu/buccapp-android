@@ -54,6 +54,7 @@ import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.DatePickerModal
 import com.buccbracu.bucc.components.ExpandableCard
 import com.buccbracu.bucc.components.MovableFloatingActionButton
+import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.ebgb
 import com.buccbracu.bucc.shortForm
 import com.buccbracu.bucc.ui.theme.palette2DarkRed
@@ -74,30 +75,43 @@ fun TaskDashboard(navController:  NavHostController){
     var taskUpdateStatus by remember{
         mutableStateOf(false)
     }
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
 
     LaunchedEffect(Unit) {
         scope.launch {
             taskvm.getAllTasks(
                 setTasks = {
                     allTasks = it
+                },
+                onSuccess = {
+                    isLoading = false
                 }
             )
         }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    if(isLoading){
+        NoButtonCircularLoadingDialog(
+            title = "Loading Tasks",
+            message = "Please wait..."
+        )
+    }
+    else{
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
 //            .padding(horizontal = 10.dp)
-            .padding(top = 70.dp)
-    ){
+                .padding(top = 70.dp)
+        ) {
 
 
             LazyColumn(
-                modifier =Modifier
+                modifier = Modifier
                     .padding(bottom = 30.dp)
             ) {
                 items(allTasks) { task ->
-                    profile?.let{
+                    profile?.let {
                         TaskCard(
                             task = task,
                             userName = profile!!.name,
@@ -106,7 +120,7 @@ fun TaskDashboard(navController:  NavHostController){
                             onUpdate = { task ->
                                 scope.launch {
                                     taskUpdateStatus = true
-                                    taskvm.updateTask(task){
+                                    taskvm.updateTask(task) {
                                         taskUpdateStatus = false
                                     }
                                 }
@@ -120,12 +134,13 @@ fun TaskDashboard(navController:  NavHostController){
                     }
                 }
             }
-        MovableFloatingActionButton(
-            onClick = {
-                navController.navigate("Create Task")
-            }
-        )
+            MovableFloatingActionButton(
+                onClick = {
+                    navController.navigate("Create Task")
+                }
+            )
 
+        }
     }
 }
 

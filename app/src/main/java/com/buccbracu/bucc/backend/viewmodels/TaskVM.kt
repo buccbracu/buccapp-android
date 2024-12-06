@@ -22,13 +22,17 @@ open class TaskVM @Inject constructor(
     val session = sharedR.session
     val profile = sharedR.profile
 
-    fun getAllTasks(setTasks: (List<TaskData>) -> Unit){
+    fun getAllTasks(
+        setTasks: (List<TaskData>) -> Unit,
+        onSuccess: () -> Unit
+    ){
         viewModelScope.launch {
             session.value?.let {
                 val response = Task.getTasks(session.value!!.authJsToken).awaitResponse()
                 val body = response.body()
                 body?.let {
                     setTasks(body)
+                    onSuccess()
                 }
             }
         }

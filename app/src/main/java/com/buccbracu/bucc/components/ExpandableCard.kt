@@ -1,10 +1,17 @@
 package com.buccbracu.bucc.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,10 +71,13 @@ fun ExpandableCard(
     val rotation by animateFloatAsState(
         targetValue = if (expand) 180f else 0f
     )
+    val cardHeight by animateDpAsState(
+        targetValue = if (expand) 500.dp else 130.dp, // Change the height range as needed
+        animationSpec = tween(durationMillis = 300), label = ""
+    )
 
     ElevatedCard(
         modifier = Modifier
-
             .padding(15.dp)
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(10.dp),
@@ -188,7 +198,23 @@ fun ExpandableCard(
                     }
                 }
             }
-            if(expand){
+//            if(expand){
+//                content()
+//                Box(
+//
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .weight(1f) // Allow content to take remaining space
+//                        .animateContentSize(animationSpec = tween(durationMillis = 300))
+//                ) {
+//
+//                }
+//            }
+            AnimatedVisibility(
+                visible = expand,
+                enter = expandVertically(animationSpec = tween(300)) + fadeIn(animationSpec = tween(300)),
+                exit = shrinkVertically(animationSpec = tween(300)) + fadeOut(animationSpec = tween(300))
+            ) {
                 content()
             }
 

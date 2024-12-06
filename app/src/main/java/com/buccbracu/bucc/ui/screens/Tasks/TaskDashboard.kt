@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.EditCalendar
@@ -79,12 +80,16 @@ fun TaskDashboard(navController:  NavHostController){
     var taskCompleteStatus by remember{
         mutableStateOf(false)
     }
+    var taskDeleteStatus by remember{
+        mutableStateOf(false)
+    }
     var isLoading by remember {
         mutableStateOf(true)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(taskDeleteStatus) {
         scope.launch {
+            isLoading = true
             taskvm.getAllTasks(
                 setTasks = {
                     allTasks = it
@@ -107,17 +112,25 @@ fun TaskDashboard(navController:  NavHostController){
                 .fillMaxSize()
 //            .padding(horizontal = 10.dp)
                 .padding(top = 70.dp),
-            contentAlignment = Alignment.Center
         ) {
 
 
             if(allTasks.isEmpty()){
-                Text("No tasks has been assigned to your department")
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        "No tasks has been assigned to your department"
+                    )
+                }
             }
             else{
                 LazyColumn(
                     modifier = Modifier
-                        .padding(bottom = 30.dp)
+                        .padding(bottom = 30.dp),
+                    verticalArrangement = Arrangement.Top
                 ) {
                     items(allTasks) { task ->
                         profile?.let {
@@ -143,8 +156,17 @@ fun TaskDashboard(navController:  NavHostController){
                                         }
                                     }
                                 },
+                                onDelete = {
+                                    scope.launch {
+                                        taskDeleteStatus = true
+                                        taskvm.deleteTask(task._id!!){
+                                            taskDeleteStatus = false
+                                        }
+                                    }
+                                },
                                 updateLoading = taskUpdateStatus,
-                                completeLoading = taskCompleteStatus
+                                completeLoading = taskCompleteStatus,
+                                deleteLoading = taskDeleteStatus
                             )
                         }
                     }
@@ -169,8 +191,10 @@ fun TaskCard(
     userDesignation: String,
     onUpdate: (UpdateTask) -> Unit,
     onDone: (UpdateTask) -> Unit,
+    onDelete: () -> Unit,
     updateLoading: Boolean,
-    completeLoading: Boolean
+    completeLoading: Boolean,
+    deleteLoading: Boolean,
 ){
 
     val editPermission = ebgb.contains(userDesignation)
@@ -187,9 +211,6 @@ fun TaskCard(
         mutableStateOf(task.status)
     }
     val (deadline, setDeadline) = remember{ mutableStateOf(task.deadline!!.slice(0..9)) }
-    var dateCompleted by remember{
-        mutableStateOf(task.deadline)
-    }
     val (comment, setComment) = remember{ mutableStateOf(task.comment) }
     val (description, setDescription) = remember { mutableStateOf(task.taskDescription!!) }
 
@@ -323,35 +344,60 @@ fun TaskCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if(updateStatus != "completed"){
-                    if(editPermission){
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    isEditable = !isEditable
-                                }
-                            ) {
-                                Icon(
-                                    imageVector =
-                                    if(isEditable) Icons.Filled.Done
-                                    else Icons.Filled.EditNote,
-                                    contentDescription = "Edit",
-                                    tint = paletteGreen,
-                                    modifier = Modifier
-                                        .padding(vertical = 5.dp)
-                                        .size(20.dp)
 
-                                )
+                if(editPermission && task.status != "completed"){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        IconButton(
+                            onClick = {
+                                isEditable = !isEditable
                             }
-                            Text(
-                                "Edit",
-                                fontSize = 12.sp
+                        ) {
+                            Icon(
+                                imageVector =
+                                if(isEditable) Icons.Filled.Done
+                                else Icons.Filled.EditNote,
+                                contentDescription = "Edit",
+                                tint = paletteGreen,
+                                modifier = Modifier
+                                    .padding(vertical = 5.dp)
+                                    .size(20.dp)
+
                             )
                         }
+                        Text(
+                            "Edit",
+                            fontSize = 12.sp
+                        )
                     }
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    IconButton(
+                        onClick = {
+                            onDelete()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Delete",
+                            tint = palette2DarkRed,
+                            modifier = Modifier
+                                .padding(vertical = 5.dp)
+                                .size(20.dp)
 
+                        )
+                    }
+                    Text(
+                        "Delete",
+                        fontSize = 12.sp
+                    )
+                }
+
+
+                if(updateStatus != "completed"){
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -369,14 +415,13 @@ fun TaskCard(
 
                             }
                         ) {
-                            if(updateLoading){
+                            if (updateLoading) {
                                 CircularProgressIndicator(
                                     modifier = Modifier
                                         .size(20.dp),
                                     color = paletteGreen
                                 )
-                            }
-                            else{
+                            } else {
                                 Icon(
                                     imageVector = Icons.Filled.CloudUpload,
                                     contentDescription = "Update",
@@ -412,14 +457,13 @@ fun TaskCard(
                             },
                             enabled = accept.isNotEmpty()
                         ) {
-                            if(completeLoading){
+                            if (completeLoading) {
                                 CircularProgressIndicator(
                                     modifier = Modifier
                                         .size(20.dp),
                                     color = paletteGreen
                                 )
-                            }
-                            else{
+                            } else {
                                 Icon(
                                     imageVector = Icons.Filled.DoneAll,
                                     contentDescription = "Done",
@@ -439,19 +483,20 @@ fun TaskCard(
                         )
                     }
                 }
+
             }
 
         }
-    if(showDatePicker){
-        DatePickerModal(
-            onDateSelected = { date ->
-                setDeadline(date)
-            },
-            onDismiss = {
-                showDatePicker = false
-            }
-        )
-    }
+        if(showDatePicker){
+            DatePickerModal(
+                onDateSelected = { date ->
+                    setDeadline(date)
+                },
+                onDismiss = {
+                    showDatePicker = false
+                }
+            )
+        }
     }
 
 }

@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.blog.BlogView
@@ -66,14 +67,25 @@ fun Main(darkModeEnabled: Boolean) {
 
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.session.collectAsState()
+    val profile by loginVM.profile.collectAsState(emptyProfile)
 
-    
+    println("PROFILE $profile")
 
-    LaunchedEffect(sessionData) {
+    var navDrawerItemList by remember{
+        mutableStateOf(navDrawerItems(profile!!.designation))
+    }
+
+    LaunchedEffect(sessionData, profile) {
         if(sessionData == null){
             scope.launch {
                 loginVM.createEmptySession()
             }
+        }
+        if(profile != null){
+            if(profile!!.designation != "") navDrawerItemList = navDrawerItems(profile!!.designation)
+        }
+        else{
+            navDrawerItemList = navDrawerItems("")
         }
     }
 
@@ -81,11 +93,11 @@ fun Main(darkModeEnabled: Boolean) {
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
-            "Profile" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Profile" }
-            "About BUCC" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About BUCC" }
-            "About Us" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About Us" }
-            "Login" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Login" }
-            "Task Dashboard" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Task Dashboard" }
+            "Profile" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Profile" }
+            "About BUCC" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "About BUCC" }
+            "About Us" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "About Us" }
+            "Login" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Login" }
+            "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Task Dashboard" }
             // Add other routes here if needed
         }
     }
@@ -111,14 +123,14 @@ fun Main(darkModeEnabled: Boolean) {
                             scrollState = scrollState,
                             selectedIndex = selectedIndexDrawer,
                             onClick = { item ->
-                                selectedIndexDrawer = navDrawerItems.indexOf(item)
+                                selectedIndexDrawer = navDrawerItemList.indexOf(item)
                                 navController.navigate(item.title)
                                 scope.launch {
                                     drawerState.close()
                                 }
                             },
-                            login = !(sessionData == null || sessionData!!.email == ""),
-                            darkMode = darkModeEnabled
+                            darkMode = darkModeEnabled,
+                            items = navDrawerItemList
                         )
                     }
                 }
@@ -134,7 +146,8 @@ fun Main(darkModeEnabled: Boolean) {
 
                 },
 
-                ) {
+                )
+            {
                 NavHost(navController = navController, startDestination =
                 if(sessionData!!.email == "") "Login Landing"
                 else "About BUCC"

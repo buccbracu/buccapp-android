@@ -59,48 +59,32 @@ fun CreateTask(
     var designations by remember{
         mutableStateOf(allDesignations)
     }
-    var (taskTitle, setTaskTitle) = rememberSaveable { mutableStateOf("") }
-    var (taskDescription, setTaskDescription) = rememberSaveable { mutableStateOf("") }
-    var (toDept, setToDept) = rememberSaveable { mutableStateOf(departments[0]) }
-    var (toDesignation, setToDesignation) = rememberSaveable { mutableStateOf(designations[0]) }
-    var (deadline, setDeadline) = rememberSaveable { mutableStateOf("") }
-    LaunchedEffect(toDept, toDesignation, profile) {
-            profile?.let {
-                val des = profile!!.designation
-                val dep = profile!!.buccDepartment
-//                departments =
-//                    if(dep.lowercase() != allDepartments[0].lowercase()) {
-//                        allDepartments.slice(1..<allDepartments.size)
-//                    }
-//                    else {
-//                        allDepartments
-//                    }.toList()
-//                designations =
-//                    if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
-//                        allDesignations.slice(0..3)
-//                    }
-//                    else if(des.lowercase() == "senior executive"){
-//                        allDesignations.slice(6..<allDesignations.size)
-//                    }
-//                    else{
-//                        allDesignations.slice(4..<allDesignations.size)
-//                    }.toList()
-
-                if(!ebgb.contains(des)){
-                    departments = allDepartments.slice(1..<allDepartments.size)
-                    designations = allDesignations.slice(6..<allDesignations.size)
-                }
-                if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
-                    designations = allDesignations.slice(0..3)
-                }
-
-                println("Departments: $departments")
-                println("Designations: $designations")
-                setToDept(departments[0])
-                setToDesignation(designations[0])
+    val (taskTitle, setTaskTitle) = rememberSaveable { mutableStateOf("") }
+    val (taskDescription, setTaskDescription) = rememberSaveable { mutableStateOf("") }
+    val (toDept, setToDept) = rememberSaveable { mutableStateOf(departments[0]) }
+    val (toDesignation, setToDesignation) = rememberSaveable { mutableStateOf(designations[0]) }
+    val (deadline, setDeadline) = rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(profile) {
+        profile?.let {
+            val des = profile!!.designation
+            if(!ebgb.contains(des)){
+                departments = allDepartments.slice(1..<allDepartments.size)
+                designations = listOf("Senior Executive")
             }
-
+            setToDept(departments[0])
+            setToDesignation(designations[0])
+        }
     }
+
+    LaunchedEffect(toDept) {
+        designations = if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
+            allDesignations.slice(0..3)
+        } else{
+            allDesignations.slice(4..6)
+        }
+        setToDesignation(designations[0])
+    }
+
 
     var showDatePicker by remember{
         mutableStateOf(false)

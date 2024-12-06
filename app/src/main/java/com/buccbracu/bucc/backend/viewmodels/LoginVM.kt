@@ -28,6 +28,7 @@ open class LoginVM @Inject constructor(
 
 
     val session = sharedR.session
+    val profile = sharedR.profile
 
     suspend fun createEmptySession(){
         viewModelScope.launch {

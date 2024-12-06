@@ -47,10 +47,10 @@ fun NavDrawer(
     scrollState: ScrollState,
     selectedIndex: Int,
     onClick: (item: NavDrawerItem) -> Unit,
-    login: Boolean,
+    items: List<NavDrawerItem>,
     darkMode: Boolean
 ){
-    val items = if(login) NavDrawerItem.navDrawerItemsLogin else NavDrawerItem.navDrawerItemsGuest
+
     val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier

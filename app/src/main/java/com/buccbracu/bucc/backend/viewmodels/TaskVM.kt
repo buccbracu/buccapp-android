@@ -66,4 +66,16 @@ open class TaskVM @Inject constructor(
         }
     }
 
+    fun deleteTask(id: String, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.deleteTask(session.value!!.authJsToken, id).awaitResponse()
+                if(response.code() == 200){
+                    println("deleted")
+                    onSuccess()
+                }
+            }
+        }
+    }
+
 }

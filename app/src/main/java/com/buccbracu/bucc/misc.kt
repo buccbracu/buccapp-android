@@ -108,6 +108,9 @@ val ebgb = listOf(
     "Director",
     "Assistant Director",
 )
+val gmex = listOf(
+    "Executive",
+    "General Member")
 
 fun shortForm(abbrv: String): String {
     val deptMap = mapOf(

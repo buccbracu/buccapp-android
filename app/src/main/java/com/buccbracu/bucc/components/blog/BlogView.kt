@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
+import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import kotlinx.coroutines.launch
 
@@ -68,14 +69,6 @@ fun BlogView(
                     .padding(top = 70.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                IconButton(
-                    onClick = back
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBackIosNew,
-                        contentDescription = "Back"
-                    )
-                }
                 LazyColumn {
                     item{
                         // Title
@@ -106,6 +99,12 @@ fun BlogView(
                     }
                 }
             }
+            MovableFloatingActionButton(
+                onClick = {
+                    back()
+                },
+                icon = Icons.Filled.ArrowBackIosNew
+            )
         }
     }
 }

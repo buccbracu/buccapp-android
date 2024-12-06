@@ -99,3 +99,31 @@ val allDesignations = listOf(
     "Executive",
     "General Member",
 )
+
+fun shortForm(abbrv: String): String {
+    val deptMap = mapOf(
+        "Governing Body" to "GB",
+        "Communication and Marketing" to "C&M",
+        "Creative" to "Creative",
+        "Event Management" to "EM",
+        "Finance" to "Finance",
+        "Human Resources" to "HR",
+        "Press Release and Publications" to "PR",
+        "Research and Development" to "R&D"
+    )
+
+    val designationMap = mapOf(
+        "President" to "GB",
+        "Vice President" to "GB",
+        "General Secretary" to "GB",
+        "Treasurer" to "GB",
+        "Director" to "EB",
+        "Assistant Director" to "EB",
+        "Senior Executive" to "SE",
+        "Executive" to "E",
+        "General Member" to "GM"
+    )
+
+    // Check the maps for the short form
+    return deptMap[abbrv] ?: designationMap[abbrv] ?: "UNKNOWN"
+}

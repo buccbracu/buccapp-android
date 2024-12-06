@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,8 +22,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.allDepartments
@@ -32,6 +37,7 @@ import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.DatePickerModal
 import com.buccbracu.bucc.components.OutlinedDropDownMenu
 import kotlinx.coroutines.launch
+import java.time.format.TextStyle
 import java.util.Locale
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -97,6 +103,17 @@ fun CreateTask(
             .padding(horizontal = horizontalPadding.dp)
             .padding(top = 70.dp)
     ) {
+
+        Text(
+            text = "Create New Task",
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth(),
+            fontWeight = FontWeight.W900,
+            fontSize = 30.sp
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+
         OutlinedTextField(
             value = taskTitle,
             onValueChange = setTaskTitle,
@@ -160,6 +177,7 @@ fun CreateTask(
                             task = newTask,
                             onSuccess = {
                                 isLoading = false
+                                navController.navigate("Task Dashboard")
                             }
                         )
                     }

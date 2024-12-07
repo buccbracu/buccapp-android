@@ -42,11 +42,15 @@ import com.buccbracu.bucc.ui.theme.backgroundDark
 fun BlogHeader(blog: Blog){
 
     var imageHeight by remember { mutableIntStateOf(0) }
+    val labelWeight = FontWeight(300)
+    val valueWeight = FontWeight(600)
+    val titleWeight = FontWeight.W900
 
     Box(
         modifier = Modifier
+            .height(250.dp)
             .fillMaxWidth()
-            .aspectRatio(4/3f)
+//            .border(1.dp, Color.Red)
     ){
         AsyncImage(
             model = blog.featuredImage,
@@ -86,7 +90,7 @@ fun BlogHeader(blog: Blog){
             Text(
                 text = blog.title,
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.W700,
+                fontWeight = titleWeight,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -98,13 +102,13 @@ fun BlogHeader(blog: Blog){
             ) {
                 Text(
                     text = "Written By: ",
-                    fontWeight = FontWeight.W300,
+                    fontWeight = labelWeight,
                     color = Color.White,
                     fontSize = 12.sp
                 )
                 Text(
                     text = "${blog.author.authorName}",
-                    fontWeight = FontWeight.W500,
+                    fontWeight = valueWeight,
                     color = Color.White,
                     fontSize = 12.sp
                 )
@@ -116,12 +120,12 @@ fun BlogHeader(blog: Blog){
                 Text(
                     text = "Designation: ",
                     color = Color.White,
-                    fontWeight = FontWeight.W300,
+                    fontWeight = labelWeight,
                     fontSize = 12.sp
                 )
                 Text(
                     text = "${blog.author.authorDesignation}",
-                    fontWeight = FontWeight.W500,
+                    fontWeight = valueWeight,
                     color = Color.White,
                     fontSize = 12.sp
                 )
@@ -133,12 +137,12 @@ fun BlogHeader(blog: Blog){
                 Text(
                     text = "Department: ",
                     color = Color.White,
-                    fontWeight = FontWeight.W300,
+                    fontWeight = labelWeight,
                     fontSize = 12.sp
                 )
                 Text(
                     text = "${blog.author.authorDepartment}",
-                    fontWeight = FontWeight.W500,
+                    fontWeight = valueWeight,
                     color = Color.White,
                     fontSize = 12.sp
                 )
@@ -151,12 +155,12 @@ fun BlogHeader(blog: Blog){
                     Text(
                         text = "Published On: ",
                         color = Color.White,
-                        fontWeight = FontWeight.W300,
+                        fontWeight = labelWeight,
                         fontSize = 12.sp
                     )
                     Text(
                         text = formatDate(blog.createdDate.slice(0..9)),
-                        fontWeight = FontWeight.W500,
+                        fontWeight = valueWeight,
                         color = Color.White,
                         fontSize = 12.sp
                     )
@@ -169,12 +173,12 @@ fun BlogHeader(blog: Blog){
                 Text(
                     text = "Category: ",
                     color = Color.White,
-                    fontWeight = FontWeight.W300,
+                    fontWeight = labelWeight,
                     fontSize = 12.sp
                 )
                 Text(
                     text = blog.category!!,
-                    fontWeight = FontWeight.W500,
+                    fontWeight = valueWeight,
                     color = Color.White,
                     fontSize = 12.sp
                 )

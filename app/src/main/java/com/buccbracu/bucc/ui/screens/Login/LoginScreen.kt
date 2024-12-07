@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -43,7 +45,9 @@ import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.createNotification
 import com.dotlottie.dlplayer.Event
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @Composable
 fun LoginScreen(
@@ -62,6 +66,9 @@ fun LoginScreen(
     var loginStatus by remember{
         mutableStateOf(false)
     }
+    var loginMessage by remember{
+        mutableStateOf("")
+    }
     var passwordVisible by remember {
         mutableStateOf(false)
     }
@@ -71,26 +78,43 @@ fun LoginScreen(
     var isLoading by remember{
         mutableStateOf(false)
     }
+    LaunchedEffect(loginMessage) {
+        scope.launch {
+            delay(3000)
+            loginMessage = ""
+        }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 10.dp)
+            .padding(top = 20.dp)
         ,
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Welcome Back",
+            text = "Welcome",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(
-            modifier = Modifier
-                .height(4.dp)
+            modifier = Modifier.
+            height(10.dp)
         )
-        Text(text = "Login")
-        Spacer(modifier = Modifier.height(16.dp))
+        if(loginMessage != "Success" && loginMessage != ""){
+            Text(
+                text = loginMessage,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                fontSize = 12.sp
+            )
+            Spacer(
+                modifier = Modifier.
+                height(10.dp)
+            )
+        }
+
         OutlinedTextField(
             value = email,
             onValueChange = {
@@ -107,7 +131,7 @@ fun LoginScreen(
         )
         Spacer(
             modifier = Modifier.
-            height(20.dp)
+            height(10.dp)
         )
 
         OutlinedTextField(
@@ -132,7 +156,7 @@ fun LoginScreen(
         )
         Spacer(
             modifier = Modifier
-                .height(20.dp)
+                .height(10.dp)
         )
 
         Button(
@@ -142,7 +166,7 @@ fun LoginScreen(
                     loginVM.login(
                         email = email,
                         password = password,
-                        loginStatus = { status ->
+                        loginStatus = { status, message ->
                             if(status){
 //                                navController.navigate("About BUCC")
                                 createNotification(
@@ -151,6 +175,7 @@ fun LoginScreen(
                                     bodyText = "Welcome"
                                 )
                             }
+                            loginMessage = message
                         },
                         setLoading = { loading ->
                             isLoading = loading
@@ -171,8 +196,7 @@ fun LoginScreen(
 
             }
         }
-        Spacer(modifier = Modifier.height(15.dp))
-
+        Spacer(modifier = Modifier.height(10.dp))
 
         TextButton(
             onClick = {

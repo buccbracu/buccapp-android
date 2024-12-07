@@ -43,14 +43,14 @@ open class LoginVM @Inject constructor(
             val errorMessage = errorDiv.selectFirst("p")?.text() ?: "Unknown error"
             listOf(false, errorMessage)
         } else {
-            listOf(true, "Signin successful")
+            listOf(true, "Success")
         }
     }
 
     fun login(
         email: String,
         password: String,
-        loginStatus: (Boolean) -> Unit,
+        loginStatus: (Boolean, String) -> Unit,
         setLoading: (Boolean) -> Unit
     ) {
         viewModelScope.launch {
@@ -73,13 +73,13 @@ open class LoginVM @Inject constructor(
                             token = cookie
                         )
                         userR.getRemoteProfileAndSave(cookie)
-                        loginStatus(true)
+                        loginStatus(true, message)
                     }
 
 
                 } else {
                     println("Sign In failed: $message")
-                    loginStatus(false)
+                    loginStatus(false, message)
                 }
                 setLoading(false)
             }

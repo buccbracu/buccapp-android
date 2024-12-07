@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.application
+package com.buccbracu.bucc.application.Retrofit
 
 import com.buccbracu.bucc.backend.adapters.MemberAdapter
 import com.buccbracu.bucc.backend.remote.BASE_URL
@@ -23,7 +23,6 @@ object RetrofitServer {
 
     lateinit var retrofit: Retrofit
     private lateinit var moshi: Moshi
-    lateinit var cookieMap: MutableMap<String, String>
     lateinit var Auth: AuthService
     lateinit var User: UserService
     lateinit var DeptMember: DeptMemberService
@@ -32,39 +31,15 @@ object RetrofitServer {
         private set
 
     fun initializeRetrofit() {
-        cookieMap = mutableMapOf()
-        val cookieJar = object : CookieJar {
-            val cookies = mutableListOf<Cookie>()
-
-            override fun loadForRequest(url: HttpUrl): List<Cookie> {
-                return cookies.filter { it.matches(url) }
-            }
-
-            override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-                this.cookies.addAll(cookies)
-                cookies.filter { it.name == TOKEN_KEY }.let { filtered ->
-                   filtered.forEach{ cookie ->
-                       val value = "${cookie.name}=${cookie.value};${cookie.expiresAt};${cookie.domain}"
-                       println("${cookies.size} Cookie $value")
-                       cookieMap[cookie.name] = value
-                   }
-                }
-            }
-
-            fun getCookies(){
-                cookies.forEach{
-                    println("Cookie: $it")
-                }
-            }
-        }
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         val client = OkHttpClient.Builder()
-            .cookieJar(cookieJar)
+            .cookieJar(RetrofitCookieJar)
 //            .addInterceptor(loggingInterceptor)       // use if need logs. else no.
             .build()
+
         moshi = Moshi.Builder()
             .add(MemberAdapter())
             .add(KotlinJsonAdapterFactory())

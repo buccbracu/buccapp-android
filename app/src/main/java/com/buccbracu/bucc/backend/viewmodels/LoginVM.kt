@@ -2,6 +2,8 @@ package com.buccbracu.bucc.backend.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.buccbracu.bucc.application.Retrofit.RetrofitCookieJar
+import com.buccbracu.bucc.application.Retrofit.RetrofitServer
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.local.repositories.UserRepository
@@ -11,6 +13,8 @@ import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.CookieJar
+import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -19,17 +23,12 @@ open class LoginVM @Inject constructor(
     private val sessionR: SessionRepository,
     private val sharedR: SharedRepository,
     private val userR: UserRepository,
-    private val cookieMap: Map<String, String>,
-    private val Auth: AuthService
+    private val Auth: AuthService,
     ): ViewModel() {
 
-    /*
-    TODO
-    1. Do not store session. instead store email and password for auto login
-    2. Do not hit session. redundant call.
-     */
 
     val session = sharedR.session
+    val profile = sharedR.profile
 
     suspend fun createEmptySession(){
         viewModelScope.launch {
@@ -63,15 +62,21 @@ open class LoginVM @Inject constructor(
                 val status = signInResult[0] as Boolean
                 val message = signInResult[1] as String
                 if (status) {
-                    println("Sign in Successful")
-                    val cookie = cookieMap[TOKEN_KEY]!!.trim()
-                    sessionR.createSession(
-                        emailData = email,
-                        passwordData = password,
-                        token = cookie
-                    )
-                    userR.getRemoteProfileAndSave(cookie)
-                    loginStatus(true)
+                    val sessionResponse = Auth.getSession().awaitResponse()
+                    val session = sessionResponse.body()
+                    session?.let { data ->
+                        println("Sign in Successful")
+                        val cookie = RetrofitCookieJar.cookieMap[TOKEN_KEY]!!.trim()
+                        sessionR.createSession(
+                            emailData = email,
+                            passwordData = password,
+                            token = cookie
+                        )
+                        userR.getRemoteProfileAndSave(cookie)
+                        loginStatus(true)
+                    }
+
+
                 } else {
                     println("Sign In failed: $message")
                     loginStatus(false)
@@ -86,6 +91,7 @@ open class LoginVM @Inject constructor(
             session.value?.let {
                 val response = Auth.signOut(session.value!!.authJsToken).awaitResponse()
                 response.body()?.let {
+                    RetrofitCookieJar.clearCookies()
                     userR.createEmptyProfile()
                     sessionR.createEmptySession()
                     sharedR.fetchAll()

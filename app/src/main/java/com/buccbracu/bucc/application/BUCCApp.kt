@@ -1,13 +1,8 @@
 package com.buccbracu.bucc.application
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import com.buccbracu.bucc.backend.local.models.Session
+import com.buccbracu.bucc.application.Retrofit.RetrofitServer
 import dagger.hilt.android.HiltAndroidApp
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
 
 @HiltAndroidApp
 class BUCCApp : Application() {

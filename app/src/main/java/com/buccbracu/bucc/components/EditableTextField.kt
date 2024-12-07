@@ -1,5 +1,6 @@
 package com.buccbracu.bucc.components
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ fun EditableTextField(
         label = {
             Text(label)
         },
-        enabled = isEditable
+        enabled = isEditable,
+        shape = MaterialTheme.shapes.medium
     )
 }

@@ -11,6 +11,30 @@ val emptySession = Session().apply {
 
 val emptyProfile = Profile().apply {
     objectid = 1
+    _id = ""
+    name = ""
+    studentId = ""
+    email = ""
+    buccDepartment = ""
+    designation = ""
+    personalEmail = ""
+    contactNumber = ""
+    joinedBracu = ""
+    departmentBracu = ""
+    profileImage = ""
+    birthDate = ""
+    bloodGroup = ""
+    gender = ""
+    emergencyContact = ""
+    joinedBucc = ""
+    lastPromotion = ""
+    memberStatus = ""
+    memberSkills.clear()
+    memberSocials = ProfileSocial().apply {
+        Facebook = ""
+        Github = ""
+        LinkedIn = ""
+    }
 }
 
 val emptyProfileSocial = ProfileSocial().apply {

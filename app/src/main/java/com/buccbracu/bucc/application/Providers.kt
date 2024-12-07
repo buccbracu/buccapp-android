@@ -4,6 +4,7 @@ import com.buccbracu.bucc.application.Retrofit.RetrofitServer
 import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.api.BlogService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
+import com.buccbracu.bucc.backend.remote.api.GithubService
 import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.api.UserService
 import dagger.Module
@@ -55,6 +56,11 @@ object Providers {
     @Singleton
     fun provideRetrofitTask(): TaskService {
         return RetrofitServer.Task
+    }
+    @Provides
+    @Singleton
+    fun provideRetrofitGithub(): GithubService {
+        return RetrofitServer.Github
     }
 
 

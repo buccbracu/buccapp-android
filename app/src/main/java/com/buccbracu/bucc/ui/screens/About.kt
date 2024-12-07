@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 val bucc_desc = "A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology."
 
 @Composable
-fun AboutUs(s: Session){
+fun AboutUs(){
     val contributorvm: ContributorVM = hiltViewModel()
 
     var list by remember{

@@ -166,7 +166,7 @@ fun Main(darkModeEnabled: Boolean) {
                         CreateTask(navController)
                     }
                     composable("About Us") {
-                        AboutUs(sessionData!!)
+                        AboutUs()
                     }
                     composable("About BUCC") {
                         AboutClub()

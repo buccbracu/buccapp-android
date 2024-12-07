@@ -71,14 +71,17 @@ fun BlogView(
                     modifier = Modifier
                         .background(backgroundDark)
                         .fillMaxSize()
-                        .padding(top = 70.dp, bottom = 50.dp),
+                        .padding(top = 5.dp, bottom = 50.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(top = 30.dp)
+                    ) {
                         item {
                             BlogHeader(blog!!)
 
-                            Spacer(modifier = Modifier.height(1.dp))
+                            Spacer(modifier = Modifier.height(20.dp))
 
 
                             Column(

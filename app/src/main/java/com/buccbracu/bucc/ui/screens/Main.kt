@@ -140,7 +140,10 @@ fun Main(darkModeEnabled: Boolean) {
 
             Scaffold(
                 topBar = {
-                    if(currentRoute != "Login Landing" && currentRoute != "Login"){
+                    if(
+                        (currentRoute != "Login Landing" && currentRoute != "Login") &&
+                        (currentRoute != null && !currentRoute.contains("BlogView"))
+                        ){
                         TopActionBar(drawerState = drawerState, scope = scope)
                     }
 
@@ -184,7 +187,7 @@ fun Main(darkModeEnabled: Boolean) {
                         ViewBlogs(navController)
                     }
                     composable(
-                        "BlogDetail/{blogId}",
+                        "BlogView/{blogId}",
                         arguments = listOf(navArgument("blogId") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val blogId = backStackEntry.arguments?.getString("blogId")
@@ -196,6 +199,7 @@ fun Main(darkModeEnabled: Boolean) {
                 }
             }
 
+            println("CURRENT ROUTE $currentRoute")
         }
     }
 //    if (isSessionReady){

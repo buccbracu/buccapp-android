@@ -77,7 +77,7 @@ fun ViewBlogs(navController: NavHostController){
                     author = blog.author.authorName?: "N/A",
                     image = blog.featuredImage
                 ) {
-                    navController.navigate("BlogDetail/${blog._id}")
+                    navController.navigate("BlogView/${blog._id}")
                 }
 
             }
@@ -113,9 +113,6 @@ fun BlogListView(
                     },
                 contentScale = ContentScale.Crop
             )
-
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()

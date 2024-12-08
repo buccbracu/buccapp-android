@@ -87,7 +87,7 @@ fun TaskDashboard(navController:  NavHostController){
         mutableStateOf(true)
     }
 
-    LaunchedEffect(taskDeleteStatus) {
+    fun fetchTasks(){
         scope.launch {
             isLoading = true
             taskvm.getAllTasks(
@@ -98,6 +98,17 @@ fun TaskDashboard(navController:  NavHostController){
                     isLoading = false
                 }
             )
+        }
+    }
+
+    LaunchedEffect(taskDeleteStatus) {
+        if(!taskDeleteStatus){
+            fetchTasks()
+        }
+    }
+    LaunchedEffect(taskCompleteStatus) {
+        if(!taskCompleteStatus){
+            fetchTasks()
         }
     }
     if(isLoading){
@@ -292,7 +303,7 @@ fun TaskCard(
                     .fillMaxWidth()
                     .padding(vertical = 10.dp),
                 trailingIcon = {
-                    if(updateStatus!= "completed"){
+                    if(updateStatus != "completed"){
                         if (accept.contains(userName)) {
                             IconButton(
                                 onClick = {
@@ -453,7 +464,7 @@ fun TaskCard(
                                     status = "completed"
                                 )
                                 onDone(update)
-                                updateStatus = "completed"
+//                                updateStatus = "completed"
                             },
                             enabled = accept.isNotEmpty()
                         ) {

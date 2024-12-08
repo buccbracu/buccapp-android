@@ -38,6 +38,7 @@ import coil3.compose.AsyncImage
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.SearchBar
 import com.buccbracu.bucc.components.filters.blogFilter
 import kotlinx.coroutines.launch
 
@@ -85,23 +86,11 @@ fun ViewBlogs(navController: NavHostController){
             modifier = Modifier
                 .padding(top = 70.dp)
         ) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = setQuery,
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth(),
-                label = {
-                    Text("Search Blog")
-                },
-                placeholder = {
-                    Text(
-                        "Title || Description || Author || Tag || Category",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(300)
-                    )
-                }
-
+            SearchBar(
+                query = query,
+                onChange = setQuery,
+                label = "Search Blog",
+                placeholder = "Title || Description || Author || Tag || Category"
             )
             if(filteredList.isEmpty()){
                 Box(

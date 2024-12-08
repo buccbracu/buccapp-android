@@ -27,6 +27,8 @@ import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.filters.memberFilter
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -36,18 +38,23 @@ fun DeptMemScreen() {
     var memberList by remember {
         mutableStateOf(listOf<Member>())
     }
+    var filteredList by remember {
+        mutableStateOf(listOf<Member>())
+    }
+    val (query, setQuery) = remember{ mutableStateOf("") }
     val scope = rememberCoroutineScope()
     var isLoading by remember {
         mutableStateOf(false)
     }
 
-    LaunchedEffect(memberList) {
+    LaunchedEffect(Unit) {
         if(memberList.isEmpty()){
             scope.launch {
                 isLoading = true
                 deptMemVM.getMembers(
                     setMembers = { list ->
                         memberList = list
+                        filteredList = list
                     },
                     setLoading = { loading ->
                         isLoading = loading
@@ -58,6 +65,13 @@ fun DeptMemScreen() {
             }
         }
     }
+    LaunchedEffect(query) {
+        if(query != ""){
+            scope.launch {
+                filteredList = memberFilter(query, memberList)
+            }
+        }
+    }
     if(isLoading){
         NoButtonCircularLoadingDialog(
             title = "Loading Department Members",
@@ -65,16 +79,37 @@ fun DeptMemScreen() {
         )
     }
     else{
-        if(memberList.isNotEmpty()){
-            LazyColumn(
-                modifier = Modifier
-                    .padding(top = 70.dp)
-            ) {
-                items(memberList){ member ->
-                    MemberCard(member)
+
+
+        Column(
+            modifier = Modifier
+                .padding(top = 70.dp, bottom = 50.dp)
+        ){
+            SearchBar(
+                query = query,
+                onChange = setQuery,
+                label = "Search Member",
+                placeholder = "Name || Designation"
+            )
+            if(filteredList.isEmpty()){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text("No Blogs containing $query is found.")
+                }
+            }
+            else{
+                LazyColumn(
+
+                ) {
+                    items(filteredList) { member ->
+                        MemberCard(member)
+                    }
                 }
             }
         }
+
     }
 
 }

@@ -34,6 +34,13 @@ data class Member(
     var memberSocials: MemberSocials
 )
 
+data class MemberSocials(
+    var Facebook: String = "",
+    var Linkedin: String = "",
+    var Github: String = ""
+
+)
+
 data class PatchMember(
     var personalEmail: String,
     var contactNumber: String,
@@ -46,9 +53,4 @@ data class PatchMember(
     var memberSocials: MemberSocials
 )
 
-data class MemberSocials(
-    var Facebook: String = "",
-    var Linkedin: String = "",
-    var Github: String = ""
 
-)

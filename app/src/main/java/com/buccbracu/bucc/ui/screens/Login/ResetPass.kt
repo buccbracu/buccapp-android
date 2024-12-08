@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.ui.theme.palette2DarkRed
 import com.buccbracu.bucc.ui.theme.palette2Plum
 import com.buccbracu.bucc.ui.theme.paletteGreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,6 +60,15 @@ fun EmailPrompt(
         mutableStateOf(false)
     }
     val scope = rememberCoroutineScope()
+    LaunchedEffect(message) {
+        if(message.contains("registered")){
+            scope.launch {
+                setEmail("")
+                delay(3000)
+                onDissmiss()
+            }
+        }
+    }
 
     Dialog(
         onDismissRequest = {
@@ -135,9 +146,6 @@ fun EmailPrompt(
                                     email = email,
                                     setMessage = {
                                         setMessage(it)
-                                        if(message.contains("registered")){
-                                            setEmail("")
-                                        }
                                         isLoading = false
                                     }
                                 )

@@ -3,18 +3,16 @@ package com.buccbracu.bucc.backend.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.buccbracu.bucc.application.Retrofit.RetrofitCookieJar
-import com.buccbracu.bucc.application.Retrofit.RetrofitServer
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.models.ResetPassword
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.CookieJar
-import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -95,6 +93,24 @@ open class LoginVM @Inject constructor(
                     userR.createEmptyProfile()
                     sessionR.createEmptySession()
                     sharedR.fetchAll()
+                }
+            }
+        }
+    }
+
+    fun resetPassword(email: String, setMessage: (String) -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Auth.resetPassword(
+                    ResetPassword(email= email)
+                ).awaitResponse()
+                response.body()?.let {
+                    val message = response.body()!!.message
+                    message?.let {
+                        setMessage(message)
+                    }
+                    println("MESSAGE: $message")
+
                 }
             }
         }

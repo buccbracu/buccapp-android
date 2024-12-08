@@ -17,3 +17,8 @@ data class User(
     val designation: String,
     val buccDepartment: String
 )
+
+data class ResetPassword(
+    val email: String? = null,
+    val message: String? = null
+)

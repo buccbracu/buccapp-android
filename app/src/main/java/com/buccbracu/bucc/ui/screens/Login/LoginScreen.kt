@@ -78,6 +78,9 @@ fun LoginScreen(
     var isLoading by remember{
         mutableStateOf(false)
     }
+    var showResetPrompt by remember{
+        mutableStateOf(false)
+    }
     LaunchedEffect(loginMessage) {
         scope.launch {
             delay(3000)
@@ -200,6 +203,7 @@ fun LoginScreen(
 
         TextButton(
             onClick = {
+                showResetPrompt = true
             },
             enabled = !isLoading
         ) {
@@ -221,6 +225,14 @@ fun LoginScreen(
     }
     if(loginLater){
         navController.navigate("About BUCC")
+    }
+    if(showResetPrompt){
+        EmailPrompt(
+            loginvm = loginVM,
+            onDissmiss = {
+                showResetPrompt = false
+            }
+        )
     }
 
 }

@@ -9,5 +9,10 @@ import retrofit2.http.Header
 interface DeptMemberService {
 
     @GET(MEMBERS)
-    fun getUserProfile(@Header("Cookie") cookie: String ): Call<MembersResponse>
+    fun getDeptMembers(@Header("Cookie") cookie: String ): Call<MembersResponse>
+
+    @GET(MEMBERS)
+    fun getAllMembers(@Header("Cookie") cookie: String ): Call<MembersResponse>
+
+
 }

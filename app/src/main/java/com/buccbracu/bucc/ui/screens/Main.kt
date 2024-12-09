@@ -93,11 +93,11 @@ fun Main(darkModeEnabled: Boolean) {
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
-            "Profile" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Profile" }
-            "About BUCC" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "About BUCC" }
-            "About Us" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "About Us" }
-            "Login" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Login" }
-            "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList!!.indexOfFirst { it.title == "Task Dashboard" }
+            "Profile" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Profile" }
+            "About BUCC" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "About BUCC" }
+            "Contributors" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Contributors" }
+            "Login" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Login" }
+            "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
             // Add other routes here if needed
         }
     }
@@ -165,8 +165,8 @@ fun Main(darkModeEnabled: Boolean) {
                     composable("Create Task"){
                         CreateTask(navController)
                     }
-                    composable("About Us") {
-                        AboutUs()
+                    composable("Contributors") {
+                        ContributorScreen()
                     }
                     composable("About BUCC") {
                         AboutClub()

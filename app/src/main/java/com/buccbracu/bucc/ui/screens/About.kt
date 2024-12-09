@@ -2,6 +2,12 @@ package com.buccbracu.bucc.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Text
@@ -28,8 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -45,97 +54,11 @@ import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.remote.models.Contributor
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.ContributorVM
+import com.buccbracu.bucc.components.GradientColors
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import kotlinx.coroutines.launch
 
 val bucc_desc = "A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology."
-
-@Composable
-fun AboutUs(){
-    val contributorvm: ContributorVM = hiltViewModel()
-
-    var list by remember{
-        mutableStateOf<List<Contributor>?>(emptyList())
-    }
-    var isLoading by remember{
-        mutableStateOf(true)
-    }
-    val scope = rememberCoroutineScope()
-    LaunchedEffect(Unit) {
-        scope.launch {
-            contributorvm.getContributors { data ->
-                list = data
-                isLoading = false
-
-            }
-        }
-    }
-    if(isLoading){
-        NoButtonCircularLoadingDialog(
-            title = "Loading Contributors",
-            message = "Please Wait..."
-        )
-    }
-    else{
-        if(list != null ){
-            LazyColumn(
-                modifier = Modifier
-                    .padding(top = 70.dp, bottom = 30.dp)
-            ) {
-                items(list!!) { person ->
-                    ContributorCard(person)
-                }
-            }
-        }
-    }
-
-}
-
-
-@Composable
-fun ContributorCard(data: Contributor){
-    val context = LocalContext.current
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        shape = RoundedCornerShape(10.dp),
-        elevation = CardDefaults.cardElevation(10.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
-        onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data.html_url))
-            context.startActivity(intent)
-        }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = data.avatar_url,
-                contentDescription = "Profile Image",
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape),
-                alignment = Alignment.Center
-            )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(0.dp)
-            ) {
-                Text(
-                    text = data.login,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W900
-                )
-            }
-        }
-    }
-}
 
 
 @Composable
@@ -169,15 +92,19 @@ fun AboutClub(){
 
 @Composable
 fun GradientText(text: String) {
-    val gradient = Brush.linearGradient(
-        colors = listOf(
-            Color(0xFF3B82F6), // Blue-500
-            Color(0xFF2DD4BF)  // Teal-400
-        )
-    )
-
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp
+    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val gradientOffset by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label= ""
+    )
+    val gradientBrush = GradientColors.animatedClubGradient(gradientOffset)
 
     // Adjust the text size based on the screen width
     val fontSize = when {
@@ -186,13 +113,12 @@ fun GradientText(text: String) {
         screenWidthDp >= 400 -> 26f
         else -> 24f
     }
-
         Text(
             text = text,
             style = TextStyle(
                 fontSize = fontSize.sp,
-                fontWeight = FontWeight.Bold,
-                brush = gradient
+                fontWeight = FontWeight(900),
+                brush = gradientBrush
             ),
             textAlign = TextAlign.Center,
             modifier = Modifier

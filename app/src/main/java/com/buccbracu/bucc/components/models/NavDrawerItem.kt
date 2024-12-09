@@ -28,10 +28,10 @@ sealed class NavDrawerItem(
     val isDivider: Boolean = false,
     val isHeader: Boolean = false,
 ){
-    object AboutUs: NavDrawerItem(
+    object Contributors: NavDrawerItem(
         selectedIcon = Icons.Filled.SupervisedUserCircle,
         unselectedIcon = Icons.Outlined.SupervisedUserCircle,
-        title = "About Us",
+        title = "Contributors",
     )
     object AboutClub: NavDrawerItem(
         selectedIcon = Icons.Filled.Apartment,
@@ -83,7 +83,7 @@ sealed class NavDrawerItem(
                     DepartmentMembers,
                     Blogs,
                     Divider,
-                    AboutUs,
+                    Contributors,
                     AboutClub,
                     Logout
                 )
@@ -93,7 +93,7 @@ sealed class NavDrawerItem(
                     DepartmentMembers,
                     Blogs,
                     Divider,
-                    AboutUs,
+                    Contributors,
                     AboutClub,
                     Logout
                 )
@@ -101,13 +101,13 @@ sealed class NavDrawerItem(
                     Profile,
                     Blogs,
                     Divider,
-                    AboutUs,
+                    Contributors,
                     AboutClub,
                     Login
                 )
                 else listOf(
                     Blogs,
-                    AboutUs,
+                    Contributors,
                     AboutClub,
                     Login
                 )

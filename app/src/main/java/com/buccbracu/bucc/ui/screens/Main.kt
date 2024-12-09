@@ -48,7 +48,9 @@ import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Main(darkModeEnabled: Boolean) {
+fun Main(
+    darkModeEnabled: Boolean
+) {
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
     }

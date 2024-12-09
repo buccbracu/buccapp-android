@@ -38,6 +38,7 @@ import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.blog.BlogView
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
+import com.buccbracu.bucc.gb
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
@@ -60,6 +61,7 @@ fun Main(
     }
 
 
+
     val navController = rememberNavController()
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     var scope = rememberCoroutineScope()
@@ -70,8 +72,6 @@ fun Main(
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.session.collectAsState()
     val profile by loginVM.profile.collectAsState(emptyProfile)
-
-    println("PROFILE $profile")
 
     var navDrawerItemList by remember{
         mutableStateOf(navDrawerItems(profile!!.designation))
@@ -84,10 +84,12 @@ fun Main(
             }
         }
         if(profile != null){
-            if(profile!!.designation != "") navDrawerItemList = navDrawerItems(profile!!.designation)
+            if(profile!!.designation != ""){
+                navDrawerItemList = navDrawerItems(profile!!.designation, profile!!.buccDepartment)
+            }
         }
         else{
-            navDrawerItemList = navDrawerItems("")
+            navDrawerItemList = navDrawerItems()
         }
     }
 
@@ -146,7 +148,10 @@ fun Main(
                         (currentRoute != "Login Landing" && currentRoute != "Login") &&
                         (currentRoute != null && !currentRoute.contains("BlogView"))
                         ){
-                        TopActionBar(drawerState = drawerState, scope = scope)
+                        TopActionBar(
+                            drawerState = drawerState,
+                            currentPage = currentRoute
+                        )
                     }
 
                 },
@@ -180,7 +185,20 @@ fun Main(
                         LandingPage(loginVM, navController)
                     }
                     composable("Department Members"){
-                        DeptMemScreen()
+                       profile?.let {
+                           DeptMemScreen(
+                               department = profile!!.buccDepartment,
+                               designation = profile!!.designation
+                           )
+                       }
+                    }
+                    composable("Club Members"){
+                        profile?.let {
+                            DeptMemScreen(
+                                department = profile!!.buccDepartment,
+                                designation = profile!!.designation
+                            )
+                        }
                     }
                     composable("Logout"){
                         Logout(loginVM, navController)

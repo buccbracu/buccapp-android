@@ -18,7 +18,7 @@ open class DeptMemVM @Inject constructor(
 ): ViewModel() {
 
     val session = sharedR.session
-    val profile = sharedR.session
+    val profile = sharedR.profile
 
     fun getMembers(
         setMembers: (List<Member>) -> Unit,
@@ -36,5 +36,20 @@ open class DeptMemVM @Inject constructor(
     }
 
     // all members for gb and hr
+    fun getAllMembers(
+        setMembers: (List<Member>) -> Unit,
+        setLoading: (Boolean) -> Unit
+    ){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = DeptMem.getAllMembers(session.value!!.authJsToken).awaitResponse()
+                response.body()?.let {
+                    println(response.errorBody())
+                    setMembers(response.body()!!.user)
+                    setLoading(false)
+                }
+            }
+        }
+    }
 
 }

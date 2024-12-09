@@ -6,7 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -23,17 +25,23 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
+import com.buccbracu.bucc.allMemberPermission
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
 import com.buccbracu.bucc.components.filters.memberFilter
+import com.buccbracu.bucc.ebgb
+import com.buccbracu.bucc.gb
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun DeptMemScreen() {
+fun DeptMemScreen(
+    designation: String,
+    department: String
+) {
     val deptMemVM: DeptMemVM = hiltViewModel()
     var memberList by remember {
         mutableStateOf(listOf<Member>())
@@ -41,6 +49,7 @@ fun DeptMemScreen() {
     var filteredList by remember {
         mutableStateOf(listOf<Member>())
     }
+
     val (query, setQuery) = remember{ mutableStateOf("") }
     val scope = rememberCoroutineScope()
     var isLoading by remember {
@@ -51,16 +60,33 @@ fun DeptMemScreen() {
         if(memberList.isEmpty()){
             scope.launch {
                 isLoading = true
-                deptMemVM.getMembers(
-                    setMembers = { list ->
-                        memberList = list
-                        filteredList = list
-                    },
-                    setLoading = { loading ->
-                        isLoading = loading
 
-                    }
-                )
+                if(allMemberPermission(dept = department, des = designation)){
+                    // for gb & HR
+                    deptMemVM.getAllMembers(
+                        setMembers = { list ->
+                            memberList = list
+                            filteredList = list
+                        },
+                        setLoading = { loading ->
+                            isLoading = loading
+
+                        }
+                    )
+                }
+                else{
+                    deptMemVM.getMembers(
+                        setMembers = { list ->
+                            memberList = list
+                            filteredList = list
+                        },
+                        setLoading = { loading ->
+                            isLoading = loading
+
+                        }
+                    )
+                }
+
 
             }
         }
@@ -89,7 +115,12 @@ fun DeptMemScreen() {
                 query = query,
                 onChange = setQuery,
                 label = "Search Member",
-                placeholder = "Name || Designation"
+                placeholder = "Name || Designation",
+                onClear = {
+                    setQuery("")
+                    filteredList = memberList
+                },
+                leadingIcon = Icons.Outlined.Person
             )
             if(filteredList.isEmpty()){
                 Box(

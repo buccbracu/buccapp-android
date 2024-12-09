@@ -9,16 +9,20 @@ import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.Apartment
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
 import androidx.compose.material.icons.outlined.GroupWork
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.buccbracu.bucc.eb
 import com.buccbracu.bucc.ebgb
+import com.buccbracu.bucc.gb
 import com.buccbracu.bucc.gmex
 
 sealed class NavDrawerItem(
@@ -58,6 +62,11 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.EmojiPeople,
         title = "Department Members",
     )
+    object ClubMembers: NavDrawerItem(
+        selectedIcon = Icons.Filled.People,
+        unselectedIcon = Icons.Outlined.People,
+        title = "Club Members",
+    )
     object Blogs: NavDrawerItem(
         selectedIcon = Icons.Filled.EditNote,
         unselectedIcon = Icons.Outlined.EditNote,
@@ -75,9 +84,22 @@ sealed class NavDrawerItem(
     )
 
     companion object{
-        fun navDrawerItems(designation: String): List<NavDrawerItem>{
+        fun navDrawerItems(
+            designation: String = "",
+            department: String = ""
+        ): List<NavDrawerItem>{
             val list =
-                if (ebgb.contains(designation)) listOf(
+                if (gb.contains(designation)) listOf(
+                    Profile,
+                    TaskDashboard,
+                    ClubMembers,
+                    Blogs,
+                    Divider,
+                    Contributors,
+                    AboutClub,
+                    Logout
+                )
+                else if (eb.contains(designation)) listOf(
                     Profile,
                     TaskDashboard,
                     DepartmentMembers,

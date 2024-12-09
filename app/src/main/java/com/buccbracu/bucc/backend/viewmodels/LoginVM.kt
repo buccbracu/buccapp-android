@@ -48,8 +48,8 @@ open class LoginVM @Inject constructor(
     fun login(
         email: String,
         password: String,
-        loginStatus: (Boolean, String) -> Unit,
-        setLoading: (Boolean) -> Unit
+        loginStatus: (Boolean, String) -> Unit = { _, _ -> },
+        setLoading: (Boolean) -> Unit = { _ -> }
     ) {
         viewModelScope.launch {
             val csrf = Auth.getCsrfToken().awaitResponse()
@@ -111,6 +111,19 @@ open class LoginVM @Inject constructor(
                     }
                     println("MESSAGE: $message")
 
+                }
+            }
+        }
+    }
+
+    fun autoLogin(){
+        viewModelScope.launch {
+            session.value?.let {
+                if(session.value!!.email != ""){
+                    login(
+                        email = session.value!!.email,
+                        password = session.value!!.password,
+                    )
                 }
             }
         }

@@ -10,6 +10,9 @@ data class MemberResponse(
 data class MembersResponse(
     val users: List<Member>
 )
+data class AllMembersResponse(
+    val user: List<Member>
+)
 
 data class Member(
     var _id: String,

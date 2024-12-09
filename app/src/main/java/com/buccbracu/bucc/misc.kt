@@ -103,6 +103,7 @@ val allDesignations = listOf(
     "General Member",
 )
 
+
 val ebgb = listOf(
     "President",
     "Vice President",
@@ -111,9 +112,14 @@ val ebgb = listOf(
     "Director",
     "Assistant Director",
 )
+
+val gb = ebgb.slice(0..3)
+val eb = ebgb.slice(4..5)
+
 val gmex = listOf(
     "Executive",
-    "General Member")
+    "General Member"
+)
 
 fun shortForm(abbrv: String): String {
     val deptMap = mapOf(
@@ -143,6 +149,10 @@ fun shortForm(abbrv: String): String {
     return deptMap[abbrv] ?: designationMap[abbrv] ?: "UNKNOWN"
 }
 
+
+fun allMemberPermission(dept: String, des: String): Boolean {
+    return gb.contains(des) || dept == "Human Resources"
+}
 
 
 fun formatDate(inputDate: String): String {

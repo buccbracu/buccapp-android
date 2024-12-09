@@ -31,14 +31,15 @@ fun SearchBar(
     placeholder: String,
     onClear: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.Search,
-    trailingIcon: ImageVector = Icons.AutoMirrored.Outlined.Backspace
+    trailingIcon: ImageVector = Icons.AutoMirrored.Outlined.Backspace,
+    modifier: Modifier = Modifier
+        .padding(horizontal = 10.dp)
+        .fillMaxWidth()
 ){
     OutlinedTextField(
         value = query,
         onValueChange = onChange,
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .fillMaxWidth(),
+        modifier = modifier,
         label = {
             Text(label)
         },

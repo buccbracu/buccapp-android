@@ -1,6 +1,7 @@
 package com.buccbracu.bucc
 
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 val skills = listOf(
@@ -121,6 +122,18 @@ val gmex = listOf(
     "General Member"
 )
 
+val bloodGroups = listOf(
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "AB+",
+    "AB-",
+    "O+",
+    "O-"
+)
+
+
 fun shortForm(abbrv: String): String {
     val deptMap = mapOf(
         "Governing Body" to "GB",
@@ -169,3 +182,15 @@ fun formatDate(inputDate: String): String {
         "Invalid date"
     }
 }
+
+
+
+fun prevYearsList(prev: Int = 4): List<String> {
+    val terms = listOf("Fall", "Spring", "Summer")
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+    return (0..prev).flatMap { yearOffset ->
+        terms.map { term -> "$term ${currentYear - yearOffset}" }
+    }
+}
+

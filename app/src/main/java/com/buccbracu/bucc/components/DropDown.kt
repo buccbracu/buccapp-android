@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -51,14 +52,15 @@ import androidx.compose.ui.unit.sp
 fun OutlinedDropDownMenu(
     dropdownItems: List<String>,
     selectedText: String,
-    parentHorizontalPadding: Int,
+    parentHorizontalPadding: Int = 0,
     onItemClick: (String) -> Unit,
     label: String,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
-        .fillMaxWidth()
+        .fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
         OutlinedTextField(
             value = selectedText,
@@ -83,13 +85,14 @@ fun OutlinedDropDownMenu(
                 Text(label)
             }
         )
-
-
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false },
             modifier = Modifier
-                .width((LocalConfiguration.current.screenWidthDp - (parentHorizontalPadding*2)).dp)
+                .width((LocalConfiguration.current.screenWidthDp - (parentHorizontalPadding * 2)).dp)
+                .then(
+                    if (dropdownItems.size > 5) Modifier.height(400.dp) else Modifier.wrapContentHeight()
+                )
         ) {
             dropdownItems.forEach { item ->
                 DropdownMenuItem(

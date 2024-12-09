@@ -9,3 +9,11 @@ fun memberFilter(query: String, list: List<Member>): List<Member> {
         member.designation.contains(query, ignoreCase = true)
     }
 }
+
+fun allMemberFilter(query: String, list: List<Member>): List<Member> {
+    return list.filter { member ->
+        member.name.contains(query, ignoreCase = true) ||
+        member.buccDepartment.contains(query, ignoreCase = true) ||
+        member.designation.contains(query, ignoreCase = true)
+    }
+}

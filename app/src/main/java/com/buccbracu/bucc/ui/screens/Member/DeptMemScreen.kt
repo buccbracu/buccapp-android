@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.ui.screens
+package com.buccbracu.bucc.ui.screens.Member
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -7,18 +7,22 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,15 +32,14 @@ import com.buccbracu.bucc.R
 import com.buccbracu.bucc.allMemberPermission
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
-import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.filters.allMemberFilter
 import com.buccbracu.bucc.components.filters.memberFilter
-import com.buccbracu.bucc.ebgb
-import com.buccbracu.bucc.gb
 import kotlinx.coroutines.launch
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DeptMemScreen(
     designation: String,
@@ -55,13 +58,19 @@ fun DeptMemScreen(
     var isLoading by remember {
         mutableStateOf(false)
     }
+    val allMemberPermission = allMemberPermission(dept = department, des = designation)
+    var showFilterDialog by remember{
+        mutableStateOf(false)
+    }
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if(memberList.isEmpty()){
             scope.launch {
                 isLoading = true
 
-                if(allMemberPermission(dept = department, des = designation)){
+                if(allMemberPermission){
                     // for gb & HR
                     deptMemVM.getAllMembers(
                         setMembers = { list ->
@@ -94,7 +103,9 @@ fun DeptMemScreen(
     LaunchedEffect(query) {
         if(query != ""){
             scope.launch {
-                filteredList = memberFilter(query, memberList)
+                filteredList =
+                    if(allMemberPermission) allMemberFilter(query, memberList)
+                    else memberFilter(query, memberList)
             }
         }
     }
@@ -105,41 +116,84 @@ fun DeptMemScreen(
         )
     }
     else{
+        Scaffold(
 
-
-        Column(
-            modifier = Modifier
-                .padding(top = 70.dp, bottom = 50.dp)
-        ){
-            SearchBar(
-                query = query,
-                onChange = setQuery,
-                label = "Search Member",
-                placeholder = "Name || Designation",
-                onClear = {
-                    setQuery("")
-                    filteredList = memberList
-                },
-                leadingIcon = Icons.Outlined.Person
-            )
-            if(filteredList.isEmpty()){
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(top = 70.dp, bottom = 50.dp)
+            ){
+                Row(
+                    modifier = Modifier
+                        .height(70.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text("No Blogs containing $query is found.")
+                    SearchBar(
+                        query = query,
+                        onChange = setQuery,
+                        label = "Search Member",
+                        placeholder =
+                        if (allMemberPermission) "Name || Designation || Department"
+                        else "Name || Designation ",
+                        onClear = {
+                            setQuery("")
+                            filteredList = memberList
+                        },
+                        leadingIcon = Icons.Outlined.Person,
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth(0.85f)
+                    )
+                    IconButton(
+                        onClick = {
+                            showBottomSheet = true
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.FilterAlt,
+                            contentDescription = "Filter",
+                            modifier = Modifier
+                                .size(30.dp)
+                        )
+                    }
                 }
-            }
-            else{
-                LazyColumn(
+                if(filteredList.isEmpty()){
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Text("No Blogs containing $query is found.")
+                    }
+                }
+                else{
+                    LazyColumn(
 
-                ) {
-                    items(filteredList) { member ->
-                        MemberCard(member)
+                    ) {
+                        items(filteredList) { member ->
+                            MemberCard(member)
+                        }
                     }
                 }
             }
+
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState,
+                    modifier = Modifier
+                        .fillMaxHeight(0.8f)
+                ) {
+                    FilterBottomModal(
+                        onApply = {
+
+                        }
+                    )
+                }
+            }
         }
+
 
     }
 

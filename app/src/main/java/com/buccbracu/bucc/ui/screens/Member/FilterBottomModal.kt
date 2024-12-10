@@ -1,17 +1,20 @@
 package com.buccbracu.bucc.ui.screens.Member
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoneOutline
 import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.FilterAltOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,22 +30,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.buccbracu.bucc.allDepartments
 import com.buccbracu.bucc.allDesignations
 import com.buccbracu.bucc.bloodGroups
 import com.buccbracu.bucc.components.OutlinedDropDownMenu
+import com.buccbracu.bucc.components.models.Filter
 import com.buccbracu.bucc.prevYearsList
+import com.buccbracu.bucc.ui.theme.palette2DarkRed
 import com.buccbracu.bucc.ui.theme.paletteGreen
 
 @Composable
 fun FilterScreen(
-    onApply: () -> Unit
+    onApply: (Filter) -> Unit,
 )
 {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val sheetHeight = screenHeight - 150.dp // 80% of the screen height
+    val sheetHeight = screenHeight - 130.dp // 80% of the screen height
 
     var designations by remember{
         mutableStateOf(allDesignations)
@@ -69,7 +75,7 @@ fun FilterScreen(
     LazyColumn(
         modifier = Modifier
 
-            .fillMaxHeight(0.82f)
+            .height(sheetHeight)
 
     ) {
         item{
@@ -91,17 +97,17 @@ fun FilterScreen(
                     label = "Designation",
                 )
             }
-//            ItemCard {
-//                OutlinedTextField(
-//                    value = contactNumber,
-//                    onValueChange = setContactNumber,
-//                    label = {
-//                        Text("Contact Number")
-//                    },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                )
-//            }
+            ItemCard {
+                OutlinedTextField(
+                    value = contactNumber,
+                    onValueChange = setContactNumber,
+                    label = {
+                        Text("Contact Number")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
             ItemCard {
                 OutlinedDropDownMenu(
                     dropdownItems = years,
@@ -109,15 +115,6 @@ fun FilterScreen(
                     parentHorizontalPadding = 100,
                     onItemClick = setJoinedBucc,
                     label = "Joined BUCC",
-                )
-            }
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = bloodGroups,
-                    selectedText = bloodGroup,
-                    parentHorizontalPadding = 100,
-                    onItemClick = setBloodGroup,
-                    label = "Blood Group",
                 )
             }
             ItemCard {
@@ -138,6 +135,16 @@ fun FilterScreen(
                     label = "Last Promotion",
                 )
             }
+            ItemCard {
+                OutlinedDropDownMenu(
+                    dropdownItems = bloodGroups,
+                    selectedText = bloodGroup,
+                    parentHorizontalPadding = 100,
+                    onItemClick = setBloodGroup,
+                    label = "Blood Group",
+                )
+            }
+
 //            ItemCard {
 //                OutlinedDropDownMenu(
 //                    dropdownItems = bloodGroups,
@@ -160,7 +167,48 @@ fun FilterScreen(
                 ){
                     IconButton(
                         onClick = {
+                            val filter = Filter()
+                            setDesignation("")
+                            setDepartment("")
+                            setContactNumber("")
+                            setJoinedBucc("")
+                            setBloodGroup("")
+                            setJoinedBracu("")
+                            setLastPromotion("")
+                            onApply(filter)
+                        },
+                        modifier = Modifier
+                            .padding(top = 10.dp),
+                    ) {
 
+                        Icon(
+                            imageVector = Icons.Filled.FilterAltOff,
+                            contentDescription = "Filter",
+                            tint = palette2DarkRed,
+                        )
+
+                    }
+                    Text("Reset")
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                ){
+                    IconButton(
+                        onClick = {
+                            val filter = Filter(
+                             buccDepartment = department,
+                             designation = designation,
+                             contactNumber = contactNumber,
+                             joinedBracu = joinedBracu,
+                             bloodGroup = bloodGroup,
+                             emergencyContact = contactNumber,
+                             joinedBucc = joinedBucc,
+                             lastPromotion = lastPromotion,
+                            )
+
+                            onApply(filter)
                         },
                         modifier = Modifier
                             .padding(top = 10.dp),
@@ -175,6 +223,7 @@ fun FilterScreen(
                     }
                     Text("Apply")
                 }
+
             }
         }
     }
@@ -192,7 +241,8 @@ fun ItemCard(content: @Composable () -> Unit){
 //    ) {
         Box(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(vertical = 5.dp)
+                .padding(horizontal = 15.dp)
         ){
             content()
         }

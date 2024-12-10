@@ -16,8 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -36,8 +34,9 @@ import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
-import com.buccbracu.bucc.components.filters.allMemberFilter
-import com.buccbracu.bucc.components.filters.memberFilter
+import com.buccbracu.bucc.components.filters.allMemberSearch
+import com.buccbracu.bucc.components.filters.filterMembers
+import com.buccbracu.bucc.components.filters.memberSearch
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,8 +105,8 @@ fun DeptMemScreen(
         if(query != ""){
             scope.launch {
                 filteredList =
-                    if(allMemberPermission) allMemberFilter(query, memberList)
-                    else memberFilter(query, memberList)
+                    if(allMemberPermission) allMemberSearch(query, memberList)
+                    else memberSearch(query, memberList)
             }
         }
     }
@@ -124,8 +123,11 @@ fun DeptMemScreen(
         BottomSheetScaffold(
             sheetContent = {
                 FilterScreen(
-                    onApply = {
-
+                    onApply = { filter ->
+                        scope.launch {
+                            filteredList = filterMembers(filter, memberList)
+                            sheetState.hide()
+                        }
                     }
                 )
             },
@@ -201,21 +203,6 @@ fun DeptMemScreen(
                 }
             }
 
-            if(showBottomSheet){
-//                ModalBottomSheet(
-//                    onDismissRequest = {
-//                        scope.launch {
-//                            sheetState.hide()
-//                            showBottomSheet = false
-//                        }
-//                    },
-//                    sheetState = sheetState,
-//                    modifier = Modifier
-//                        .fillMaxHeight(0.8f)
-//                ) {
-//
-//                }
-            }
         }
 
 

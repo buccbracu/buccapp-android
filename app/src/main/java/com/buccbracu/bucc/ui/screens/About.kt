@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,6 +57,7 @@ import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.ContributorVM
 import com.buccbracu.bucc.components.GradientColors
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.ui.theme.outfitFontFamily
 import kotlinx.coroutines.launch
 
 val bucc_desc = "A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology."
@@ -71,7 +73,7 @@ fun AboutClub(){
         GradientText(text = "BRAC UNIVERSITY COMPUTER CLUB")
         Text(
             text = bucc_desc,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 16.dp,start = 16.dp,end = 16.dp)
         )
@@ -108,21 +110,23 @@ fun GradientText(text: String) {
 
     // Adjust the text size based on the screen width
     val fontSize = when {
-        screenWidthDp >= 900 -> 64f
-        screenWidthDp >= 600 -> 48f
-        screenWidthDp >= 400 -> 26f
-        else -> 24f
+        screenWidthDp >= 900 -> 46f
+        screenWidthDp >= 600 -> 30f
+        screenWidthDp >= 400 -> 24f
+        else -> 22f
     }
         Text(
             text = text,
             style = TextStyle(
                 fontSize = fontSize.sp,
-                fontWeight = FontWeight(900),
-                brush = gradientBrush
+                fontWeight = FontWeight.Bold,
+                brush = gradientBrush,
+                fontFamily = outfitFontFamily
             ),
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+
         )
 
 }

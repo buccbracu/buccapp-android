@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -19,10 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
@@ -48,6 +53,7 @@ fun BlogView(
     var isLoading by remember{
         mutableStateOf(true)
     }
+    val (fontSize, setFontSize) = remember { mutableStateOf(14.sp) }
     LaunchedEffect(Unit) {
         scope.launch {
             id?.let {
@@ -71,12 +77,43 @@ fun BlogView(
                     modifier = Modifier
                         .background(backgroundDark)
                         .fillMaxSize()
-                        .padding(top = 5.dp, bottom = 50.dp),
+                        .padding(top = 30.dp, bottom = 50.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = {
+                                setFontSize((fontSize.value - 2).sp)
+                            },
+                            enabled = fontSize > 14.sp
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Remove,
+                                contentDescription = "Decrease text size"
+                            )
+                        }
+                        Text("Font size")
+                        IconButton(
+                            onClick = {
+                                setFontSize((fontSize.value + 2).sp)
+                            },
+                            enabled = fontSize < 22.sp
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Add,
+                                contentDescription = "Increase text size"
+                            )
+                        }
+                    }
                     LazyColumn(
                         modifier = Modifier
-                            .padding(top = 30.dp)
+                            .padding(top = 0.dp)
                     ) {
                         item {
                             BlogHeader(blog!!)
@@ -89,7 +126,7 @@ fun BlogView(
                                     .padding(horizontal = 10.dp)
                             )
                             {
-                                RenderContent(blog!!.content)
+                                RenderContent(blog!!.content, fontSize = fontSize)
                             }
                         }
                     }

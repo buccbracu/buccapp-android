@@ -1,6 +1,7 @@
 package com.buccbracu.bucc.ui.screens.Member
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -110,9 +112,6 @@ fun DeptMemScreen(
             }
         }
     }
-    LaunchedEffect(sheetState.currentValue) {
-        println("SHEET STATE ${sheetState.currentValue.name}")
-    }
     if(isLoading){
         NoButtonCircularLoadingDialog(
             title = "Loading Department Members",
@@ -138,7 +137,9 @@ fun DeptMemScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(top = 70.dp, bottom = 50.dp)
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(top = 70.dp, bottom = 50.dp),
+
             ){
                 Row(
                     modifier = Modifier

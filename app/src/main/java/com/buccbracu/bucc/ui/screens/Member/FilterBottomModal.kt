@@ -48,7 +48,7 @@ fun FilterScreen(
 )
 {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val sheetHeight = screenHeight - 130.dp // 80% of the screen height
+    val sheetHeight = screenHeight - 130.dp
 
     var designations by remember{
         mutableStateOf(allDesignations)

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,6 +47,7 @@ fun DeptMemScreen(
     designation: String,
     department: String
 ) {
+
     val deptMemVM: DeptMemVM = hiltViewModel()
     var memberList by remember {
         mutableStateOf(listOf<Member>())
@@ -64,7 +67,6 @@ fun DeptMemScreen(
     }
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-
     LaunchedEffect(Unit) {
         if(memberList.isEmpty()){
             scope.launch {
@@ -109,6 +111,9 @@ fun DeptMemScreen(
             }
         }
     }
+    LaunchedEffect(sheetState.currentValue) {
+        println("SHEET STATE ${sheetState.currentValue.name}")
+    }
     if(isLoading){
         NoButtonCircularLoadingDialog(
             title = "Loading Department Members",
@@ -116,8 +121,18 @@ fun DeptMemScreen(
         )
     }
     else{
-        Scaffold(
+        BottomSheetScaffold(
+            sheetContent = {
+                FilterScreen(
+                    onApply = {
 
+                    }
+                )
+            },
+            scaffoldState = rememberBottomSheetScaffoldState(sheetState),
+            sheetPeekHeight = 0.dp,
+            modifier = Modifier
+                .fillMaxHeight()
         ) {
             Column(
                 modifier = Modifier
@@ -125,6 +140,7 @@ fun DeptMemScreen(
             ){
                 Row(
                     modifier = Modifier
+                        .padding(bottom = 10.dp)
                         .height(70.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
@@ -146,7 +162,16 @@ fun DeptMemScreen(
                     )
                     IconButton(
                         onClick = {
-                            showBottomSheet = true
+                            println("SHEET STATE BUTTON ${sheetState.currentValue.name}")
+                            scope.launch {
+                                if( sheetState.currentValue.name == "PartiallyExpanded"){
+                                    sheetState.expand()
+                                }
+                                else{
+                                    sheetState.hide()
+                                }
+                                showBottomSheet = !showBottomSheet
+                            }
                         }
                     ) {
                         Icon(
@@ -176,21 +201,20 @@ fun DeptMemScreen(
                 }
             }
 
-            if (showBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = {
-                        showBottomSheet = false
-                    },
-                    sheetState = sheetState,
-                    modifier = Modifier
-                        .fillMaxHeight(0.8f)
-                ) {
-                    FilterBottomModal(
-                        onApply = {
-
-                        }
-                    )
-                }
+            if(showBottomSheet){
+//                ModalBottomSheet(
+//                    onDismissRequest = {
+//                        scope.launch {
+//                            sheetState.hide()
+//                            showBottomSheet = false
+//                        }
+//                    },
+//                    sheetState = sheetState,
+//                    modifier = Modifier
+//                        .fillMaxHeight(0.8f)
+//                ) {
+//
+//                }
             }
         }
 

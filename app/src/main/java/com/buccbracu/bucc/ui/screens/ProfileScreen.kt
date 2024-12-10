@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,10 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
-import com.buccbracu.bucc.backend.local.models.Session
-import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.EditableTextField
@@ -47,28 +45,30 @@ fun Profile() {
     val scope = rememberCoroutineScope()
 
     val dataTemp = uservm.profileData.value
+
     val profileData by uservm.profileData.collectAsState(initial = dataTemp)
+
     var edit by remember { mutableStateOf(false) }
     val tempMember by remember { mutableStateOf(uservm.patchMemberFromProfile(profileData!!)) }
     var isLoading by remember { mutableStateOf(false) }
     var isProfileLoading by remember { mutableStateOf(false) }
+    val (name, setName) = rememberSaveable { mutableStateOf("") }
+    val (studentId, setStudentId) = rememberSaveable { mutableStateOf("") }
+    val (email, setEmail) = rememberSaveable { mutableStateOf("") }
+    val (buccDepartment, setBuccDepartment) = rememberSaveable { mutableStateOf("") }
+    val (designation, setDesignation) = rememberSaveable { mutableStateOf("") }
+    val (personalEmail, setPersonalEmail) = rememberSaveable { mutableStateOf("") }
+    val (contactNumber, setContactNumber) = rememberSaveable { mutableStateOf("") }
+    val (joinedBracu, setJoinedBracu) = rememberSaveable { mutableStateOf("") }
+    val (departmentBracu, setDepartmentBracu) = rememberSaveable { mutableStateOf("") }
+    val (profileImage, setProfileImage) = rememberSaveable { mutableStateOf("") }
+    val (birthDate, setBirthDate) = rememberSaveable { mutableStateOf("") }
+    val (bloodGroup, setBloodGroup) = rememberSaveable { mutableStateOf("") }
+    val (gender, setGender) = rememberSaveable { mutableStateOf("") }
+    val (emergencyContact, setEmergencyContact) = rememberSaveable { mutableStateOf("") }
+    val (joinedBucc, setJoinedBucc) = rememberSaveable { mutableStateOf("") }
+    val (memberStatus, setMemberStatus) = rememberSaveable { mutableStateOf("") }
 
-    var (name, setName) = rememberSaveable { mutableStateOf("") }
-    var (studentId, setStudentId) = rememberSaveable { mutableStateOf("") }
-    var (email, setEmail) = rememberSaveable { mutableStateOf("") }
-    var (buccDepartment, setBuccDepartment) = rememberSaveable { mutableStateOf("") }
-    var (designation, setDesignation) = rememberSaveable { mutableStateOf("") }
-    var (personalEmail, setPersonalEmail) = rememberSaveable { mutableStateOf("") }
-    var (contactNumber, setContactNumber) = rememberSaveable { mutableStateOf("") }
-    var (joinedBracu, setJoinedBracu) = rememberSaveable { mutableStateOf("") }
-    var (departmentBracu, setDepartmentBracu) = rememberSaveable { mutableStateOf("") }
-    var (profileImage, setProfileImage) = rememberSaveable { mutableStateOf("") }
-    var (birthDate, setBirthDate) = rememberSaveable { mutableStateOf("") }
-    var (bloodGroup, setBloodGroup) = rememberSaveable { mutableStateOf("") }
-    var (gender, setGender) = rememberSaveable { mutableStateOf("") }
-    var (emergencyContact, setEmergencyContact) = rememberSaveable { mutableStateOf("") }
-    var (joinedBucc, setJoinedBucc) = rememberSaveable { mutableStateOf("") }
-    var (memberStatus, setMemberStatus) = rememberSaveable { mutableStateOf("") }
 
     val (facebook, setFacebook) = remember { mutableStateOf("") }
     val (linkedin, setLinkedin) = remember { mutableStateOf("") }
@@ -78,7 +78,6 @@ fun Profile() {
         if (profileData != null) {
             val data = profileData!!
             val socials = data.memberSocials
-
             setName(data.name)
             setStudentId(data.studentId)
             setEmail(data.email)
@@ -215,6 +214,7 @@ fun Profile() {
                         // Group: Personal Information
                         Text("Personal Information", modifier = Modifier.padding(10.dp))
                         EditableTextField(text = name, label = "Name", isEditable = false, onEdit = {})
+
                         EditableTextField(text = studentId, label = "Student ID", isEditable = false, onEdit = {})
                         EditableTextField(text = email, label = "Email", isEditable = false, onEdit = {})
                         EditableTextField(text = personalEmail, label = "Personal Email", isEditable = edit) {
@@ -263,4 +263,13 @@ fun Profile() {
     }
 }
 
-
+@Composable
+fun LabeledText(label:String, text: String){
+    Row{
+        Text(
+            text= "$label : ",
+            fontWeight = FontWeight.W700
+        )
+        Text(text)
+    }
+}

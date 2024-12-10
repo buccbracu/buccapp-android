@@ -1,13 +1,17 @@
 package com.buccbracu.bucc.ui.screens.Member
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoneOutline
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,7 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.buccbracu.bucc.allDepartments
 import com.buccbracu.bucc.allDesignations
@@ -30,10 +37,13 @@ import com.buccbracu.bucc.prevYearsList
 import com.buccbracu.bucc.ui.theme.paletteGreen
 
 @Composable
-fun FilterBottomModal(
+fun FilterScreen(
     onApply: () -> Unit
 )
 {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val sheetHeight = screenHeight - 150.dp // 80% of the screen height
+
     var designations by remember{
         mutableStateOf(allDesignations)
     }
@@ -56,9 +66,12 @@ fun FilterBottomModal(
         }
     }
 
+    LazyColumn(
+        modifier = Modifier
 
+            .fillMaxHeight(0.82f)
 
-    LazyColumn {
+    ) {
         item{
             ItemCard {
                 OutlinedDropDownMenu(
@@ -78,17 +91,17 @@ fun FilterBottomModal(
                     label = "Designation",
                 )
             }
-            ItemCard {
-                OutlinedTextField(
-                    value = contactNumber,
-                    onValueChange = setContactNumber,
-                    label = {
-                        Text("Contact Number")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
+//            ItemCard {
+//                OutlinedTextField(
+//                    value = contactNumber,
+//                    onValueChange = setContactNumber,
+//                    label = {
+//                        Text("Contact Number")
+//                    },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                )
+//            }
             ItemCard {
                 OutlinedDropDownMenu(
                     dropdownItems = years,
@@ -125,36 +138,42 @@ fun FilterBottomModal(
                     label = "Last Promotion",
                 )
             }
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = bloodGroups,
-                    selectedText = bloodGroup,
-                    parentHorizontalPadding = 100,
-                    onItemClick = setBloodGroup,
-                    label = "Blood Group",
-                )
-            }
+//            ItemCard {
+//                OutlinedDropDownMenu(
+//                    dropdownItems = bloodGroups,
+//                    selectedText = bloodGroup,
+//                    parentHorizontalPadding = 100,
+//                    onItemClick = setBloodGroup,
+//                    label = "Blood Group",
+//                )
+//            }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(
-                    onClick = {
-
-                    },
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .padding(top = 10.dp)
-                        .padding(start = 10.dp),
-                ) {
+                        .padding(horizontal = 20.dp)
+                ){
+                    IconButton(
+                        onClick = {
 
-                    Icon(
-                        imageVector = Icons.Filled.DoneOutline,
-                        contentDescription = "Cancel",
-                        tint = paletteGreen,
-                    )
+                        },
+                        modifier = Modifier
+                            .padding(top = 10.dp),
+                    ) {
 
+                        Icon(
+                            imageVector = Icons.Filled.FilterAlt,
+                            contentDescription = "Filter",
+                            tint = paletteGreen,
+                        )
+
+                    }
+                    Text("Apply")
                 }
             }
         }
@@ -166,16 +185,16 @@ fun FilterBottomModal(
 
 @Composable
 fun ItemCard(content: @Composable () -> Unit){
-    Card(
-        modifier = Modifier
-            .padding(10.dp),
-
-    ) {
+//    Card(
+//        modifier = Modifier
+//            .padding(10.dp),
+//
+//    ) {
         Box(
             modifier = Modifier
                 .padding(10.dp)
         ){
             content()
         }
-    }
+//    }
 }

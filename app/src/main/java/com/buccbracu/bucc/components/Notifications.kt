@@ -15,7 +15,7 @@ fun createNotification(
         .Builder(context, "bucc_notification")
         .setContentTitle(title)
         .setContentText(bodyText)
-        .setSmallIcon(R.drawable.bucc_logo_dark)
+        .setSmallIcon(R.drawable.bucc_general)
         .build()
     notificationManager.notify(2024, notification)
 

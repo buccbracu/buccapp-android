@@ -23,30 +23,20 @@ object GradientColors {
             Color(0xFF1C1C1C)  // Dark gray to simulate the night sky
         )
     )
-
-    val ClubGradient = Brush.linearGradient(
-        colors = listOf(
-            Color(0xFF3B82F6), // Blue-500
-            Color(0xFF2DD4BF)  // Teal-400
-        )
-    )
-
     @Composable
-    fun animatedClubGradient(offset: Float): Brush {
+    fun animatedGradient(
+        offset: Float,
+        colors: List<Color>,
+        mode: TileMode
+    ): Brush {
         return remember(offset) {
             Brush.linearGradient(
-                colors = listOf(
-                    Color(0xFF2DD4BF),
-                    Color(0xFF3B82F6),
-                    Color(0xFF2DD4BF),
-
-                ),
+                colors = colors,
                 start = Offset(1000f * offset, 0f),
                 end = Offset(1000f * (offset + 1), 0f),
-                tileMode = TileMode.Repeated
+                tileMode = mode
             )
         }
-
     }
 
 }

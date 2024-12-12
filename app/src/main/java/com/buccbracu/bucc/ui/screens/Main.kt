@@ -4,11 +4,9 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -29,12 +27,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
@@ -62,6 +60,7 @@ fun Main(
     var isLoading by remember {
         mutableStateOf(false)
     }
+
 
 
 
@@ -179,13 +178,13 @@ fun Main(
                         ContributorScreen()
                     }
                     composable("About BUCC") {
-                        AboutClub()
+                        AboutClub(darkModeEnabled)
                     }
                     composable("Login") {
-                        LandingPage(loginVM, navController, true)
+                        LandingPage(loginVM, navController, true, darkModeEnabled)
                     }
                     composable("Login Landing") {
-                        LandingPage(loginVM, navController)
+                        LandingPage(loginVM, navController, darkMode = darkModeEnabled)
                     }
                     composable("Department Members"){
                        profile?.let {

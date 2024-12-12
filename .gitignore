@@ -18,3 +18,5 @@ local.properties
 remote.properties
 /app/src/main/java/com/buccbracu/bucc/backend/remote/secrets.kt
 **/secrets.kt
+/app/google-services.json
+

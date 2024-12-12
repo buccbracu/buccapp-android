@@ -9,6 +9,7 @@ plugins {
     id("io.realm.kotlin")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -139,6 +140,11 @@ dependencies {
 
     // preferences
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-messaging")
+
 
 
 

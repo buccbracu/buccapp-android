@@ -164,7 +164,8 @@ fun shortForm(abbrv: String): String {
 
 
 fun allMemberPermission(dept: String, des: String): Boolean {
-    return gb.contains(des) || dept == "Human Resources" || dept == "Research and Development"
+    println("PERMISSION $dept $des")
+    return gb.contains(des) || dept == "Human Resources" || (dept == "Research and Development" && eb.contains(des))
 }
 
 

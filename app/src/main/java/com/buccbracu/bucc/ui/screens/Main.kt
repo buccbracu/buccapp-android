@@ -32,7 +32,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
@@ -42,7 +41,6 @@ import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
-import com.buccbracu.bucc.ui.screens.Member.DeptMemScreen
 import com.buccbracu.bucc.ui.screens.Tasks.CreateTask
 import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 

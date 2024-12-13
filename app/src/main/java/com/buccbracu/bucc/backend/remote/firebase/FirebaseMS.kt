@@ -16,11 +16,6 @@ class FirebaseMS : FirebaseMessagingService() {
         // Extract notification title and body
         val notificationTitle = message.notification?.title ?: "New Message"
         val notificationBody = message.notification?.body ?: "Message received"
-
-        // You can handle notifications here
-        // For example, show a notification or process the data
-        println("Notification Title: $notificationTitle")
-        println("Notification Body: $notificationBody")
         createNotification(
             this,
             title = notificationTitle,

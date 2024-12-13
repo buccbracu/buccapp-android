@@ -34,6 +34,7 @@ open class TaskVM @Inject constructor(
                     setTasks(body)
                     onSuccess()
                 }
+                println(response.message())
             }
         }
     }

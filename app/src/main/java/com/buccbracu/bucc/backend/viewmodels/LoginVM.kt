@@ -3,18 +3,16 @@ package com.buccbracu.bucc.backend.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.buccbracu.bucc.application.Retrofit.RetrofitCookieJar
-import com.buccbracu.bucc.application.Retrofit.RetrofitServer
 import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.models.ResetPassword
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.CookieJar
-import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -28,6 +26,7 @@ open class LoginVM @Inject constructor(
 
 
     val session = sharedR.session
+    val profile = sharedR.profile
 
     suspend fun createEmptySession(){
         viewModelScope.launch {
@@ -42,15 +41,15 @@ open class LoginVM @Inject constructor(
             val errorMessage = errorDiv.selectFirst("p")?.text() ?: "Unknown error"
             listOf(false, errorMessage)
         } else {
-            listOf(true, "Signin successful")
+            listOf(true, "Success")
         }
     }
 
     fun login(
         email: String,
         password: String,
-        loginStatus: (Boolean) -> Unit,
-        setLoading: (Boolean) -> Unit
+        loginStatus: (Boolean, String) -> Unit = { _, _ -> },
+        setLoading: (Boolean) -> Unit = { _ -> }
     ) {
         viewModelScope.launch {
             val csrf = Auth.getCsrfToken().awaitResponse()
@@ -72,13 +71,13 @@ open class LoginVM @Inject constructor(
                             token = cookie
                         )
                         userR.getRemoteProfileAndSave(cookie)
-                        loginStatus(true)
+                        loginStatus(true, message)
                     }
 
 
                 } else {
                     println("Sign In failed: $message")
-                    loginStatus(false)
+                    loginStatus(false, message)
                 }
                 setLoading(false)
             }
@@ -94,6 +93,37 @@ open class LoginVM @Inject constructor(
                     userR.createEmptyProfile()
                     sessionR.createEmptySession()
                     sharedR.fetchAll()
+                }
+            }
+        }
+    }
+
+    fun resetPassword(email: String, setMessage: (String) -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Auth.resetPassword(
+                    ResetPassword(email= email)
+                ).awaitResponse()
+                response.body()?.let {
+                    val message = response.body()!!.message
+                    message?.let {
+                        setMessage(message)
+                    }
+                    println("MESSAGE: $message")
+
+                }
+            }
+        }
+    }
+
+    fun autoLogin(){
+        viewModelScope.launch {
+            session.value?.let {
+                if(session.value!!.email != ""){
+                    login(
+                        email = session.value!!.email,
+                        password = session.value!!.password,
+                    )
                 }
             }
         }

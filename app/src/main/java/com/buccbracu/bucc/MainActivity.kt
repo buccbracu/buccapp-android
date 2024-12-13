@@ -11,6 +11,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.preferences.Preferences
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
@@ -35,14 +37,23 @@ class MainActivity : ComponentActivity() {
                 Preferences.get().darkModeEnabled.first()
             }
             val darkModeEnabled by Preferences.get().darkModeEnabled.collectAsState(darkMode)
+            setStatusBarStyle(this, darkModeEnabled)
             BuccTheme(
                 darkTheme = darkModeEnabled
             ) {
                 Surface(
                 ) {
-                    Main(darkModeEnabled)
+                    Main(darkModeEnabled = darkModeEnabled)
                 }
             }
         }
     }
+}
+
+private fun setStatusBarStyle(activity: ComponentActivity, isDarkMode: Boolean) {
+    val window = activity.window
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
+    val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+    insetsController.isAppearanceLightStatusBars = !isDarkMode // true for light content, false for dark
 }

@@ -12,11 +12,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.ContentItem
 
 @Composable
-fun ParagraphContent(contentItems: List<ContentItem>) {
+fun ParagraphContent(contentItems: List<ContentItem>, fontSize: TextUnit = 15.sp) {
     val color = MaterialTheme.colorScheme.primary
     Text(
         text = buildAnnotatedString {
@@ -60,6 +63,7 @@ fun ParagraphContent(contentItems: List<ContentItem>) {
         },
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth(),
-        textAlign = TextAlign.Justify
+        textAlign = TextAlign.Justify,
+        fontSize = fontSize
     )
 }

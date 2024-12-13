@@ -9,15 +9,21 @@ import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.Apartment
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
 import androidx.compose.material.icons.outlined.GroupWork
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.buccbracu.bucc.eb
+import com.buccbracu.bucc.ebgb
+import com.buccbracu.bucc.gb
+import com.buccbracu.bucc.gmex
 
 sealed class NavDrawerItem(
     val selectedIcon: ImageVector? = null,
@@ -26,10 +32,10 @@ sealed class NavDrawerItem(
     val isDivider: Boolean = false,
     val isHeader: Boolean = false,
 ){
-    object AboutUs: NavDrawerItem(
+    object Contributors: NavDrawerItem(
         selectedIcon = Icons.Filled.SupervisedUserCircle,
         unselectedIcon = Icons.Outlined.SupervisedUserCircle,
-        title = "About Us",
+        title = "Contributors",
     )
     object AboutClub: NavDrawerItem(
         selectedIcon = Icons.Filled.Apartment,
@@ -56,6 +62,11 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.EmojiPeople,
         title = "Department Members",
     )
+    object ClubMembers: NavDrawerItem(
+        selectedIcon = Icons.Filled.People,
+        unselectedIcon = Icons.Outlined.People,
+        title = "Club Members",
+    )
     object Blogs: NavDrawerItem(
         selectedIcon = Icons.Filled.EditNote,
         unselectedIcon = Icons.Outlined.EditNote,
@@ -73,30 +84,57 @@ sealed class NavDrawerItem(
     )
 
     companion object{
-        val navDrawerItems = listOf(
-            Profile,
-            TaskDashboard,
-            Divider,
-            AboutUs,
-            AboutClub,
-            Login
-        )
+        fun navDrawerItems(
+            designation: String = "",
+            department: String = ""
+        ): List<NavDrawerItem>{
+            val list =
+                if (gb.contains(designation)) listOf(
+                    Profile,
+                    TaskDashboard,
+                    ClubMembers,
+                    Blogs,
+                    Divider,
+                    Contributors,
+                    AboutClub,
+                    Logout
+                )
+                else if (eb.contains(designation)) listOf(
+                    Profile,
+                    TaskDashboard,
+                    DepartmentMembers,
+                    Blogs,
+                    Divider,
+                    Contributors,
+                    AboutClub,
+                    Logout
+                )
+                else if(designation == "Senior Executive") listOf(
+                    Profile,
+                    TaskDashboard,
+                    DepartmentMembers,
+                    Blogs,
+                    Divider,
+                    Contributors,
+                    AboutClub,
+                    Logout
+                )
+                else if(gmex.contains(designation)) listOf(
+                    Profile,
+                    Blogs,
+                    Divider,
+                    Contributors,
+                    AboutClub,
+                    Login
+                )
+                else listOf(
+                    Blogs,
+                    Contributors,
+                    AboutClub,
+                    Login
+                )
 
-        val navDrawerItemsLogin = listOf(
-            Profile,
-            TaskDashboard,
-            DepartmentMembers,
-            Blogs,
-            Divider,
-            AboutUs,
-            AboutClub,
-            Logout
-        )
-        val navDrawerItemsGuest = listOf(
-            Blogs,
-            AboutUs,
-            AboutClub,
-            Login
-        )
+            return list
+        }
     }
 }

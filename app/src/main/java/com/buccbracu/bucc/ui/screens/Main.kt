@@ -4,9 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -27,11 +29,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.blog.BlogView
@@ -40,6 +44,7 @@ import com.buccbracu.bucc.components.permissionLauncher
 import com.buccbracu.bucc.ui.screens.Blog.ViewBlogs
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
+import com.buccbracu.bucc.ui.screens.Member.DeptMemScreen
 import com.buccbracu.bucc.ui.screens.Tasks.CreateTask
 import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 
@@ -47,7 +52,9 @@ import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Main(darkModeEnabled: Boolean) {
+fun Main(
+    darkModeEnabled: Boolean
+) {
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
     }
@@ -55,6 +62,7 @@ fun Main(darkModeEnabled: Boolean) {
     var isLoading by remember {
         mutableStateOf(false)
     }
+
 
 
     val navController = rememberNavController()
@@ -66,14 +74,25 @@ fun Main(darkModeEnabled: Boolean) {
 
     val loginVM: LoginVM = hiltViewModel()
     val sessionData by loginVM.session.collectAsState()
+    val profile by loginVM.profile.collectAsState(emptyProfile)
 
-    
+    var navDrawerItemList by remember{
+        mutableStateOf(navDrawerItems(profile!!.designation))
+    }
 
-    LaunchedEffect(sessionData) {
+    LaunchedEffect(sessionData, profile) {
         if(sessionData == null){
             scope.launch {
                 loginVM.createEmptySession()
             }
+        }
+        if(profile != null){
+            if(profile!!.designation != ""){
+                navDrawerItemList = navDrawerItems(profile!!.designation, profile!!.buccDepartment)
+            }
+        }
+        else{
+            navDrawerItemList = navDrawerItems()
         }
     }
 
@@ -81,11 +100,11 @@ fun Main(darkModeEnabled: Boolean) {
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
-            "Profile" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Profile" }
-            "About BUCC" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About BUCC" }
-            "About Us" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "About Us" }
-            "Login" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Login" }
-            "Task Dashboard" -> selectedIndexDrawer = navDrawerItems.indexOfFirst { it.title == "Task Dashboard" }
+            "Profile" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Profile" }
+            "About BUCC" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "About BUCC" }
+            "Contributors" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Contributors" }
+            "Login" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Login" }
+            "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
             // Add other routes here if needed
         }
     }
@@ -111,14 +130,14 @@ fun Main(darkModeEnabled: Boolean) {
                             scrollState = scrollState,
                             selectedIndex = selectedIndexDrawer,
                             onClick = { item ->
-                                selectedIndexDrawer = navDrawerItems.indexOf(item)
+                                selectedIndexDrawer = navDrawerItemList.indexOf(item)
                                 navController.navigate(item.title)
                                 scope.launch {
                                     drawerState.close()
                                 }
                             },
-                            login = !(sessionData == null || sessionData!!.email == ""),
-                            darkMode = darkModeEnabled
+                            darkMode = darkModeEnabled,
+                            items = navDrawerItemList
                         )
                     }
                 }
@@ -128,13 +147,20 @@ fun Main(darkModeEnabled: Boolean) {
 
             Scaffold(
                 topBar = {
-                    if(currentRoute != "Login Landing" && currentRoute != "Login"){
-                        TopActionBar(drawerState = drawerState, scope = scope)
+                    if(
+                        (currentRoute != "Login Landing" && currentRoute != "Login") &&
+                        (currentRoute != null && !currentRoute.contains("BlogView"))
+                        ){
+                        TopActionBar(
+                            drawerState = drawerState,
+                            currentPage = currentRoute
+                        )
                     }
 
                 },
 
-                ) {
+                )
+            {
                 NavHost(navController = navController, startDestination =
                 if(sessionData!!.email == "") "Login Landing"
                 else "About BUCC"
@@ -149,8 +175,8 @@ fun Main(darkModeEnabled: Boolean) {
                     composable("Create Task"){
                         CreateTask(navController)
                     }
-                    composable("About Us") {
-                        AboutUs(sessionData!!)
+                    composable("Contributors") {
+                        ContributorScreen()
                     }
                     composable("About BUCC") {
                         AboutClub()
@@ -162,7 +188,20 @@ fun Main(darkModeEnabled: Boolean) {
                         LandingPage(loginVM, navController)
                     }
                     composable("Department Members"){
-                        DeptMemScreen()
+                       profile?.let {
+                           DeptMemScreen(
+                               department = profile!!.buccDepartment,
+                               designation = profile!!.designation
+                           )
+                       }
+                    }
+                    composable("Club Members"){
+                        profile?.let {
+                            DeptMemScreen(
+                                department = profile!!.buccDepartment,
+                                designation = profile!!.designation
+                            )
+                        }
                     }
                     composable("Logout"){
                         Logout(loginVM, navController)
@@ -171,7 +210,7 @@ fun Main(darkModeEnabled: Boolean) {
                         ViewBlogs(navController)
                     }
                     composable(
-                        "BlogDetail/{blogId}",
+                        "BlogView/{blogId}",
                         arguments = listOf(navArgument("blogId") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val blogId = backStackEntry.arguments?.getString("blogId")
@@ -183,6 +222,7 @@ fun Main(darkModeEnabled: Boolean) {
                 }
             }
 
+            println("CURRENT ROUTE $currentRoute")
         }
     }
 //    if (isSessionReady){

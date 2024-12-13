@@ -2,31 +2,29 @@ package com.buccbracu.bucc.components
 
 
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,116 +38,77 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Composable
-fun DropDownCard(
+fun OutlinedDropDownMenu(
     dropdownItems: List<String>,
-    height: Dp = 40.dp,
-    width: Dp = 0.dp,
-    weight: Float = 1f,
-    startPadding: Dp = 0.dp,
-    endPadding: Dp = 0.dp,
-    topPadding: Dp = 0.dp,
-    bottomPadding: Dp = 0.dp,
+    selectedText: String,
+    parentHorizontalPadding: Int = 0,
     onItemClick: (String) -> Unit,
-
+    label: String,
 ) {
-    var isContextMenuVisible by rememberSaveable {
-        mutableStateOf(false)
-    }
-    var selectedText by remember{
-        mutableStateOf(dropdownItems[0])
-    }
-    var pressOffset by remember {
-        mutableStateOf(DpOffset.Zero)
-    }
-    var itemHeight by remember {
-        mutableStateOf(0.dp)
-    }
-    var widthDp by remember { mutableStateOf(0.dp) } // State to hold the width
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-    val density = LocalDensity.current
-    LaunchedEffect(key1 = dropdownItems) {
-        selectedText = dropdownItems[0]
-    }
+    var isMenuExpanded by remember { mutableStateOf(false) }
 
-//    println("Inside drop down $dropdownItems $selectedText ${dropdownItems[0]}")
-    Card(
-//        elevation = 4.dp,
-        modifier = Modifier
-            .padding(start = startPadding, end = endPadding, top = topPadding, bottom = bottomPadding)
-            .height(height)
-            .then(
-                if (width == 0.dp) Modifier.fillMaxWidth(weight) else Modifier.width(width)
-            )
-            .onSizeChanged {
-                itemHeight = with(density) { it.height.toDp() }
-                widthDp = with(density) { it.width.toDp() }
-
-            },
-        shape = RoundedCornerShape(5.dp),
+    Box(modifier = Modifier
+        .fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = {}, // No direct value change allowed via typing
             modifier = Modifier
-                .fillMaxSize()
-                .indication(interactionSource, LocalIndication.current)
-                .pointerInput(true) {
-                    detectTapGestures(
-                        onPress = {
-                            isContextMenuVisible = true
-                            pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
-                        },
+                .fillMaxWidth(),
+            readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { isMenuExpanded = !isMenuExpanded }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = if (isMenuExpanded) "Collapse menu" else "Expand menu"
                     )
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = selectedText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                textAlign = TextAlign.Center
-            )
-        }
-        DropdownMenu(
-            expanded = isContextMenuVisible,
-            onDismissRequest = {
-                isContextMenuVisible = false
+                }
             },
+            textStyle = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            ),
+            singleLine = true,
+            label = {
+                Text(label)
+            }
+        )
+        DropdownMenu(
+            expanded = isMenuExpanded,
+            onDismissRequest = { isMenuExpanded = false },
             modifier = Modifier
-                .padding(start = startPadding, end = endPadding)
-                .width( widthDp - startPadding*2 ),
-            offset = DpOffset(0.dp, 10.dp)
+                .width((LocalConfiguration.current.screenWidthDp - (parentHorizontalPadding * 2)).dp)
+                .then(
+                    if (dropdownItems.size > 5) Modifier.height(400.dp) else Modifier.wrapContentHeight()
+                )
         ) {
-            dropdownItems.forEach {
+            dropdownItems.forEach { item ->
                 DropdownMenuItem(
                     onClick = {
-                        onItemClick(it)
-                        isContextMenuVisible = false
-                        selectedText = it
+                        isMenuExpanded = false
+                        onItemClick(item)
                     },
                     text = {
                         Text(
-                            text = it,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = startPadding, end = endPadding)
+                            text = item,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.fillMaxWidth()
                         )
-                    }
+                    },
                 )
+
             }
         }
     }

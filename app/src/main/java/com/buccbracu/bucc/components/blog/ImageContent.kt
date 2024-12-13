@@ -28,7 +28,7 @@ fun ImageContent(url: String){
         contentDescription = "Blog Image",
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(vertical = 10.dp)
             .clip(RoundedCornerShape(10.dp)),
         contentScale = ContentScale.FillWidth,
     )

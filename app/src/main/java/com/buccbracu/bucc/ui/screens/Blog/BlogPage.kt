@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ScreenSearchDesktop
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,6 +40,8 @@ import coil3.compose.AsyncImage
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.filters.blogFilter
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,14 +51,26 @@ fun ViewBlogs(navController: NavHostController){
     var blogList by remember{
         mutableStateOf<List<Blog>>(emptyList())
     }
+    var filteredList by remember{
+        mutableStateOf<List<Blog>>(emptyList())
+    }
     var isLoading by remember{
         mutableStateOf(true)
     }
+    val (query, setQuery) = remember{ mutableStateOf("") }
     LaunchedEffect(Unit) {
         scope.launch {
             blogvm.getAllBlogs { list ->
                 blogList = list
+                filteredList = list
                 isLoading = false
+            }
+        }
+    }
+    LaunchedEffect(query) {
+        if(query != ""){
+            scope.launch {
+                filteredList = blogFilter(query, blogList)
             }
         }
     }
@@ -65,24 +82,52 @@ fun ViewBlogs(navController: NavHostController){
         )
     }
     else{
-        LazyColumn(
+
+
+        Column(
             modifier = Modifier
-                .padding(top = 70.dp)
+                .padding(top = 70.dp, bottom = 50.dp)
         ) {
-            items(blogList){blog ->
-                BlogListView(
-                    title = blog.title,
-                    description = blog.description,
-                    category = blog.category ?: "N/A",
-                    author = blog.author.authorName?: "N/A",
-                    image = blog.featuredImage
-                ) {
-                    navController.navigate("BlogDetail/${blog._id}")
+            SearchBar(
+                query = query,
+                onChange = setQuery,
+                label = "Search Blog",
+                placeholder = "Title || Description || Author || Tag || Category",
+                onClear = {
+                    setQuery("")
+                    filteredList = blogList
+                },
+                leadingIcon = Icons.Outlined.ScreenSearchDesktop
+            )
+            if(filteredList.isEmpty()){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text("No Blogs containing $query is found.")
                 }
-
             }
+            else{
+                LazyColumn(
 
+                ) {
+                    items(filteredList) { blog ->
+                        BlogListView(
+                            title = blog.title,
+                            description = blog.description,
+                            category = blog.category ?: "N/A",
+                            author = blog.author.authorName ?: "N/A",
+                            image = blog.featuredImage
+                        ) {
+                            navController.navigate("BlogView/${blog._id}")
+                        }
+
+                    }
+
+                }
+            }
         }
+
     }
 }
 
@@ -113,9 +158,6 @@ fun BlogListView(
                     },
                 contentScale = ContentScale.Crop
             )
-
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()

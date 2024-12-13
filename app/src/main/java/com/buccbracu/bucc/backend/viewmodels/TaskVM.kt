@@ -6,6 +6,7 @@ import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.models.NewTask
 import com.buccbracu.bucc.backend.remote.models.TaskData
+import com.buccbracu.bucc.backend.remote.models.UpdateTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.awaitResponse
@@ -21,20 +22,23 @@ open class TaskVM @Inject constructor(
     val session = sharedR.session
     val profile = sharedR.profile
 
-    fun getAllTasks(setTasks: (List<TaskData>) -> Unit){
+    fun getAllTasks(
+        setTasks: (List<TaskData>) -> Unit,
+        onSuccess: () -> Unit
+    ){
         viewModelScope.launch {
             session.value?.let {
                 val response = Task.getTasks(session.value!!.authJsToken).awaitResponse()
                 val body = response.body()
                 body?.let {
                     setTasks(body)
+                    onSuccess()
                 }
             }
         }
     }
 
     fun createTask(task: NewTask, onSuccess: () -> Unit){
-        println("Started")
         viewModelScope.launch {
             session.value?.let {
                 val response = Task.createTask(session.value!!.authJsToken, task).awaitResponse()
@@ -45,4 +49,33 @@ open class TaskVM @Inject constructor(
             }
         }
     }
+
+    fun updateTask(task: UpdateTask, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.updateTask(
+                    cookie = session.value!!.authJsToken,
+                    task = task,
+                    id = task._id
+                ).awaitResponse()
+                val body = response.body()
+                body?.let {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteTask(id: String, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.deleteTask(session.value!!.authJsToken, id).awaitResponse()
+                if(response.code() == 200){
+                    println("deleted")
+                    onSuccess()
+                }
+            }
+        }
+    }
+
 }

@@ -2,10 +2,7 @@ package com.buccbracu.bucc.backend.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.buccbracu.bucc.backend.local.repositories.SessionRepository
 import com.buccbracu.bucc.backend.local.repositories.SharedRepository
-import com.buccbracu.bucc.backend.local.repositories.UserRepository
-import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.models.Member
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +18,7 @@ open class DeptMemVM @Inject constructor(
 ): ViewModel() {
 
     val session = sharedR.session
+    val profile = sharedR.profile
 
     fun getMembers(
         setMembers: (List<Member>) -> Unit,
@@ -28,9 +26,26 @@ open class DeptMemVM @Inject constructor(
     ){
         viewModelScope.launch {
             session.value?.let {
-                val response = DeptMem.getUserProfile(session.value!!.authJsToken).awaitResponse()
+                val response = DeptMem.getDeptMembers(session.value!!.authJsToken).awaitResponse()
                 response.body()?.let {
                     setMembers(response.body()!!.users)
+                    setLoading(false)
+                }
+            }
+        }
+    }
+
+    // all members for gb and hr
+    fun getAllMembers(
+        setMembers: (List<Member>) -> Unit,
+        setLoading: (Boolean) -> Unit
+    ){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = DeptMem.getAllMembers(session.value!!.authJsToken).awaitResponse()
+                response.body()?.let {
+                    println(response.errorBody())
+                    setMembers(response.body()!!.user)
                     setLoading(false)
                 }
             }

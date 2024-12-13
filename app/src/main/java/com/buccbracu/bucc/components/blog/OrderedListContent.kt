@@ -14,12 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.Content
 import com.buccbracu.bucc.backend.remote.models.ContentItem
 
 @Composable
-fun OrderedListContent(content: Content) {
+fun OrderedListContent(content: Content, fontSize: TextUnit = 14.sp) {
     val items = content.content.orEmpty()
     val startIndex = content.attrs?.start ?: 1 // Default start index is 1
 
@@ -38,7 +40,7 @@ fun OrderedListContent(content: Content) {
                     // Render the content of the listItem
                     listItem.content?.forEach { paragraph ->
                         if (paragraph.type == "paragraph") {
-                            RenderParagraph(paragraph.content.orEmpty())
+                            RenderParagraph(paragraph.content.orEmpty(), fontSize)
                         }
                     }
                 }
@@ -47,7 +49,7 @@ fun OrderedListContent(content: Content) {
     }
 }
 @Composable
-private fun RenderParagraph(contentItems: List<ContentItem>) {
+private fun RenderParagraph(contentItems: List<ContentItem>, fontSize: TextUnit = 14.sp) {
     val color = MaterialTheme.colorScheme.primary
     Text(
         text = buildAnnotatedString {
@@ -84,6 +86,7 @@ private fun RenderParagraph(contentItems: List<ContentItem>) {
         modifier = Modifier
             .padding(vertical = 4.dp)
             .fillMaxWidth(),
-        textAlign = TextAlign.Justify
+        textAlign = TextAlign.Justify,
+        fontSize = fontSize
     )
 }

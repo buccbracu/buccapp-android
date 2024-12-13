@@ -7,25 +7,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.Content
 
 @Composable
 fun RenderContent(
-    content: List<Content>
+    content: List<Content>,
+    fontSize: TextUnit = 12.sp
 ) {
     content.forEach { item ->
         when (item.type) {
             "paragraph" -> {
                 if (!item.content.isNullOrEmpty()) {
-                    ParagraphContent(item.content)
+                    ParagraphContent(item.content, fontSize)
                 } else {
                     Spacer(modifier = Modifier.height(8.dp)) // For empty paragraphs
                 }
             }
 
             "heading" -> {
-                HeadingContent(item)
+                HeadingContent(item, fontSize)
             }
 
             "image" -> {
@@ -52,7 +55,7 @@ fun RenderContent(
 
             "orderedList" -> {
 
-                    OrderedListContent(item)
+                    OrderedListContent(item, fontSize)
                 }
 
 

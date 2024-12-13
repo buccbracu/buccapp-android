@@ -38,6 +38,7 @@ import com.buccbracu.bucc.ui.theme.paletteGreen
 @Composable
 fun FilterScreen(
     onApply: (Filter) -> Unit,
+    onReset: () -> Unit
 )
 {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
@@ -138,16 +139,6 @@ fun FilterScreen(
                 )
             }
 
-//            ItemCard {
-//                OutlinedDropDownMenu(
-//                    dropdownItems = bloodGroups,
-//                    selectedText = bloodGroup,
-//                    parentHorizontalPadding = 100,
-//                    onItemClick = setBloodGroup,
-//                    label = "Blood Group",
-//                )
-//            }
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -169,6 +160,7 @@ fun FilterScreen(
                             setJoinedBracu("")
                             setLastPromotion("")
                             onApply(filter)
+                            onReset()
                         },
                         modifier = Modifier
                             .padding(top = 10.dp),
@@ -200,7 +192,6 @@ fun FilterScreen(
                              joinedBucc = joinedBucc,
                              lastPromotion = lastPromotion,
                             )
-
                             onApply(filter)
                         },
                         modifier = Modifier

@@ -10,4 +10,15 @@ data class Filter(
     var emergencyContact: String = "",
     var joinedBucc: String = "",
     var lastPromotion: String = "",
-)
+){
+    fun isEmpty(): Boolean {
+        return  buccDepartment.isEmpty() &&
+                designation.isEmpty() &&
+                contactNumber.isEmpty() &&
+                joinedBracu.isEmpty() &&
+                bloodGroup.isEmpty() &&
+                emergencyContact.isEmpty() &&
+                joinedBucc.isEmpty() &&
+                lastPromotion.isEmpty()
+    }
+}

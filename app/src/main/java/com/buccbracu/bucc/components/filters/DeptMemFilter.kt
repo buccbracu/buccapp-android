@@ -20,8 +20,8 @@ fun allMemberSearch(query: String, list: List<Member>): List<Member> {
 
 fun filterMembers(filter: Filter, members: List<Member>): List<Member> {
     return members.filter { member ->
-        (filter.buccDepartment.isEmpty() || member.buccDepartment.contains(filter.buccDepartment, ignoreCase = true)) &&
-        (filter.designation.isEmpty() || member.designation.contains(filter.designation, ignoreCase = true)) &&
+        (filter.buccDepartment.isEmpty() || member.buccDepartment.equals(filter.buccDepartment, ignoreCase = true)) &&
+        (filter.designation.isEmpty() || member.designation.equals(filter.designation, ignoreCase = true)) &&
         (filter.contactNumber.isEmpty() || member.contactNumber.contains(filter.contactNumber)) &&
         (filter.joinedBracu.isEmpty() || member.joinedBracu.contains(filter.joinedBracu, ignoreCase = true)) &&
         (filter.bloodGroup.isEmpty() || member.bloodGroup.contains(filter.bloodGroup, ignoreCase = true)) &&

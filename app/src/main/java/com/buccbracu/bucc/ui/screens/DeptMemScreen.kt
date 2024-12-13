@@ -31,6 +31,7 @@ import com.buccbracu.bucc.components.filters.filterMembers
 import com.buccbracu.bucc.components.filters.memberSearch
 import com.buccbracu.bucc.components.member.FilterScreen
 import com.buccbracu.bucc.components.member.MemberCard
+import com.buccbracu.bucc.components.models.Filter
 import com.buccbracu.bucc.ebgb
 import kotlinx.coroutines.launch
 
@@ -48,6 +49,9 @@ fun DeptMemScreen(
     }
     var filteredList by remember {
         mutableStateOf(listOf<Member>())
+    }
+    var filterValues by remember{
+        mutableStateOf(Filter())
     }
 
     val (query, setQuery) = remember{ mutableStateOf("") }
@@ -96,8 +100,18 @@ fun DeptMemScreen(
         if(query != ""){
             scope.launch {
                 filteredList =
-                    if(allMemberPermission) allMemberSearch(query, memberList)
-                    else memberSearch(query, memberList)
+                    if(allMemberPermission) allMemberSearch(
+                        query = query,
+                        list =
+                        if(filterValues.isEmpty()) memberList
+                        else filteredList)
+                    else memberSearch(
+                        query = query,
+                        list =
+                        if(filterValues.isEmpty()) memberList
+                        else filteredList
+                    )
+
             }
         }
     }
@@ -112,10 +126,14 @@ fun DeptMemScreen(
             sheetContent = {
                 FilterScreen(
                     onApply = { filter ->
+                        filterValues = filter
                         scope.launch {
                             filteredList = filterMembers(filter, memberList)
                             sheetState.hide()
                         }
+                    },
+                    onReset = {
+                        setQuery("")
                     }
                 )
             },

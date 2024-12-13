@@ -77,11 +77,16 @@ fun CreateTask(
     }
 
     LaunchedEffect(toDept) {
-        designations = if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
-            allDesignations.slice(0..3)
-        } else{
-            allDesignations.slice(4..6)
-        }
+        designations =
+            if(toDept.lowercase() ==  allDepartments[0].lowercase()) {
+                allDesignations.slice(0..3)
+            }
+            else if(profile != null && profile!!.designation == "Senior Executive"){
+                listOf("Senior Executive")
+            }
+            else{
+                allDesignations.slice(4..6)
+            }
         setToDesignation(designations[0])
     }
 

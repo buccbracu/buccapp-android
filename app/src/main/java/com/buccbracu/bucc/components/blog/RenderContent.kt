@@ -11,6 +11,15 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.Content
+import com.buccbracu.bucc.components.blog.content.BulletListContent
+import com.buccbracu.bucc.components.blog.content.CodeContent
+import com.buccbracu.bucc.components.blog.content.HeadingContent
+import com.buccbracu.bucc.components.blog.content.ImageContent
+import com.buccbracu.bucc.components.blog.content.OrderedListContent
+import com.buccbracu.bucc.components.blog.content.ParagraphContent
+import com.buccbracu.bucc.components.blog.content.QuoteContent
+import com.buccbracu.bucc.components.blog.content.TaskListContent
+import com.buccbracu.bucc.components.blog.content.YoutubeContent
 
 @Composable
 fun RenderContent(
@@ -54,9 +63,21 @@ fun RenderContent(
             }
 
             "orderedList" -> {
+                OrderedListContent(item, fontSize)
+            }
+            "bulletList" -> {
+                BulletListContent(item, fontSize)
+            }
 
-                    OrderedListContent(item, fontSize)
-                }
+            "codeBlock" -> {
+                CodeContent(item, fontSize)
+            }
+            "blockquote" -> {
+                QuoteContent(item, fontSize)
+            }
+            "taskList" ->{
+                TaskListContent(item, fontSize)
+            }
 
 
             else -> {

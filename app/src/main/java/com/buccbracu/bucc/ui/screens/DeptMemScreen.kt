@@ -31,6 +31,7 @@ import com.buccbracu.bucc.components.filters.filterMembers
 import com.buccbracu.bucc.components.filters.memberSearch
 import com.buccbracu.bucc.components.member.FilterScreen
 import com.buccbracu.bucc.components.member.MemberCard
+import com.buccbracu.bucc.ebgb
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +62,6 @@ fun DeptMemScreen(
         if(memberList.isEmpty()){
             scope.launch {
                 isLoading = true
-                println("ALLMEMBERPERMISSION $allMemberPermission")
 
                 if(allMemberPermission){
                     deptMemVM.getAllMembers(
@@ -150,28 +150,31 @@ fun DeptMemScreen(
                         leadingIcon = Icons.Outlined.Person,
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
-                            .fillMaxWidth(0.85f)
+                            .fillMaxWidth(
+                                if(ebgb.contains(designation)) 0.85f
+                                else 1f
+                            )
                     )
-                    IconButton(
-                        onClick = {
-                            println("SHEET STATE BUTTON ${sheetState.currentValue.name}")
-                            scope.launch {
-                                if( sheetState.currentValue.name == "PartiallyExpanded"){
-                                    sheetState.expand()
+                    if(ebgb.contains(designation)){
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    if (sheetState.currentValue.name == "PartiallyExpanded") {
+                                        sheetState.expand()
+                                    } else {
+                                        sheetState.hide()
+                                    }
+                                    showBottomSheet = !showBottomSheet
                                 }
-                                else{
-                                    sheetState.hide()
-                                }
-                                showBottomSheet = !showBottomSheet
                             }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.FilterAlt,
+                                contentDescription = "Filter",
+                                modifier = Modifier
+                                    .size(30.dp)
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.FilterAlt,
-                            contentDescription = "Filter",
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
                     }
                 }
                 if(filteredList.isEmpty()){

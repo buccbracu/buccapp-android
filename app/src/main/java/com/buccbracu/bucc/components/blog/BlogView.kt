@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Abc
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.FontDownload
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -84,9 +87,15 @@ fun BlogView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+
+
+                        Text(
+                            text = "Aa"
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
                         IconButton(
                             onClick = {
                                 setFontSize((fontSize.value - 2).sp)
@@ -98,7 +107,6 @@ fun BlogView(
                                 contentDescription = "Decrease text size"
                             )
                         }
-                        Text("Font size")
                         IconButton(
                             onClick = {
                                 setFontSize((fontSize.value + 2).sp)

@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components.blog
+package com.buccbracu.bucc.components.blog.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -28,7 +29,6 @@ fun OrderedListContent(content: Content, fontSize: TextUnit = 14.sp) {
     Column(modifier = Modifier.padding(start = 16.dp)) {
         items.forEachIndexed { index, listItem ->
             if (listItem.type == "listItem") {
-                // Display the list number
                 Row{
                     Text(
                         text = "${startIndex + index}.",
@@ -49,7 +49,36 @@ fun OrderedListContent(content: Content, fontSize: TextUnit = 14.sp) {
     }
 }
 @Composable
-private fun RenderParagraph(contentItems: List<ContentItem>, fontSize: TextUnit = 14.sp) {
+fun BulletListContent(content: Content, fontSize: TextUnit = 14.sp) {
+    val items = content.content.orEmpty()
+
+    Column(modifier = Modifier.padding(start = 16.dp)) {
+        items.forEach { listItem ->
+            if (listItem.type == "listItem") {
+                Row(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "•",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 5.dp, end = 8.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = (fontSize.value + 5).sp
+                    )
+                    listItem.content?.forEach { paragraph ->
+                        if (paragraph.type == "paragraph") {
+                            RenderParagraph(paragraph.content.orEmpty(), fontSize)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RenderParagraph(contentItems: List<ContentItem>, fontSize: TextUnit = 14.sp) {
     val color = MaterialTheme.colorScheme.primary
     Text(
         text = buildAnnotatedString {

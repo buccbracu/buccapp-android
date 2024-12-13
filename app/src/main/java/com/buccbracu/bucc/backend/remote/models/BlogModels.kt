@@ -25,7 +25,8 @@ data class Author(
 data class Content(
     val type: String,
     val content: List<ContentItem>? = null, // For text or nested content
-    val attrs: ContentAttributes? = null // For attributes like image source, heading level, etc.
+    val attrs: ContentAttributes? = null, // For attributes like image source, heading level, etc.
+    val text: String? = null
 )
 
 data class ContentItem(

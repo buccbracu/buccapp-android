@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components.blog
+package com.buccbracu.bucc.components.blog.content
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

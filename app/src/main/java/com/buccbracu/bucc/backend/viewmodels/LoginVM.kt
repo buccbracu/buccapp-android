@@ -8,6 +8,7 @@ import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
+import com.buccbracu.bucc.backend.remote.firebase.FirebaseRepository
 import com.buccbracu.bucc.backend.remote.models.ResetPassword
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
@@ -22,6 +23,7 @@ open class LoginVM @Inject constructor(
     private val sharedR: SharedRepository,
     private val userR: UserRepository,
     private val Auth: AuthService,
+    private val firebase: FirebaseRepository
     ): ViewModel() {
 
 
@@ -71,6 +73,7 @@ open class LoginVM @Inject constructor(
                             token = cookie
                         )
                         userR.getRemoteProfileAndSave(cookie)
+                        firebase.subscribeToTopic("task")
                         loginStatus(true, message)
                     }
 

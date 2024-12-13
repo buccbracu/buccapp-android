@@ -7,6 +7,8 @@ import com.buccbracu.bucc.backend.remote.api.DeptMemberService
 import com.buccbracu.bucc.backend.remote.api.GithubService
 import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.api.UserService
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

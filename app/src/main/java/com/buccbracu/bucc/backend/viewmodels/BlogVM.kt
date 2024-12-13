@@ -35,7 +35,7 @@ open class BlogVM @Inject constructor(
                 body?.let {
                     body.forEach { blog ->
                         blog.content.forEach { content ->
-                            println(content.attrs?.level)
+//                            println(content.attrs?.level)
                         }
                     }
                 }

@@ -2,9 +2,9 @@ package com.buccbracu.bucc.application
 
 import android.app.Application
 import com.buccbracu.bucc.application.Retrofit.RetrofitServer
-import dagger.hilt.android.HiltAndroidApp
+import com.buccbracu.bucc.backend.remote.firebase.FirebaseMS
 import com.google.firebase.FirebaseApp
-import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
@@ -15,6 +15,13 @@ class BUCCApp : Application() {
         LocalServer.initializeRealm()
         NotificationMan.initializeNotificationChannel(this)
         RetrofitServer.initializeRetrofit()
-        FirebaseApp.initializeApp(this)
+        initializeFirebase()
+
+    }
+
+    private fun initializeFirebase() {
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this)
+        }
     }
 }

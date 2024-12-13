@@ -89,7 +89,7 @@ sealed class NavDrawerItem(
             department: String = ""
         ): List<NavDrawerItem>{
             val list =
-                if (gb.contains(designation)) listOf(
+                if (gb.contains(designation) || department == "Research and Development") listOf(
                     Profile,
                     TaskDashboard,
                     ClubMembers,

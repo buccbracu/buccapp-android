@@ -13,9 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.local.preferences.Preferences
-import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.ui.screens.Main
 import com.buccbracu.bucc.ui.theme.BuccTheme
 import dagger.hilt.android.AndroidEntryPoint

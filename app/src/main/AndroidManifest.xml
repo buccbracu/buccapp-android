@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".backend.remote.firebase.FirebaseMessagingService"
+            android:name=".backend.remote.firebase.FirebaseMS"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.Apartment
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.Apartment
+import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
 import androidx.compose.material.icons.outlined.GroupWork
@@ -79,6 +81,11 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.Person,
         title = "Profile"
     )
+    object Dashboard: NavDrawerItem(
+        selectedIcon = Icons.Filled.Dashboard,
+        unselectedIcon = Icons.Outlined.Dashboard,
+        title = "Dashboard"
+    )
     object CurrentPanel: NavDrawerItem(
         selectedIcon = Icons.Filled.AdminPanelSettings,
         unselectedIcon = Icons.Outlined.AdminPanelSettings,
@@ -97,7 +104,7 @@ sealed class NavDrawerItem(
         ): List<NavDrawerItem>{
             val list =
                 if (gb.contains(designation) || (department == "Research and Development" && eb.contains(designation))) listOf(
-                    Profile,
+                    Dashboard,
                     TaskDashboard,
                     ClubMembers,
                     Blogs,
@@ -107,7 +114,7 @@ sealed class NavDrawerItem(
                     Logout
                 )
                 else if (eb.contains(designation)) listOf(
-                    Profile,
+                    Dashboard,
                     TaskDashboard,
                     DepartmentMembers,
                     Blogs,
@@ -117,7 +124,7 @@ sealed class NavDrawerItem(
                     Logout
                 )
                 else if(designation == "Senior Executive") listOf(
-                    Profile,
+                    Dashboard,
                     TaskDashboard,
                     DepartmentMembers,
                     Blogs,
@@ -127,7 +134,7 @@ sealed class NavDrawerItem(
                     Logout
                 )
                 else if(gmex.contains(designation)) listOf(
-                    Profile,
+                    Dashboard,
                     Blogs,
                     Divider,
                     Contributors,

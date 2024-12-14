@@ -212,7 +212,7 @@ fun CreateTask(
             }
         }
     }
-        if(showDatePicker){
+    if(showDatePicker){
         DatePickerModal(
             onDateSelected = { date ->
                 setDeadline(date)

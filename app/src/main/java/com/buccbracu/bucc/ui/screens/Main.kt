@@ -39,6 +39,10 @@ import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.blog.BlogView
 import com.buccbracu.bucc.components.models.NavDrawerItem.Companion.navDrawerItems
 import com.buccbracu.bucc.components.permissionLauncher
+import com.buccbracu.bucc.notIgnoredRoute
+
+import com.buccbracu.bucc.ui.screens.Dashboard.Dashboard
+import com.buccbracu.bucc.ui.screens.Dashboard.EditProfile
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
 import com.buccbracu.bucc.ui.screens.Tasks.CreateTask
@@ -140,18 +144,15 @@ fun Main(
                     }
                 }
             },
-            gesturesEnabled = (currentRoute != "Login Landing" && currentRoute != "Login")
+            gesturesEnabled = notIgnoredRoute(currentRoute)
         ) {
 
             Scaffold(
                 topBar = {
-                    if(
-                        (currentRoute != "Login Landing" && currentRoute != "Login") &&
-                        (currentRoute != null && !currentRoute.contains("BlogView"))
-                        ){
+                    if(notIgnoredRoute(currentRoute)){
                         TopActionBar(
                             drawerState = drawerState,
-                            currentPage = currentRoute
+                            currentPage = currentRoute!!
                         )
                     }
 
@@ -164,8 +165,8 @@ fun Main(
                 else "About BUCC"
                 ) {
                     // Routes
-                    composable("Profile") {
-                        Dashboard()
+                    composable("Dashboard") {
+                        Dashboard(navController)
                     }
                     composable("Task Dashboard") {
                         TaskDashboard(navController)
@@ -215,6 +216,9 @@ fun Main(
                         BlogView(blogId) {
                             navController.popBackStack()
                         }
+                    }
+                    composable("Edit Profile"){
+                        EditProfile(navController)
                     }
 
                 }

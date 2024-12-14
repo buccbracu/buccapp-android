@@ -133,7 +133,6 @@ val bloodGroups = listOf(
     "O-"
 )
 
-
 fun shortForm(abbrv: String): String {
     val deptMap = mapOf(
         "Governing Body" to "GB",
@@ -195,3 +194,16 @@ fun prevYearsList(prev: Int = 4): List<String> {
     }
 }
 
+fun notIgnoredRoute(route: String?): Boolean {
+
+    val ignoredRoutes = listOf(
+        "Login Landing",
+        "Login",
+        "Edit Profile"
+    )
+
+    return if(route == null) false
+    else !ignoredRoutes.contains(route) && !route.contains("BlogView")
+
+
+}

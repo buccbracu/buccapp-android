@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.ui.screens
+package com.buccbracu.bucc.ui.screens.Dashboard
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.UserVM
 import com.buccbracu.bucc.components.dashboard.ProfileCard
 import com.buccbracu.bucc.components.dashboard.taskoverview.TaskOverview
@@ -26,7 +27,7 @@ import com.buccbracu.bucc.components.dashboard.upcomingevents.UpcomingEventsOver
 
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @Composable
-fun Dashboard() {
+fun Dashboard(navController: NavHostController) {
     val context = LocalContext.current
     val uservm: UserVM = hiltViewModel()
     val scope = rememberCoroutineScope()
@@ -106,7 +107,7 @@ fun Dashboard() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     item{
-                        ProfileCard(profileData!!)
+                        ProfileCard(profileData!!, navController)
                         TaskOverview()
                         UpcomingEventsOverview()
                     }

@@ -24,12 +24,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.User.Profile
 
 @Composable
-fun ProfileCard(profile: Profile){
+fun ProfileCard(profile: Profile, navController: NavHostController){
+
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(10.dp),
@@ -43,7 +45,9 @@ fun ProfileCard(profile: Profile){
                 horizontalArrangement = Arrangement.End
             ) {
                 IconButton(
-                    onClick = {}
+                    onClick = {
+                        navController.navigate("Edit Profile")
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
@@ -56,7 +60,7 @@ fun ProfileCard(profile: Profile){
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp),
+                    .padding(bottom = 10.dp, top = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(

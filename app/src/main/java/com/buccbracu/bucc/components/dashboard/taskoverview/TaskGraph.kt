@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components.dashboard
+package com.buccbracu.bucc.components.dashboard.taskoverview
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -9,12 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.TaskOverview
 import com.buccbracu.bucc.ui.theme.palette2DarkRed
-import com.buccbracu.bucc.ui.theme.palette2Plum
 
 @Composable
 fun TaskGraph(taskCounts: TaskOverview, modifier: Modifier = Modifier) {
@@ -62,7 +60,7 @@ fun Bar(label: String, value: Int, maxValue: Int, color: Color) {
     ) {
         Canvas(
             modifier = Modifier
-                .width(10.dp)
+                .width(30.dp)
                 .weight(1f) // Make it fill proportional to remaining space
         ) {
             val barHeight = if (maxValue > 0) size.height * (value.toFloat() / maxValue) else 0f

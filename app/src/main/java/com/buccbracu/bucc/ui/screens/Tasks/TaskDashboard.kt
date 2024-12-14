@@ -41,6 +41,7 @@ import com.buccbracu.bucc.components.BasicDialog
 import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.appendBulletPoint
 import com.buccbracu.bucc.components.filters.allMemberSearch
 import com.buccbracu.bucc.components.filters.filterTask
 import com.buccbracu.bucc.components.filters.memberSearch
@@ -266,16 +267,7 @@ fun TaskDashboard(navController:  NavHostController){
         }
     }
 }
-fun AnnotatedString.Builder.appendBulletPoint(fieldName: String, description: String = "") {
-    append("• ")
-    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-        append(fieldName)
-    }
-    if (description.isNotEmpty()) {
-        append(description)
-    }
-    append("\n")
-}
+
 
 
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,8 +14,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ScreenSearchDesktop
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,8 +42,10 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
+import com.buccbracu.bucc.components.BasicDialog
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.appendBulletPoint
 import com.buccbracu.bucc.components.filters.blogFilter
 import kotlinx.coroutines.launch
 
@@ -55,6 +61,9 @@ fun ViewBlogs(navController: NavHostController){
     }
     var isLoading by remember{
         mutableStateOf(true)
+    }
+    var showHelp by remember{
+        mutableStateOf(false)
     }
     val (query, setQuery) = remember{ mutableStateOf("") }
     LaunchedEffect(Unit) {
@@ -96,7 +105,11 @@ fun ViewBlogs(navController: NavHostController){
                     setQuery("")
                     filteredList = blogList
                 },
-                leadingIcon = Icons.Outlined.ScreenSearchDesktop
+                leadingIcon = Icons.Outlined.ScreenSearchDesktop,
+                isLeadingIconButton = true,
+                leadingIconAction = {
+                    showHelp = true
+                }
             )
             if(filteredList.isEmpty()){
                 Box(
@@ -124,6 +137,61 @@ fun ViewBlogs(navController: NavHostController){
                     }
 
                 }
+            }
+        }
+
+        if(showHelp){
+            BasicDialog(
+                onDismiss = {
+                    showHelp = false
+                }
+            ) {
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    elevation = CardDefaults.cardElevation(5.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Blog Search Guide",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "You can search for blogs based on the following information:",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Searchable fields list
+                        Text(
+                            text = buildAnnotatedString {
+                                appendBulletPoint("Title")
+                                appendBulletPoint("Description")
+                                appendBulletPoint("Category", ": Search by blog category names.")
+                                appendBulletPoint("Tags", ": Any tag associated with the blog.")
+                                appendBulletPoint("Author name", ": The name of the blog author.")
+                                appendBulletPoint("Author designation", ": Must use full designations (e.g., \"Senior Executive\", not \"SE\").")
+                                appendBulletPoint("Author department", ": Must use full department names (e.g., \"Event Management\", not \"EM\").")
+                            },
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Note
+                        Text(
+                            text = "Note: For accurate results, ensure you use complete and exact terms. Abbreviations or partial matches, especially for designations and departments, may not yield results.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                        )
+                    }
+                }
+
             }
         }
 

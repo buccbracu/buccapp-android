@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Bucc" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Bucc" parent="android:Theme.Material.Light.NoActionBar"/>
+    
+    <style name="Theme.BuccSplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/bucc_black_full</item>
+        <item name="postSplashScreenTheme">@style/Theme.Bucc</item>
+        <item name="splashScreenIconSize">@dimen/splashscreen_icon_size_wide</item>
+    </style>
+
+    <dimen name="splashscreen_icon_size_wide">400dp</dimen>
+
+
 </resources>

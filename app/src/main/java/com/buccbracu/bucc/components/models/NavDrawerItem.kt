@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.Apartment
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.GroupWork
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
+import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.Apartment
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
@@ -76,6 +78,11 @@ sealed class NavDrawerItem(
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person,
         title = "Profile"
+    )
+    object CurrentPanel: NavDrawerItem(
+        selectedIcon = Icons.Filled.AdminPanelSettings,
+        unselectedIcon = Icons.Outlined.AdminPanelSettings,
+        title = "Current Panel"
     )
 
     object Divider: NavDrawerItem(

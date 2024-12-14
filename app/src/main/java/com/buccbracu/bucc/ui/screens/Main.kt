@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
@@ -48,7 +49,8 @@ import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Main(
-    darkModeEnabled: Boolean
+    darkModeEnabled: Boolean,
+    session: Session?
 ) {
     var selectedIndexDrawer by rememberSaveable {
         mutableIntStateOf(-1)
@@ -69,7 +71,7 @@ fun Main(
     val context = LocalContext.current
 
     val loginVM: LoginVM = hiltViewModel()
-    val sessionData by loginVM.session.collectAsState()
+    val sessionData by loginVM.session.collectAsState(session)
     val profile by loginVM.profile.collectAsState(emptyProfile)
 
     var navDrawerItemList by remember{

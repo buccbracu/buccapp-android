@@ -3,6 +3,7 @@ package com.buccbracu.bucc.ui.screens.Login
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -137,7 +138,7 @@ fun LandingPage(
                         scaleX = imageScale,
                         scaleY = imageScale
                     )
-                    .offset(y = logoOffsetY.dp) // Move the logo up as you swipe
+                    .offset(y = logoOffsetY.dp)
             )
 
             Box(

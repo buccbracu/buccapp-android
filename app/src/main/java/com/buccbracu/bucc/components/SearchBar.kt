@@ -31,6 +31,8 @@ fun SearchBar(
     placeholder: String,
     onClear: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.Search,
+    isLeadingIconButton: Boolean = false,
+    leadingIconAction: () -> Unit ={},
     trailingIcon: ImageVector = Icons.AutoMirrored.Outlined.Backspace,
     modifier: Modifier = Modifier
         .padding(horizontal = 10.dp)
@@ -64,12 +66,26 @@ fun SearchBar(
             }
         },
         leadingIcon = {
-            Icon(
-                imageVector = leadingIcon,
-                contentDescription = "Search",
-                modifier = Modifier
-                    .size(20.dp)
-            )
+            if(isLeadingIconButton){
+                IconButton(
+                    onClick = leadingIconAction
+                ) {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = "Search",
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                }
+            }
+            else{
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = "Search",
+                    modifier = Modifier
+                        .size(20.dp)
+                )
+            }
         }
 
     )

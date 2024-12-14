@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
-import com.buccbracu.bucc.components.NoButtonDialog
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

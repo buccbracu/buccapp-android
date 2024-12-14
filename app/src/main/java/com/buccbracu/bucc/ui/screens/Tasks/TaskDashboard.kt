@@ -39,6 +39,9 @@ fun TaskDashboard(navController:  NavHostController){
     var allTasks by remember{
         mutableStateOf<List<TaskData>>(emptyList())
     }
+    var filteredTasks by remember{
+        mutableStateOf<List<TaskData>>(emptyList())
+    }
     var taskUpdateStatus by remember{
         mutableStateOf(false)
     }

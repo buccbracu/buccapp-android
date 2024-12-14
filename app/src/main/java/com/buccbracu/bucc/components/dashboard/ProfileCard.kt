@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.User.Profile
+import com.buccbracu.bucc.components.ProfileView
 
 @Composable
 fun ProfileCard(profile: Profile, navController: NavHostController){
@@ -63,36 +64,11 @@ fun ProfileCard(profile: Profile, navController: NavHostController){
                     .padding(bottom = 10.dp, top = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AsyncImage(
-                    model =
-                    if (profile.profileImage == "") R.drawable.empty_person
-                    else profile.profileImage,
-                    contentDescription = "Profile image",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .padding(10.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.FillWidth
-                )
-                Text(
-                    text = profile.name,
-                    modifier = Modifier
-                        .padding(top = 10.dp),
-                    fontWeight = FontWeight.W900,
-                )
-                Text(
-                    text = profile.designation,
-                    modifier = Modifier
-                        .padding(top = 5.dp),
-                    fontWeight = FontWeight.W600,
-                    fontSize = 12.sp
-                )
-                Text(
-                    text = profile.buccDepartment,
-                    modifier = Modifier
-                        .padding(top = 0.dp),
-                    fontWeight = FontWeight.W400,
-                    fontSize = 10.sp
+                ProfileView(
+                    image = profile.profileImage,
+                    name = profile.name,
+                    department = profile.buccDepartment,
+                    designation = profile.designation
                 )
 //                FieldCard(
 //                    label = "Student ID",

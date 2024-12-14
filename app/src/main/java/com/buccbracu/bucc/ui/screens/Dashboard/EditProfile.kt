@@ -18,7 +18,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.CloudDone
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +51,9 @@ import com.buccbracu.bucc.components.ButtonLoading
 import com.buccbracu.bucc.components.DatePickerModal
 import com.buccbracu.bucc.components.EditableTextField
 import com.buccbracu.bucc.components.MovableFloatingActionButton
+import com.buccbracu.bucc.components.ProfileView
 import com.buccbracu.bucc.ui.screens.Tasks.DateField
+import com.buccbracu.bucc.ui.theme.paletteGreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
@@ -96,133 +103,111 @@ fun EditProfile(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp), // Added padding for overall layout
-            contentAlignment = Alignment.Center
+                .padding(16.dp),
         ) {
             if (profileData != null) {
-
-                Column(
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Spacer(modifier = Modifier.height(70.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
-                            Button(
-                                onClick = {
-                                    if (edit) {
-                                        scope.launch {
-                                            isLoading = true
-                                            uservm.updateUserProfile(
-                                                profileData = tempMember,
-                                                setLoading = { loading ->
-                                                    isLoading = loading
-                                                }
-                                            )
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(
+                        onClick = {
+                            if (edit) {
+                                scope.launch {
+                                    isLoading = true
+                                    uservm.updateUserProfile(
+                                        profileData = tempMember,
+                                        setLoading = { loading ->
+                                            isLoading = loading
                                         }
-                                    }
-                                    edit = !edit
-                                },
-                                enabled = !isLoading
-                            ) {
-                                if (isLoading) {
-                                    ButtonLoading()
-                                } else {
-                                    Text(if (edit) "Save" else "Edit")
+                                    )
                                 }
                             }
+                        },
+                        enabled = !isLoading
+                    ) {
+                        if (isLoading) {
+                            ButtonLoading()
+                        } else {
+                            Icon(
+                                imageVector = Icons.Filled.CloudDone,
+                                contentDescription = "Save",
+                                tint = paletteGreen
+                            )
                         }
                     }
-                    LazyColumn(
+                }
+                profileData?.let {
+                    Column(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(0.8f)
-                            .padding(8.dp), // Added padding for scrolling
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        item {
-                            AsyncImage(
-                                model =
-                                if (profileData!!.profileImage == "") R.drawable.empty_person
-                                else profileData!!.profileImage,
-                                contentDescription = "Profile image",
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .padding(10.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.FillWidth
-                            )
-                            Text(
-                                text = profileData!!.name,
-                                modifier = Modifier
-                                    .padding(top = 10.dp),
-                                fontWeight = FontWeight.W900,
-                            )
-                            Text(
-                                text = profileData!!.designation,
-                                modifier = Modifier
-                                    .padding(top = 5.dp),
-                                fontWeight = FontWeight.W600,
-                                fontSize = 12.sp
-                            )
-                            Text(
-                                text = profileData!!.buccDepartment,
-                                modifier = Modifier
-                                    .padding(top = 0.dp),
-                                fontWeight = FontWeight.W400,
-                                fontSize = 10.sp
-                            )
+                    ){
+                        Spacer(modifier = Modifier.height(30.dp))
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(0.8f)
+                                .padding(8.dp), // Added padding for scrolling
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            item {
+                                ProfileView(
+                                    image = profileData!!.profileImage,
+                                    name = profileData!!.name,
+                                    department = profileData!!.buccDepartment,
+                                    designation = profileData!!.designation
+                                )
 
-                            Text("Personal Information", modifier = Modifier.padding(10.dp))
-                            EditableTextField(
-                                text = personalEmail,
-                                label = "Personal Email",
-                                isEditable = edit
-                            ) {
-                                setPersonalEmail(it)
-                                tempMember.personalEmail = it
-                            }
-                            EditableTextField(
-                                text = contactNumber,
-                                label = "Contact Number",
-                                isEditable = edit
-                            ) {
-                                setContactNumber(it)
-                                tempMember.contactNumber = it
-                            }
-                            DateField(
-                                value = birthDate,
-                                label = "Date of Birth"
-                            ) {
-                                showDatePicker = true
-                            }
+                                Text("Personal Information", modifier = Modifier.padding(10.dp))
+                                EditableTextField(
+                                    text = personalEmail,
+                                    label = "Personal Email",
+                                    isEditable = edit
+                                ) {
+                                    setPersonalEmail(it)
+                                    tempMember.personalEmail = it
+                                }
+                                EditableTextField(
+                                    text = contactNumber,
+                                    label = "Contact Number",
+                                    isEditable = edit
+                                ) {
+                                    setContactNumber(it)
+                                    tempMember.contactNumber = it
+                                }
+                                DateField(
+                                    value = birthDate,
+                                    label = "Date of Birth"
+                                ) {
+                                    showDatePicker = true
+                                }
 
 
-                            // Group: Social Links
-                            Text("Social Links", modifier = Modifier.padding(8.dp))
-                            EditableTextField(text = github, label = "Github", isEditable = edit) {
-                                setGithub(it)
-                                tempMember.memberSocials.Github = it
-                            }
-                            EditableTextField(
-                                text = linkedin,
-                                label = "LinkedIn",
-                                isEditable = edit
-                            ) {
-                                setLinkedin(it)
-                                tempMember.memberSocials.Linkedin = it
-                            }
-                            EditableTextField(
-                                text = facebook,
-                                label = "Facebook",
-                                isEditable = edit
-                            ) {
-                                setFacebook(it)
-                                tempMember.memberSocials.Facebook = it
+                                // Group: Social Links
+                                Text("Social Links", modifier = Modifier.padding(8.dp))
+                                EditableTextField(text = github, label = "Github", isEditable = edit) {
+                                    setGithub(it)
+                                    tempMember.memberSocials.Github = it
+                                }
+                                EditableTextField(
+                                    text = linkedin,
+                                    label = "LinkedIn",
+                                    isEditable = edit
+                                ) {
+                                    setLinkedin(it)
+                                    tempMember.memberSocials.Linkedin = it
+                                }
+                                EditableTextField(
+                                    text = facebook,
+                                    label = "Facebook",
+                                    isEditable = edit
+                                ) {
+                                    setFacebook(it)
+                                    tempMember.memberSocials.Facebook = it
+                                }
                             }
                         }
                     }

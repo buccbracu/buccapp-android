@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.backend.remote.models.TaskData
 import com.buccbracu.bucc.backend.remote.models.UpdateTask
 import com.buccbracu.bucc.components.DatePickerModal
-import com.buccbracu.bucc.components.ExpandableCard
 import com.buccbracu.bucc.ebgb
 import com.buccbracu.bucc.ui.screens.Tasks.DateField
 import com.buccbracu.bucc.ui.theme.palette2DarkRed
@@ -90,7 +89,7 @@ fun TaskCard(
                 "accepted"
             }
     }
-    ExpandableCard(
+    ExpandableTaskCard(
         task = task,
         status = updateStatus,
         deadline = deadline

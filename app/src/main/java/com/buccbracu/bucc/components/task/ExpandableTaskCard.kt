@@ -1,4 +1,4 @@
-package com.buccbracu.bucc.components
+package com.buccbracu.bucc.components.task
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -48,9 +48,10 @@ import com.buccbracu.bucc.shortForm
 import com.buccbracu.bucc.ui.theme.paletteGreen
 
 @Composable
-fun ExpandableCard(
-    title: String,
-    description: String,
+fun ExpandableTaskCard(
+    task: TaskData,
+    status: String,
+    deadline: String,
     content: @Composable () -> Unit
 ){
 
@@ -63,10 +64,10 @@ fun ExpandableCard(
 
     ElevatedCard(
         modifier = Modifier
-            .padding(vertical = 10.dp)
+            .padding(15.dp)
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(10.dp),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(20.dp),
         onClick = {
             expand = !expand
         },
@@ -84,10 +85,56 @@ fun ExpandableCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Column{
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Card(
+                            modifier = Modifier,
+//                            elevation = CardDefaults.cardElevation(1.dp),
+                            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.inverseOnSurface)
+                        ){
+                            Row(
+                                modifier = Modifier.padding(5.dp),
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarMonth,
+                                    contentDescription = "Deadline",
+                                    tint = Color(0xFFEF5350),
+                                    modifier = Modifier
+                                        .padding(top = 2.dp)
+                                        .size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = "Due By: $deadline",
+                                    fontWeight = FontWeight.W400,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFFEF5350)
+                                )
+                            }
+                        }
+                        Icon(
+                            imageVector = Icons.Filled.Circle,
+                            contentDescription = "Status",
+                            tint =
+                                when(status){
+                                    "pending" -> Color(0xFFEF5350) // Red 400
+                                    "accepted" -> Color(0xFF29B6F6) // Light Blue 400
+                                    "completed" -> Color(0xFF66BB6A) // Green 400
+                                    else -> Color(0xFFB0BEC5) // Blue Grey 300 (default for unknown status)
+                                },
+                            modifier = Modifier
+                                .size(20.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        text = title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.W700,
+                        text = task.taskTitle,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.W900,
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -104,8 +151,19 @@ fun ExpandableCard(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Text(
-                                text = description,
-                                fontWeight = FontWeight.W300
+                                text = "${shortForm(task.fromDept!!)} || ${shortForm(task.fromDesignation!!)}",
+                                fontWeight = FontWeight.W500
+                            )
+                            AnimatedIcon(
+                                initialValue = -10f,
+                                targetValue = 10f,
+                                icon = Icons.Filled.KeyboardDoubleArrowRight,
+                                modifier = Modifier
+                                    .padding(horizontal = 10.dp)
+                            )
+                            Text(
+                                text = "${shortForm(task.toDept!!)} || ${shortForm(task.toDesignation!!)}",
+                                fontWeight = FontWeight.W500
                             )
                         }
                         IconButton(
@@ -126,6 +184,18 @@ fun ExpandableCard(
                     }
                 }
             }
+//            if(expand){
+//                content()
+//                Box(
+//
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .weight(1f) // Allow content to take remaining space
+//                        .animateContentSize(animationSpec = tween(durationMillis = 300))
+//                ) {
+//
+//                }
+//            }
             AnimatedVisibility(
                 visible = expand,
                 enter = expandVertically(animationSpec = tween(300)) + fadeIn(animationSpec = tween(300)),

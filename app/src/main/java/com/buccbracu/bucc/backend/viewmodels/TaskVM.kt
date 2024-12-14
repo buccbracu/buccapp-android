@@ -6,6 +6,7 @@ import com.buccbracu.bucc.backend.local.repositories.SharedRepository
 import com.buccbracu.bucc.backend.remote.api.TaskService
 import com.buccbracu.bucc.backend.remote.models.NewTask
 import com.buccbracu.bucc.backend.remote.models.TaskData
+import com.buccbracu.bucc.backend.remote.models.TaskOverview
 import com.buccbracu.bucc.backend.remote.models.UpdateTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -35,6 +36,21 @@ open class TaskVM @Inject constructor(
                     onSuccess()
                 }
                 println(response.message())
+            }
+        }
+    }
+    fun getTaskOverview(
+        setTasks: (TaskOverview) -> Unit,
+        onSuccess: () -> Unit
+    ){
+        viewModelScope.launch {
+            session.value?.let {
+                val response = Task.getTaskOverview(session.value!!.authJsToken).awaitResponse()
+                val body = response.body()
+                body?.let {
+                    setTasks(body!!.taskCounts)
+                    onSuccess()
+                }
             }
         }
     }

@@ -33,3 +33,12 @@ data class UpdateTask(
     val comment: String = "",
     val status: String = "pending"
 )
+data class TaskOverview(
+    var dueTomorrow: Int = 0,
+    var pending: Int = 0,
+    var completed: Int = 0,
+    var accepted: Int = 0
+)
+data class TaskOverviewResponse(
+    val taskCounts: TaskOverview
+)

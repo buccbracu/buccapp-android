@@ -165,7 +165,7 @@ fun Main(
                 ) {
                     // Routes
                     composable("Profile") {
-                        Profile()
+                        Dashboard()
                     }
                     composable("Task Dashboard") {
                         TaskDashboard(navController)

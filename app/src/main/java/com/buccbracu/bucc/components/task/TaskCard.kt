@@ -239,28 +239,30 @@ fun TaskCard(
                         )
                     }
                 }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    IconButton(
-                        onClick = {
-                            onDelete()
-                        }
+                if(ebgb.contains(userDesignation)){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Delete,
-                            contentDescription = "Delete",
-                            tint = palette2DarkRed,
-                            modifier = Modifier
-                                .padding(vertical = 5.dp)
-                                .size(20.dp)
+                        IconButton(
+                            onClick = {
+                                onDelete()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Delete",
+                                tint = palette2DarkRed,
+                                modifier = Modifier
+                                    .padding(vertical = 5.dp)
+                                    .size(20.dp)
 
+                            )
+                        }
+                        Text(
+                            "Delete",
+                            fontSize = 12.sp
                         )
                     }
-                    Text(
-                        "Delete",
-                        fontSize = 12.sp
-                    )
                 }
 
 

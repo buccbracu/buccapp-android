@@ -186,21 +186,13 @@ fun Main(
                     composable("Login Landing") {
                         LandingPage(loginVM, navController, darkMode = darkModeEnabled)
                     }
-                    composable("Department Members"){
+                    composable("Members"){
                        profile?.let {
                            DeptMemScreen(
                                department = profile!!.buccDepartment,
                                designation = profile!!.designation
                            )
                        }
-                    }
-                    composable("Club Members"){
-                        profile?.let {
-                            DeptMemScreen(
-                                department = profile!!.buccDepartment,
-                                designation = profile!!.designation
-                            )
-                        }
                     }
                     composable("Logout"){
                         Logout(loginVM, navController)

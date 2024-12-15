@@ -1,7 +1,7 @@
 package com.buccbracu.bucc.components.filters
 
 import com.buccbracu.bucc.backend.remote.models.Member
-import com.buccbracu.bucc.components.models.Filter
+import com.buccbracu.bucc.components.filters.models.MemberFilter
 
 fun memberSearch(query: String, list: List<Member>): List<Member> {
     return list.filter { member ->
@@ -18,7 +18,7 @@ fun allMemberSearch(query: String, list: List<Member>): List<Member> {
     }
 }
 
-fun filterMembers(filter: Filter, members: List<Member>): List<Member> {
+fun filterMembers(filter: MemberFilter, members: List<Member>): List<Member> {
     return members.filter { member ->
         (filter.buccDepartment.isEmpty() || member.buccDepartment.equals(filter.buccDepartment, ignoreCase = true)) &&
         (filter.designation.isEmpty() || member.designation.equals(filter.designation, ignoreCase = true)) &&

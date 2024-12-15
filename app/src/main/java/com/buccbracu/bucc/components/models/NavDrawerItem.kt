@@ -25,7 +25,6 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.buccbracu.bucc.eb
-import com.buccbracu.bucc.ebgb
 import com.buccbracu.bucc.gb
 import com.buccbracu.bucc.gmex
 
@@ -61,15 +60,10 @@ sealed class NavDrawerItem(
         unselectedIcon = Icons.Outlined.GroupWork,
         title = "Task Dashboard",
     )
-    object DepartmentMembers: NavDrawerItem(
+    object Members: NavDrawerItem(
         selectedIcon = Icons.Filled.EmojiPeople,
         unselectedIcon = Icons.Outlined.EmojiPeople,
-        title = "Department Members",
-    )
-    object ClubMembers: NavDrawerItem(
-        selectedIcon = Icons.Filled.People,
-        unselectedIcon = Icons.Outlined.People,
-        title = "Club Members",
+        title = "Members",
     )
     object Blogs: NavDrawerItem(
         selectedIcon = Icons.Filled.EditNote,
@@ -106,7 +100,7 @@ sealed class NavDrawerItem(
                 if (gb.contains(designation) || (department == "Research and Development" && eb.contains(designation))) listOf(
                     Dashboard,
                     TaskDashboard,
-                    ClubMembers,
+                    Members,
                     Blogs,
                     Divider,
                     Contributors,
@@ -116,7 +110,7 @@ sealed class NavDrawerItem(
                 else if (eb.contains(designation)) listOf(
                     Dashboard,
                     TaskDashboard,
-                    DepartmentMembers,
+                    Members,
                     Blogs,
                     Divider,
                     Contributors,
@@ -126,7 +120,7 @@ sealed class NavDrawerItem(
                 else if(designation == "Senior Executive") listOf(
                     Dashboard,
                     TaskDashboard,
-                    DepartmentMembers,
+                    Members,
                     Blogs,
                     Divider,
                     Contributors,

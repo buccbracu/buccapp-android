@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,24 +26,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.buccbracu.bucc.allDepartments
 import com.buccbracu.bucc.allDesignations
 import com.buccbracu.bucc.bloodGroups
 import com.buccbracu.bucc.components.OutlinedDropDownMenu
-import com.buccbracu.bucc.components.models.Filter
+import com.buccbracu.bucc.components.filters.models.MemberFilter
 import com.buccbracu.bucc.prevYearsList
 import com.buccbracu.bucc.ui.theme.palette2DarkRed
 import com.buccbracu.bucc.ui.theme.paletteGreen
 
 @Composable
 fun FilterScreen(
-    onApply: (Filter) -> Unit,
+    allFields: Boolean,
+    onApply: (MemberFilter) -> Unit,
     onReset: () -> Unit
 )
 {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val sheetHeight = screenHeight - 130.dp
+    val modalHeight = screenHeight(allFields, screenHeight.value)
 
     var designations by remember{
         mutableStateOf(allDesignations)
@@ -69,18 +75,28 @@ fun FilterScreen(
     LazyColumn(
         modifier = Modifier
 
-            .height(sheetHeight)
+            .height(modalHeight)
 
     ) {
         item{
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = allDepartments,
-                    selectedText = department,
-                    parentHorizontalPadding = 10,
-                    onItemClick = setDepartment,
-                    label = "Department",
-                )
+            Text(
+                text = "Filter Members",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.W500,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            if(allFields){
+                ItemCard {
+                    OutlinedDropDownMenu(
+                        dropdownItems = allDepartments,
+                        selectedText = department,
+                        parentHorizontalPadding = 10,
+                        onItemClick = setDepartment,
+                        label = "Department",
+                    )
+                }
             }
             ItemCard {
                 OutlinedDropDownMenu(
@@ -102,32 +118,34 @@ fun FilterScreen(
                         .fillMaxWidth()
                 )
             }
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = years,
-                    selectedText = joinedBucc,
-                    parentHorizontalPadding = 100,
-                    onItemClick = setJoinedBucc,
-                    label = "Joined BUCC",
-                )
-            }
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = years,
-                    selectedText = joinedBracu,
-                    parentHorizontalPadding = 100,
-                    onItemClick = setJoinedBracu,
-                    label = "Joined BRACU",
-                )
-            }
-            ItemCard {
-                OutlinedDropDownMenu(
-                    dropdownItems = years,
-                    selectedText = lastPromotion,
-                    parentHorizontalPadding = 100,
-                    onItemClick = setLastPromotion,
-                    label = "Last Promotion",
-                )
+            if(allFields){
+                ItemCard {
+                    OutlinedDropDownMenu(
+                        dropdownItems = years,
+                        selectedText = joinedBucc,
+                        parentHorizontalPadding = 100,
+                        onItemClick = setJoinedBucc,
+                        label = "Joined BUCC",
+                    )
+                }
+                ItemCard {
+                    OutlinedDropDownMenu(
+                        dropdownItems = years,
+                        selectedText = joinedBracu,
+                        parentHorizontalPadding = 100,
+                        onItemClick = setJoinedBracu,
+                        label = "Joined BRACU",
+                    )
+                }
+                ItemCard {
+                    OutlinedDropDownMenu(
+                        dropdownItems = years,
+                        selectedText = lastPromotion,
+                        parentHorizontalPadding = 100,
+                        onItemClick = setLastPromotion,
+                        label = "Last Promotion",
+                    )
+                }
             }
             ItemCard {
                 OutlinedDropDownMenu(
@@ -151,7 +169,7 @@ fun FilterScreen(
                 ){
                     IconButton(
                         onClick = {
-                            val filter = Filter()
+                            val filter = MemberFilter()
                             setDesignation("")
                             setDepartment("")
                             setContactNumber("")
@@ -182,15 +200,23 @@ fun FilterScreen(
                 ){
                     IconButton(
                         onClick = {
-                            val filter = Filter(
-                             buccDepartment = department,
-                             designation = designation,
-                             contactNumber = contactNumber,
-                             joinedBracu = joinedBracu,
-                             bloodGroup = bloodGroup,
-                             emergencyContact = contactNumber,
-                             joinedBucc = joinedBucc,
-                             lastPromotion = lastPromotion,
+                            val filter =
+                            if(allFields) MemberFilter(
+                                buccDepartment = department,
+                                designation = designation,
+                                contactNumber = contactNumber,
+                                joinedBracu = joinedBracu,
+                                bloodGroup = bloodGroup,
+                                emergencyContact = contactNumber,
+                                joinedBucc = joinedBucc,
+                                lastPromotion = lastPromotion,
+                            )
+                            else MemberFilter(
+                                designation = designation,
+                                contactNumber = contactNumber,
+                                emergencyContact = contactNumber,
+                                bloodGroup = bloodGroup,
+
                             )
                             onApply(filter)
                         },
@@ -231,4 +257,9 @@ fun ItemCard(content: @Composable () -> Unit){
             content()
         }
 //    }
+}
+
+fun screenHeight(allFields: Boolean, totalHeight: Float): Dp {
+    val offset = if(allFields) 0.15 else 0.45
+    return (totalHeight - totalHeight*offset).dp
 }

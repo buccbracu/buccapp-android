@@ -1,7 +1,7 @@
-package com.buccbracu.bucc.components.models
+package com.buccbracu.bucc.components.filters.models
 
 
-data class Filter(
+data class MemberFilter(
     var buccDepartment: String = "",
     var designation: String = "",
     var contactNumber: String = "",

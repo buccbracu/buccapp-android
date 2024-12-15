@@ -129,9 +129,9 @@ fun CreateTask(
             label = { Text("Task Description") },
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp), // Adjust the height to make the text field bigger
-            maxLines = 5,  // Allows up to 5 lines of text
-            minLines = 3,  // Ensures the text field has at least 3 lines visible
+                .heightIn(min = 100.dp),
+            maxLines = 5,
+            minLines = 3,
         )
 
         OutlinedDropDownMenu(

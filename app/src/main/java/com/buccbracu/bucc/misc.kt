@@ -82,6 +82,19 @@ val skills = listOf(
     "WebRTC"
 )
 
+val alwaysPermittedDepartments = listOf(
+    "Research and Development",
+    "Governing Body",
+)
+val alwaysPermittedDesignations = listOf(
+    "Director",
+    "Assistant Director",
+    "President",
+    "Vice President",
+    "General Secretary",
+    "Treasurer",
+)
+
 val allDepartments = listOf(
     "Governing Body",
     "Communication and Marketing",
@@ -150,8 +163,8 @@ fun shortForm(abbrv: String): String {
         "Vice President" to "VP",
         "General Secretary" to "GS",
         "Treasurer" to "TR",
-        "Director" to "EB",
-        "Assistant Director" to "EB",
+        "Director" to "D",
+        "Assistant Director" to "AD",
         "Senior Executive" to "SE",
         "Executive" to "E",
         "General Member" to "GM"

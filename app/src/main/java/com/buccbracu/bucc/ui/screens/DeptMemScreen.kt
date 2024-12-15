@@ -31,7 +31,8 @@ import com.buccbracu.bucc.components.filters.filterMembers
 import com.buccbracu.bucc.components.filters.memberSearch
 import com.buccbracu.bucc.components.member.FilterScreen
 import com.buccbracu.bucc.components.member.MemberCard
-import com.buccbracu.bucc.components.models.Filter
+import com.buccbracu.bucc.components.filters.models.MemberFilter
+import com.buccbracu.bucc.components.permissions.MemberPermissions
 import com.buccbracu.bucc.ebgb
 import kotlinx.coroutines.launch
 
@@ -43,6 +44,7 @@ fun DeptMemScreen(
     department: String
 ) {
 
+    val (admin, allFields) = MemberPermissions(dept = department, des = designation)
     val deptMemVM: DeptMemVM = hiltViewModel()
     var memberList by remember {
         mutableStateOf(listOf<Member>())
@@ -51,7 +53,7 @@ fun DeptMemScreen(
         mutableStateOf(listOf<Member>())
     }
     var filterValues by remember{
-        mutableStateOf(Filter())
+        mutableStateOf(MemberFilter())
     }
 
     val (query, setQuery) = remember{ mutableStateOf("") }
@@ -59,7 +61,6 @@ fun DeptMemScreen(
     var isLoading by remember {
         mutableStateOf(false)
     }
-    val allMemberPermission = allMemberPermission(dept = department, des = designation)
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
@@ -67,7 +68,7 @@ fun DeptMemScreen(
             scope.launch {
                 isLoading = true
 
-                if(allMemberPermission){
+                if(admin){
                     deptMemVM.getAllMembers(
                         setMembers = { list ->
                             memberList = list
@@ -100,7 +101,7 @@ fun DeptMemScreen(
         if(query != ""){
             scope.launch {
                 filteredList =
-                    if(allMemberPermission) allMemberSearch(
+                    if(admin) allMemberSearch(
                         query = query,
                         list =
                         if(filterValues.isEmpty()) memberList
@@ -125,6 +126,7 @@ fun DeptMemScreen(
         BottomSheetScaffold(
             sheetContent = {
                 FilterScreen(
+                    allFields = allFields,
                     onApply = { filter ->
                         filterValues = filter
                         scope.launch {
@@ -159,7 +161,7 @@ fun DeptMemScreen(
                         onChange = setQuery,
                         label = "Search Member",
                         placeholder =
-                        if (allMemberPermission) "Name || Designation || Department"
+                        if (admin) "Name || Designation || Department"
                         else "Name || Designation ",
                         onClear = {
                             setQuery("")
@@ -168,32 +170,30 @@ fun DeptMemScreen(
                         leadingIcon = Icons.Outlined.Person,
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
-                            .fillMaxWidth(
-                                if(ebgb.contains(designation)) 0.85f
-                                else 1f
+                            .fillMaxWidth(0.85f
                             )
                     )
-                    if(ebgb.contains(designation)){
-                        IconButton(
-                            onClick = {
-                                scope.launch {
-                                    if (sheetState.currentValue.name == "PartiallyExpanded") {
-                                        sheetState.expand()
-                                    } else {
-                                        sheetState.hide()
-                                    }
-                                    showBottomSheet = !showBottomSheet
+
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                if (sheetState.currentValue.name == "PartiallyExpanded") {
+                                    sheetState.expand()
+                                } else {
+                                    sheetState.hide()
                                 }
+                                showBottomSheet = !showBottomSheet
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.FilterAlt,
-                                contentDescription = "Filter",
-                                modifier = Modifier
-                                    .size(30.dp)
-                            )
                         }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.FilterAlt,
+                            contentDescription = "Filter",
+                            modifier = Modifier
+                                .size(30.dp)
+                        )
                     }
+
                 }
                 if(filteredList.isEmpty()){
                     Box(
@@ -213,12 +213,8 @@ fun DeptMemScreen(
                     }
                 }
             }
-
         }
-
-
     }
-
 }
 
 

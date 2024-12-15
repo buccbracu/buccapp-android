@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.Session
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
+import com.buccbracu.bucc.ui.theme.backgroundDark
 import kotlinx.coroutines.delay
 
 @Composable
@@ -69,13 +70,13 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(backgroundDark),
     ){
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
-                .background(MaterialTheme.colorScheme.background)
+                .background(backgroundDark)
                 .padding(top = 100.dp),
             contentAlignment = Alignment.Center
         ) {

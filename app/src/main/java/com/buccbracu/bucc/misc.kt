@@ -1,5 +1,8 @@
 package com.buccbracu.bucc
 
+import com.buccbracu.bucc.backend.local.models.User.Profile
+import com.buccbracu.bucc.backend.local.models.User.ProfileSocial
+import com.buccbracu.bucc.backend.remote.models.Member
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -219,4 +222,34 @@ fun notIgnoredRoute(route: String?): Boolean {
     else !ignoredRoutes.contains(route) && !route.contains("BlogView")
 
 
+}
+
+fun memberToProfile(member: Member): Profile {
+    return Profile().apply {
+        _id = member._id
+        name = member.name
+        studentId = member.studentId
+        email = member.email
+        buccDepartment = member.buccDepartment
+        designation = member.designation
+        personalEmail = member.personalEmail
+        contactNumber = member.contactNumber
+        joinedBracu = member.joinedBracu
+        departmentBracu = member.departmentBracu
+        profileImage = member.profileImage
+        birthDate = member.birthDate
+        bloodGroup = member.bloodGroup
+        gender = member.gender
+        emergencyContact = member.emergencyContact
+        joinedBucc = member.joinedBucc
+        lastPromotion = member.lastPromotion
+        memberStatus = member.memberStatus
+        memberSkills.addAll(member.memberSkills)
+        // Convert the MemberSocials object to a RealmList of ProfileSocial
+        memberSocials = ProfileSocial().apply {
+            Facebook = member.memberSocials.Facebook
+            Github = member.memberSocials.Github
+            LinkedIn = member.memberSocials.Linkedin
+        }
+    }
 }

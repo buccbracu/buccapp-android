@@ -45,6 +45,7 @@ import com.buccbracu.bucc.ui.screens.Dashboard.Dashboard
 import com.buccbracu.bucc.ui.screens.Dashboard.EditProfile
 import com.buccbracu.bucc.ui.screens.Login.LandingPage
 import com.buccbracu.bucc.ui.screens.Login.Logout
+import com.buccbracu.bucc.ui.screens.Member.MemberScreen
 import com.buccbracu.bucc.ui.screens.Tasks.CreateTask
 import com.buccbracu.bucc.ui.screens.Tasks.TaskDashboard
 
@@ -188,7 +189,7 @@ fun Main(
                     }
                     composable("Members"){
                        profile?.let {
-                           DeptMemScreen(
+                           MemberScreen(
                                department = profile!!.buccDepartment,
                                designation = profile!!.designation
                            )

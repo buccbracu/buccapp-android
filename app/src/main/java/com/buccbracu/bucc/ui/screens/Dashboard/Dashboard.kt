@@ -107,7 +107,12 @@ fun Dashboard(navController: NavHostController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     item{
-                        ProfileCard(profileData!!, navController)
+                        ProfileCard(
+                            profile = profileData!!,
+                            onEditClick = {
+                                navController.navigate("Edit Profile")
+                            }
+                        )
                         TaskOverview()
                         UpcomingEventsOverview()
                     }

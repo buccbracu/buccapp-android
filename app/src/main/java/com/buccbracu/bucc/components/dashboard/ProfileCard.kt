@@ -29,9 +29,14 @@ import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.local.models.User.Profile
 import com.buccbracu.bucc.components.ProfileView
+import com.buccbracu.bucc.components.ShowSocials
 
 @Composable
-fun ProfileCard(profile: Profile, navController: NavHostController){
+fun ProfileCard(
+    profile: Profile,
+    onEditClick: () -> Unit,
+    showEditButton: Boolean = true
+){
 
 
     ElevatedCard(
@@ -39,23 +44,23 @@ fun ProfileCard(profile: Profile, navController: NavHostController){
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
     ) {
         Box(){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(
-                    onClick = {
-                        navController.navigate("Edit Profile")
-                    }
+            if(showEditButton){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = "Edit profile",
-                        modifier = Modifier
-                            .size(20.dp)
-                    )
+                    IconButton(
+                        onClick = onEditClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = "Edit profile",
+                            modifier = Modifier
+                                .size(20.dp)
+                        )
+                    }
                 }
             }
             Column(
@@ -68,7 +73,7 @@ fun ProfileCard(profile: Profile, navController: NavHostController){
                     image = profile.profileImage,
                     name = profile.name,
                     department = profile.buccDepartment,
-                    designation = profile.designation
+                    designation = profile.designation,
                 )
 //                FieldCard(
 //                    label = "Student ID",

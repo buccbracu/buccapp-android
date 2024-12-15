@@ -17,7 +17,10 @@ fun EditableTextField(
     text: String,
     label: String,
     isEditable: Boolean,
-    onEdit: (String) -> Unit
+    leadingIcon: @Composable () -> Unit ={},
+    trailingIcon: @Composable () -> Unit = {},
+    onEdit: (String) -> Unit,
+
 ){
 
     OutlinedTextField(
@@ -31,6 +34,8 @@ fun EditableTextField(
         enabled = isEditable,
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon
     )
 }

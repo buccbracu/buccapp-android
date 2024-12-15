@@ -40,7 +40,10 @@ import com.buccbracu.bucc.components.EditableTextField
 import kotlinx.coroutines.launch
 
 @Composable
-fun MemberDetails(member: Member) {
+fun MemberDetails(
+    allFields: Boolean,
+    member: Member
+) {
     var edit by remember { mutableStateOf(false) }
     val tempMember by remember { mutableStateOf(member.copy()) }
     var isLoading by remember { mutableStateOf(false) }
@@ -80,47 +83,127 @@ fun MemberDetails(member: Member) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
+                AsyncImage(
+                    model =
+                    if (profileImage.isEmpty()) R.drawable.empty_person
+                    else profileImage,
+                    contentDescription = "Profile image",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(10.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.FillWidth
+                )
+
+                // Profile Details
+                Text(
+                    text = if (name.isEmpty()) "No Name Provided" else name,
+                    modifier = Modifier.padding(top = 10.dp),
+                    fontWeight = FontWeight.W900
+                )
                 // Group: Personal Information
                 Text("Personal Information", modifier = Modifier.padding(10.dp))
-                EditableTextField(text = name, label = "Name", isEditable = false, onEdit = {})
-                EditableTextField(text = studentId, label = "Student ID", isEditable = false, onEdit = {})
-                EditableTextField(text = email, label = "Email", isEditable = false, onEdit = {})
-                EditableTextField(text = personalEmail, label = "Personal Email", isEditable = edit) {
-                    setPersonalEmail(it)
-                    tempMember.personalEmail = it
-                }
-                EditableTextField(text = contactNumber, label = "Contact Number", isEditable = edit) {
-                    setContactNumber(it)
-                    tempMember.contactNumber = it
-                }
-                EditableTextField(text = birthDate, label = "Birth Date", isEditable = edit) {
-                    setBirthDate(it)
-                    tempMember.birthDate = it
+                if(allFields){
+
+                    EditableTextField(
+                        text = name,
+                        label = "Name",
+                        isEditable = false,
+                        onEdit = {})
+
+                    EditableTextField(
+                        text = studentId,
+                        label = "Student ID",
+                        isEditable = false,
+                        onEdit = {})
                 }
 
-                // Group: Academic Information
-                Text("Academic Information", modifier = Modifier.padding(8.dp))
-                EditableTextField(text = joinedBracu, label = "Joined BRACU", isEditable = false, onEdit = {})
-                EditableTextField(text = departmentBracu, label = "Department BRACU", isEditable = false, onEdit = {})
-                EditableTextField(text = buccDepartment, label = "BUCC Department", isEditable = false, onEdit = {})
-                EditableTextField(text = designation, label = "Designation", isEditable = false, onEdit = {})
+
+                EditableTextField(
+                    text = email,
+                    label = "Email",
+                    isEditable = false,
+                    onEdit = {})
+
+                if(allFields){
+                    EditableTextField(text = personalEmail, label = "Personal Email", isEditable = edit) {
+                        setPersonalEmail(it)
+                        tempMember.personalEmail = it
+                    }
+                }
+                if(allFields){
+                    EditableTextField(text = contactNumber, label = "Contact Number", isEditable = edit) {
+                        setContactNumber(it)
+                        tempMember.contactNumber = it
+                    }
+                    EditableTextField(text = birthDate, label = "Birth Date", isEditable = edit) {
+                        setBirthDate(it)
+                        tempMember.birthDate = it
+                    }
+                }
+
+                if(allFields){// Group: Academic Information
+                    Text("Academic Information", modifier = Modifier.padding(8.dp))
+                    EditableTextField(
+                        text = joinedBracu,
+                        label = "Joined BRACU",
+                        isEditable = false,
+                        onEdit = {})
+                    EditableTextField(
+                        text = departmentBracu,
+                        label = "Department BRACU",
+                        isEditable = false,
+                        onEdit = {})
+                }
 
                 // Group: Membership Information
                 Text("Membership Information", modifier = Modifier.padding(8.dp))
-                EditableTextField(text = joinedBucc, label = "Joined BUCC", isEditable = false, onEdit = {})
-                EditableTextField(text = memberStatus, label = "Member Status", isEditable = false, onEdit = {})
+
+                EditableTextField(
+                    text = buccDepartment,
+                    label = "BUCC Department",
+                    isEditable = false,
+                    onEdit = {})
+                EditableTextField(
+                    text = designation,
+                    label = "Designation",
+                    isEditable = false,
+                    onEdit = {})
+
+
+                if(allFields){
+                    EditableTextField(
+                        text = joinedBucc,
+                        label = "Joined BUCC",
+                        isEditable = false,
+                        onEdit = {})
+                    EditableTextField(
+                        text = memberStatus,
+                        label = "Member Status",
+                        isEditable = false,
+                        onEdit = {})
+                }
 
                 // Group: Social Links
                 Text("Social Links", modifier = Modifier.padding(8.dp))
-                EditableTextField(text = github, label = "Github", isEditable = edit) {
+                EditableTextField(
+                    text = github,
+                    label = "Github",
+                    isEditable = edit) {
                     setGithub(it)
                     tempMember.memberSocials.Github = it
                 }
-                EditableTextField(text = linkedin, label = "LinkedIn", isEditable = edit) {
+                EditableTextField(
+                    text = linkedin,
+                    label = "LinkedIn",
+                    isEditable = edit) {
                     setLinkedin(it)
                     tempMember.memberSocials.Linkedin = it
                 }
-                EditableTextField(text = facebook, label = "Facebook", isEditable = edit) {
+                EditableTextField(
+                    text = facebook,
+                    label = "Facebook",
+                    isEditable = edit) {
                     setFacebook(it)
                     tempMember.memberSocials.Facebook = it
                 }

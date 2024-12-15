@@ -32,24 +32,13 @@ fun ViewMember(
     member: Member,
     navController: NavHostController
 ){
-
-
     Column(
         modifier = Modifier
-            .padding(top = 80.dp)
             .padding(horizontal = 10.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ProfileCard(
-            profile = memberToProfile(member),
-            onEditClick = {
-
-            },
-            showEditButton = false
-        )
-        MemberDetails(member)
-
+        MemberDetails(allFields, member)
     }
     MovableFloatingActionButton(
         onClick = {

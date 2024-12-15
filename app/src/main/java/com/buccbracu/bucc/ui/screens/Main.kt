@@ -103,12 +103,17 @@ fun Main(
 
     LaunchedEffect(navBackStackEntry?.destination) {
         when (navBackStackEntry?.destination?.route) {
-            "Profile" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Profile" }
+            "Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Dashboard" }
             "About BUCC" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "About BUCC" }
             "Contributors" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Contributors" }
-            "Login" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Login" }
+            "Login" -> selectedIndexDrawer = -1
             "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
-            // Add other routes here if needed
+            "Create Task" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
+            "Members" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Members" }
+            "Logout" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Logout" }
+            "Blogs" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Blogs" }
+            "Edit Profile" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Dashboard" }
+            else -> selectedIndexDrawer = -1
         }
     }
 

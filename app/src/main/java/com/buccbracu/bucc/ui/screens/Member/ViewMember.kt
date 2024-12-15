@@ -34,6 +34,7 @@ fun ViewMember(
 ){
     Column(
         modifier = Modifier
+            .padding(top = 70.dp)
             .padding(horizontal = 10.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally

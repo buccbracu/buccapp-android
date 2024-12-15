@@ -17,9 +17,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AlternateEmail
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Business
+import androidx.compose.material.icons.filled.Cake
 import androidx.compose.material.icons.filled.CloudDone
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Facebook
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -144,7 +150,7 @@ fun EditProfile(navController: NavHostController) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Spacer(modifier = Modifier.height(30.dp))
                         LazyColumn(
                             modifier = Modifier
@@ -162,48 +168,62 @@ fun EditProfile(navController: NavHostController) {
                                 )
 
                                 Text("Personal Information", modifier = Modifier.padding(10.dp))
+
                                 EditableTextField(
                                     text = personalEmail,
                                     label = "Personal Email",
-                                    isEditable = edit
+                                    isEditable = edit,
+                                    leadingIcon = { Icon(imageVector = Icons.Default.AlternateEmail, contentDescription = "Personal Email Icon") }
                                 ) {
                                     setPersonalEmail(it)
                                     tempMember.personalEmail = it
                                 }
+
                                 EditableTextField(
                                     text = contactNumber,
                                     label = "Contact Number",
-                                    isEditable = edit
+                                    isEditable = edit,
+                                    leadingIcon = { Icon(imageVector = Icons.Default.Phone, contentDescription = "Contact Number Icon") }
                                 ) {
                                     setContactNumber(it)
                                     tempMember.contactNumber = it
                                 }
+
                                 DateField(
                                     value = birthDate,
-                                    label = "Date of Birth"
+                                    label = "Date of Birth",
                                 ) {
                                     showDatePicker = true
                                 }
 
-
                                 // Group: Social Links
                                 Text("Social Links", modifier = Modifier.padding(8.dp))
-                                EditableTextField(text = github, label = "Github", isEditable = edit) {
+
+                                EditableTextField(
+                                    text = github,
+                                    label = "Github",
+                                    isEditable = edit,
+                                    leadingIcon = { Icon(imageVector = Icons.Default.Code, contentDescription = "Github Icon") }
+                                ) {
                                     setGithub(it)
                                     tempMember.memberSocials.Github = it
                                 }
+
                                 EditableTextField(
                                     text = linkedin,
                                     label = "LinkedIn",
-                                    isEditable = edit
+                                    isEditable = edit,
+                                    leadingIcon = { Icon(imageVector = Icons.Default.Business, contentDescription = "LinkedIn Icon") }
                                 ) {
                                     setLinkedin(it)
                                     tempMember.memberSocials.Linkedin = it
                                 }
+
                                 EditableTextField(
                                     text = facebook,
                                     label = "Facebook",
-                                    isEditable = edit
+                                    isEditable = edit,
+                                    leadingIcon = { Icon(imageVector = Icons.Default.Facebook, contentDescription = "Facebook Icon") }
                                 ) {
                                     setFacebook(it)
                                     tempMember.memberSocials.Facebook = it
@@ -211,6 +231,7 @@ fun EditProfile(navController: NavHostController) {
                             }
                         }
                     }
+
                 }
             }
         }

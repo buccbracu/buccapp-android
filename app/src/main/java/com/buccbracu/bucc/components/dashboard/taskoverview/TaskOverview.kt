@@ -2,6 +2,7 @@ package com.buccbracu.bucc.components.dashboard.taskoverview
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,9 +69,11 @@ fun TaskOverview(
 //                    label = "Due Tomorrow",
 //                    text = overView.dueTomorrow.toString()
 //                )
-                TaskGraph(
-                    taskCounts = overView
-                )
+                Card {
+                    TaskGraph(
+                        taskCounts = overView
+                    )
+                }
             }
         }
     }

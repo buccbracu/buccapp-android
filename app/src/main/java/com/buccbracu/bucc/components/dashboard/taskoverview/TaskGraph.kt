@@ -23,7 +23,7 @@ fun TaskGraph(taskCounts: TaskOverview, modifier: Modifier = Modifier) {
         Pair("Due TMR", taskCounts.dueTomorrow to palette2DarkRed) // Red
     )
 
-    val maxValue = barData.maxOf { it.second.first }
+    val maxValue =taskCounts.accepted + taskCounts.pending+ taskCounts.completed
 
     Column(
         modifier = modifier

@@ -87,7 +87,7 @@ open class LoginVM @Inject constructor(
         }
     }
 
-    suspend fun logout(){
+    suspend fun logout(onComplete: () -> Unit){
         viewModelScope.launch {
             session.value?.let {
                 val response = Auth.signOut(session.value!!.authJsToken).awaitResponse()
@@ -96,6 +96,8 @@ open class LoginVM @Inject constructor(
                     userR.createEmptyProfile()
                     sessionR.createEmptySession()
                     sharedR.fetchAll()
+
+                    onComplete()
                 }
             }
         }

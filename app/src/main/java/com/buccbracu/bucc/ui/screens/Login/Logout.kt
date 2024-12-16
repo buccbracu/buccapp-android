@@ -26,7 +26,7 @@ fun Logout(loginVM: LoginVM, navController: NavHostController) {
     val scope = rememberCoroutineScope()
 
     var isLoading by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
     var logoutComplete by remember {
         mutableStateOf(false)
@@ -34,12 +34,14 @@ fun Logout(loginVM: LoginVM, navController: NavHostController) {
 
     LaunchedEffect(Unit) {
         scope.launch {
-            isLoading = true
-            loginVM.logout()
-//            delay(500)
+            loginVM.logout(
+                onComplete = {
+                    isLoading = false
+                    logoutComplete = true
+                }
+            )
 
-            isLoading = false
-            logoutComplete = true
+
         }
     }
     if(logoutComplete){

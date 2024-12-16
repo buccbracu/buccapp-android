@@ -42,8 +42,8 @@ data class ContentAttributes(
     val src: String? = null,
     val alt: String? = null,
     val title: String? = null,
-    val width: Int? = null,
-    val height: Int? = null,
+    val width: Float? = null,
+    val height: Float? = null,
     val start: Int? = null
 )
 

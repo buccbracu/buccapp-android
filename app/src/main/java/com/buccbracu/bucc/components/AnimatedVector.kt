@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -52,21 +53,36 @@ fun AnimatedIcon(
     repeatMode: RepeatMode = RepeatMode.Restart
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "")
+
+    // Animate horizontal offset
     val offsetX by infiniteTransition.animateFloat(
         initialValue = initialValue,
         targetValue = targetValue,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 600, easing = LinearEasing),
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
             repeatMode = repeatMode
         ),
-        label = ""
+        label = "Offset Animation"
+    )
+
+    // Animate opacity
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = repeatMode
+        ),
+        label = "Alpha Animation"
     )
 
     Icon(
         imageVector = icon,
         contentDescription = "Animated icon",
         modifier = modifier
-            .offset(x = offsetX.dp),
+            .offset(x = offsetX.dp)
+            .alpha(alpha), // Apply animated opacity
     )
 }
+
 

@@ -104,7 +104,6 @@ fun TaskCard(
                         value = description,
                         onValueChange = {
                             setDescription(it)
-                            println("Setting description: $description")
                         },
                         label = { Text("Description") },
                         modifier = Modifier

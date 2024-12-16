@@ -50,12 +50,13 @@ fun MemberCard(
             .padding(12.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(5.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onSecondary),
         onClick = onCardClick
     ) {
         Card(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(10.dp),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
         ) {
             Row(
                 modifier = Modifier

@@ -75,7 +75,7 @@ fun MemberDetails(
     val (joinedBracu, setJoinedBracu) = rememberSaveable { mutableStateOf(member.joinedBracu) }
     val (departmentBracu, setDepartmentBracu) = rememberSaveable { mutableStateOf(member.departmentBracu) }
     val (profileImage, setProfileImage) = rememberSaveable { mutableStateOf(member.profileImage) }
-    val (birthDate, setBirthDate) = rememberSaveable { mutableStateOf(member.birthDate.slice(0..9)) }
+    val (birthDate, setBirthDate) = rememberSaveable { mutableStateOf(member.birthDate) }
     val (bloodGroup, setBloodGroup) = rememberSaveable { mutableStateOf(member.bloodGroup) }
     val (gender, setGender) = rememberSaveable { mutableStateOf(member.gender) }
     val (emergencyContact, setEmergencyContact) = rememberSaveable { mutableStateOf(member.emergencyContact) }
@@ -169,7 +169,7 @@ fun MemberDetails(
                     }
 
                     EditableTextField(
-                        text = birthDate,
+                        text = birthDate.slice(0..9),
                         label = "Birth Date",
                         isEditable = edit,
                         leadingIcon = { Icon(imageVector = Icons.Default.Cake, contentDescription = "Birth Date Icon") }

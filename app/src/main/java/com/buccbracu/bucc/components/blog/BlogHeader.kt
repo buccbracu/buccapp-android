@@ -52,12 +52,13 @@ fun BlogHeader(blog: Blog){
         modifier = Modifier
             .height(250.dp)
             .fillMaxWidth()
-//            .border(1.dp, Color.Red)
+
     ){
         AsyncImage(
             model = blog.featuredImage,
             contentDescription = "Blog Image",
             modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
                 .fillMaxWidth()
                 .aspectRatio(16/9f)
                 .onGloballyPositioned { coordinates ->
@@ -67,7 +68,7 @@ fun BlogHeader(blog: Blog){
                     alpha = 1f
                 }
                 .padding(bottom = 10.dp)
-                .clip(RoundedCornerShape(10.dp)),
+                ,
             contentScale = ContentScale.Crop
         )
 

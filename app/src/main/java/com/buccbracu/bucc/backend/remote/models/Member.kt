@@ -15,26 +15,26 @@ data class AllMembersResponse(
 )
 
 data class Member(
-    var _id: String,
-    var name: String,
-    var studentId: String,
-    var email: String,
-    var buccDepartment: String,
-    var designation: String,
-    var personalEmail: String,
-    var contactNumber: String,
-    var joinedBracu: String,
-    var departmentBracu: String,
-    var profileImage: String,
-    var birthDate: String,
-    var bloodGroup: String,
-    var gender: String,
-    var emergencyContact: String,
-    var joinedBucc: String,
-    var lastPromotion: String,
-    var memberStatus: String,
-    var memberSkills: List<String>,
-    var memberSocials: MemberSocials
+    var _id: String ="",
+    var name: String ="",
+    var studentId: String ="",
+    var email: String ="",
+    var buccDepartment: String ="",
+    var designation: String ="",
+    var personalEmail: String ="",
+    var contactNumber: String ="",
+    var joinedBracu: String ="",
+    var departmentBracu: String ="",
+    var profileImage: String ="",
+    var birthDate: String ="",
+    var bloodGroup: String ="",
+    var gender: String ="",
+    var emergencyContact: String ="",
+    var joinedBucc: String ="",
+    var lastPromotion: String ="",
+    var memberStatus: String ="",
+    var memberSkills: List<String> = listOf(),
+    var memberSocials: MemberSocials = MemberSocials()
 )
 
 data class MemberSocials(

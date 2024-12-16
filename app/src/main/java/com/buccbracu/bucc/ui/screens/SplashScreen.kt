@@ -58,7 +58,7 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         animationProgress.animateTo(
             targetValue = 1f,
-            animationSpec = tween(durationMillis = 2000)
+            animationSpec = tween(durationMillis = 1500)
         )
 
         setSession(sessionData)

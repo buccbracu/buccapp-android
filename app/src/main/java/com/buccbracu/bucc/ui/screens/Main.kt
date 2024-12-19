@@ -105,7 +105,7 @@ fun Main(
         when (navBackStackEntry?.destination?.route) {
             "Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Dashboard" }
             "About BUCC" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "About BUCC" }
-            "Contributors" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Contributors" }
+            "About Us" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "About Us" }
             "Login" -> selectedIndexDrawer = -1
             "Task Dashboard" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
             "Create Task" -> selectedIndexDrawer = navDrawerItemList.indexOfFirst { it.title == "Task Dashboard" }
@@ -180,7 +180,7 @@ fun Main(
                     composable("Create Task"){
                         CreateTask(navController)
                     }
-                    composable("Contributors") {
+                    composable("About Us") {
                         ContributorScreen()
                     }
                     composable("About BUCC") {

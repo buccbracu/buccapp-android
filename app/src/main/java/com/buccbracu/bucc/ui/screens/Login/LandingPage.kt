@@ -91,7 +91,7 @@ fun LandingPage(
     val swipeThreshold = 1000f
     val minSwipeToShow = 0.5f
 
-    val imageScale by animateFloatAsState(targetValue = 1.2f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.4
+    val imageScale by animateFloatAsState(targetValue = 1f - (swipeProgress * 0.4f)) // Scale between 1.2 and 0.4
     val contentOpacity by animateFloatAsState(targetValue = 1f - swipeProgress) // Opacity from 1 to 0
     val reverseContentOpacity by animateFloatAsState(targetValue = swipeProgress) // Reverse opacity
     val logoOffsetY by animateFloatAsState(targetValue = -70.dp.value * swipeProgress) // Move logo up as you swipe

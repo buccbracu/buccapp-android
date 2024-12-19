@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BUCC</string>
     <string name="bucc_desc">A community for tech enthusiasts from BRAC University, where we explore the latest advancements in computer science and technology.</string>
+    <string name="about_us">At BUCC’s Research &amp; Development department (R&amp;D) , our mission is to tackle real-world challenges through innovative solutions. We’ve already created impactful tools like the BUCC Website and Mobile App, which have made a significant difference in enhancing our club experience, with many more exciting projects on the way. And now, we’re excited to announce that we are opening our doors to everyone — whether you’re from within BUCC or beyond. We welcome your contributions to help drive us forward. So, why wait? Join us today and be part of something bigger!</string>
 </resources>

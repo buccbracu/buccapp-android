@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.material.icons.filled.GroupWork
-import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material.icons.outlined.AdminPanelSettings
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.EmojiPeople
 import androidx.compose.material.icons.outlined.GroupWork
-import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.SupervisedUserCircle
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,10 +33,10 @@ sealed class NavDrawerItem(
     val isDivider: Boolean = false,
     val isHeader: Boolean = false,
 ){
-    object Contributors: NavDrawerItem(
+    object AboutUs: NavDrawerItem(
         selectedIcon = Icons.Filled.SupervisedUserCircle,
         unselectedIcon = Icons.Outlined.SupervisedUserCircle,
-        title = "Contributors",
+        title = "About Us",
     )
     object AboutClub: NavDrawerItem(
         selectedIcon = Icons.Filled.Apartment,
@@ -103,7 +101,7 @@ sealed class NavDrawerItem(
                     Members,
                     Blogs,
                     Divider,
-                    Contributors,
+                    AboutUs,
                     AboutClub,
                     Logout
                 )
@@ -113,7 +111,7 @@ sealed class NavDrawerItem(
                     Members,
                     Blogs,
                     Divider,
-                    Contributors,
+                    AboutUs,
                     AboutClub,
                     Logout
                 )
@@ -123,7 +121,7 @@ sealed class NavDrawerItem(
                     Members,
                     Blogs,
                     Divider,
-                    Contributors,
+                    AboutUs,
                     AboutClub,
                     Logout
                 )
@@ -131,13 +129,13 @@ sealed class NavDrawerItem(
                     Dashboard,
                     Blogs,
                     Divider,
-                    Contributors,
+                    AboutUs,
                     AboutClub,
                     Login
                 )
                 else listOf(
                     Blogs,
-                    Contributors,
+                    AboutUs,
                     AboutClub,
                     Login
                 )

@@ -7,6 +7,10 @@ import javax.inject.Inject
 
 class FirebaseRepository @Inject constructor() {
 
+    init {
+        subscribeToTopic("blog")
+    }
+
     fun subscribeToTopic(topic: String) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
             .addOnCompleteListener { task ->

@@ -13,7 +13,7 @@ fun topics(department: String, designation: String): List<String> {
     )
     val normalizedDept = department.lowercase().replace(" ", "_")
     val normalizedDes = designation.lowercase().replace(" ", "_")
-    val topics = mutableListOf("blogs") // Add "blogs" to all
+    val topics = mutableListOf<String>()
 
     when (normalizedDes) {
         "senior_executive" -> {

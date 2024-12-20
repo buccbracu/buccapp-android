@@ -18,4 +18,23 @@ class FirebaseRepository @Inject constructor() {
             }
     }
 
+    fun unsubscribeFromAllTopics(topics: List<String>) {
+        if (topics.isEmpty()) {
+            println("No topics to unsubscribe from.")
+            return
+        }
+
+        topics.forEach { topic ->
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        println("Successfully unsubscribed from topic: $topic")
+                    } else {
+                        println("Failed to unsubscribe from topic: $topic")
+                    }
+                }
+        }
+    }
+
+
 }

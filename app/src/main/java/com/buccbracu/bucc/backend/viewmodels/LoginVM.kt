@@ -95,11 +95,22 @@ open class LoginVM @Inject constructor(
         }
     }
 
+    fun unsubscribe(){
+        profile.value?.let {
+            val topics = topics(
+                department = profile.value!!.buccDepartment,
+                designation = profile.value!!.designation
+            )
+            firebase.unsubscribeFromAllTopics(topics)
+        }
+    }
+
     suspend fun logout(onComplete: () -> Unit){
         viewModelScope.launch {
             session.value?.let {
                 val response = Auth.signOut(session.value!!.authJsToken).awaitResponse()
                 response.body()?.let {
+                    unsubscribe()
                     RetrofitCookieJar.clearCookies()
                     userR.createEmptyProfile()
                     sessionR.createEmptySession()
@@ -110,9 +121,11 @@ open class LoginVM @Inject constructor(
             }
         }
     }
+
     suspend fun logoutOffline(onComplete: () -> Unit){
         viewModelScope.launch {
             session.value?.let {
+                unsubscribe()
                 RetrofitCookieJar.clearCookies()
                 userR.createEmptyProfile()
                 sessionR.createEmptySession()

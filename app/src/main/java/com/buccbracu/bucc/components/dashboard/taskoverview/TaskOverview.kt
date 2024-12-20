@@ -14,7 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.buccbracu.bucc.backend.remote.models.TaskOverview
 import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.CircularLoadingBasic
+import com.buccbracu.bucc.components.EmptyScreenText
 import com.buccbracu.bucc.components.ExpandableCard
+import com.buccbracu.bucc.components.checkServer
 import kotlinx.coroutines.launch
 
 @SuppressLint("MutableCollectionMutableState")
@@ -31,16 +33,26 @@ fun TaskOverview(
     var isLoading by remember {
         mutableStateOf(true)
     }
+    var hasInternet by remember {
+        mutableStateOf(false)
+    }
     LaunchedEffect(Unit){
         scope.launch {
-            taskvm.getTaskOverview(
-                setTasks = {
-                    overView = it
-                },
-                onSuccess = {
-                    isLoading = false
-                }
-            )
+            hasInternet = checkServer()
+            if(hasInternet){
+                taskvm.getTaskOverview(
+                    setTasks = {
+                        overView = it
+                    },
+                    onSuccess = {
+                        isLoading = false
+                    }
+                )
+            }
+            else{
+                isLoading = false
+            }
+
         }
     }
 
@@ -50,6 +62,9 @@ fun TaskOverview(
     ) {
         if(isLoading){
             CircularLoadingBasic("Loading Task Overview")
+        }
+        else if(!hasInternet){
+            EmptyScreenText("Connect to the Internet and Try Again.")
         }
         else{
             Column {

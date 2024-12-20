@@ -43,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -58,6 +59,7 @@ import com.buccbracu.bucc.components.DatePickerModal
 import com.buccbracu.bucc.components.EditableTextField
 import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.ProfileView
+import com.buccbracu.bucc.components.checkServer
 import com.buccbracu.bucc.ui.screens.Tasks.DateField
 import com.buccbracu.bucc.ui.theme.paletteGreen
 import kotlinx.coroutines.launch
@@ -75,6 +77,9 @@ fun EditProfile(navController: NavHostController) {
     var showDatePicker by remember{
         mutableStateOf(false)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
 
     var edit by remember { mutableStateOf(true) }
     val tempMember by remember { mutableStateOf(uservm.patchMemberFromProfile(profileData!!)) }
@@ -88,7 +93,12 @@ fun EditProfile(navController: NavHostController) {
     val (facebook, setFacebook) = remember { mutableStateOf("") }
     val (linkedin, setLinkedin) = remember { mutableStateOf("") }
     val (github, setGithub) = remember { mutableStateOf("") }
-
+    LaunchedEffect(Unit){
+        scope.launch {
+            hasInternet = checkServer()
+            edit = hasInternet
+        }
+    }
     LaunchedEffect(profileData) {
         if (profileData != null) {
             val data = profileData!!
@@ -132,7 +142,7 @@ fun EditProfile(navController: NavHostController) {
                                 }
                             }
                         },
-                        enabled = !isLoading
+                        enabled = !isLoading && hasInternet
                     ) {
                         if (isLoading) {
                             ButtonLoading()
@@ -140,7 +150,7 @@ fun EditProfile(navController: NavHostController) {
                             Icon(
                                 imageVector = Icons.Filled.CloudDone,
                                 contentDescription = "Save",
-                                tint = paletteGreen
+                                tint = if(hasInternet) paletteGreen else Color.Gray
                             )
                         }
                     }
@@ -192,6 +202,7 @@ fun EditProfile(navController: NavHostController) {
                                 DateField(
                                     value = birthDate,
                                     label = "Date of Birth",
+                                    enabled = hasInternet
                                 ) {
                                     showDatePicker = true
                                 }

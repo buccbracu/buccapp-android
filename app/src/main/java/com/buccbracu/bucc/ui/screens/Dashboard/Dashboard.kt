@@ -62,6 +62,10 @@ fun Dashboard(navController: NavHostController) {
     val (linkedin, setLinkedin) = remember { mutableStateOf("") }
     val (github, setGithub) = remember { mutableStateOf("") }
 
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(profileData) {
         if (profileData != null) {
             val data = profileData!!

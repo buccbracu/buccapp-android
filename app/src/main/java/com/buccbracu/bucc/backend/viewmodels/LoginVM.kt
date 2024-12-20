@@ -102,6 +102,18 @@ open class LoginVM @Inject constructor(
             }
         }
     }
+    suspend fun logoutOffline(onComplete: () -> Unit){
+        viewModelScope.launch {
+            session.value?.let {
+                RetrofitCookieJar.clearCookies()
+                userR.createEmptyProfile()
+                sessionR.createEmptySession()
+                sharedR.fetchAll()
+                onComplete()
+            }
+        }
+    }
+
 
     fun resetPassword(email: String, setMessage: (String) -> Unit){
         viewModelScope.launch {

@@ -43,9 +43,11 @@ import coil3.compose.AsyncImage
 import com.buccbracu.bucc.backend.remote.models.Blog
 import com.buccbracu.bucc.backend.viewmodels.BlogVM
 import com.buccbracu.bucc.components.BasicDialog
+import com.buccbracu.bucc.components.EmptyScreenText
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
 import com.buccbracu.bucc.components.appendBulletPoint
+import com.buccbracu.bucc.components.checkServer
 import com.buccbracu.bucc.components.filters.blogFilter
 import kotlinx.coroutines.launch
 
@@ -65,14 +67,24 @@ fun ViewBlogs(navController: NavHostController){
     var showHelp by remember{
         mutableStateOf(false)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
     val (query, setQuery) = remember{ mutableStateOf("") }
     LaunchedEffect(Unit) {
         scope.launch {
-            blogvm.getAllBlogs { list ->
-                blogList = list
-                filteredList = list
+            hasInternet= checkServer()
+            if(hasInternet){
+                blogvm.getAllBlogs { list ->
+                    blogList = list
+                    filteredList = list
+                    isLoading = false
+                }
+            }
+            else{
                 isLoading = false
             }
+
         }
     }
     LaunchedEffect(query) {
@@ -88,6 +100,9 @@ fun ViewBlogs(navController: NavHostController){
             title = "Loading Published Blogs",
             message = "Please wait..."
         )
+    }
+    else if(!hasInternet){
+        EmptyScreenText("Connect to the Internet and Try Again.")
     }
     else{
 

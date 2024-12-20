@@ -26,8 +26,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.viewmodels.DeptMemVM
+import com.buccbracu.bucc.components.EmptyScreenText
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.NoInternet
 import com.buccbracu.bucc.components.SearchBar
+import com.buccbracu.bucc.components.checkServer
 import com.buccbracu.bucc.components.filters.allMemberSearch
 import com.buccbracu.bucc.components.filters.filterMembers
 import com.buccbracu.bucc.components.filters.memberSearch
@@ -67,37 +70,46 @@ fun MemberScreen(
     var selectedMember by remember{
         mutableStateOf<Member?>(null)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(Unit) {
-        if(memberList.isEmpty()){
-            scope.launch {
-                isLoading = true
 
-                if(admin){
-                    deptMemVM.getAllMembers(
-                        setMembers = { list ->
-                            memberList = list
-                            filteredList = list
-                        },
-                        setLoading = { loading ->
-                            isLoading = loading
+        scope.launch {
+            hasInternet = checkServer()
 
-                        }
-                    )
+            if(hasInternet){
+                if(memberList.isEmpty()){
+
+                    isLoading = true
+
+                    if(admin){
+                        deptMemVM.getAllMembers(
+                            setMembers = { list ->
+                                memberList = list
+                                filteredList = list
+                            },
+                            setLoading = { loading ->
+                                isLoading = loading
+
+                            }
+                        )
+                    }
+                    else{
+                        deptMemVM.getMembers(
+                            setMembers = { list ->
+                                memberList = list
+                                filteredList = list
+                            },
+                            setLoading = { loading ->
+                                isLoading = loading
+
+                            }
+                        )
+                    }
+
                 }
-                else{
-                    deptMemVM.getMembers(
-                        setMembers = { list ->
-                            memberList = list
-                            filteredList = list
-                        },
-                        setLoading = { loading ->
-                            isLoading = loading
-
-                        }
-                    )
-                }
-
-
             }
         }
     }
@@ -125,6 +137,9 @@ fun MemberScreen(
             title = "Loading Department Members",
             message = "Please wait..."
         )
+    }
+    else if(!hasInternet){
+        EmptyScreenText("Connect to the Internet and Try Again.")
     }
     else{
         NavHost(

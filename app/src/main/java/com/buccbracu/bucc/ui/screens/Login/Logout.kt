@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.checkServer
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,15 +32,30 @@ fun Logout(loginVM: LoginVM, navController: NavHostController) {
     var logoutComplete by remember {
         mutableStateOf(false)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
 
     LaunchedEffect(Unit) {
         scope.launch {
-            loginVM.logout(
-                onComplete = {
-                    isLoading = false
-                    logoutComplete = true
-                }
-            )
+            hasInternet = checkServer()
+            if(hasInternet){
+                loginVM.logout(
+                    onComplete = {
+                        isLoading = false
+                        logoutComplete = true
+                    }
+                )
+            }
+            else{
+                loginVM.logoutOffline(
+                    onComplete = {
+                        isLoading = false
+                        logoutComplete = true
+                    }
+                )
+            }
+
 
 
         }

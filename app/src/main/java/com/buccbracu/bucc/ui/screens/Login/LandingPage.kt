@@ -165,6 +165,15 @@ fun LandingPage(
                     )
                     Spacer(modifier = Modifier.height(150.dp))
                     AnimatedVector("up_new.json")
+                    if(!showLogin){
+
+                        Text(
+                            text = "Upgrade Yourself",
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray
+                        )
+                    }
                 }
                 Box(
                     modifier = Modifier

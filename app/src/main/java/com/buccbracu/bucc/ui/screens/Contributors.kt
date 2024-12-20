@@ -46,7 +46,9 @@ import coil3.compose.AsyncImage
 import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.remote.models.Contributor
 import com.buccbracu.bucc.backend.viewmodels.ContributorVM
+import com.buccbracu.bucc.components.EmptyScreenText
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
+import com.buccbracu.bucc.components.checkGithub
 import kotlinx.coroutines.launch
 
 @Composable
@@ -60,13 +62,23 @@ fun ContributorScreen(){
         mutableStateOf(true)
     }
     val scope = rememberCoroutineScope()
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
     LaunchedEffect(Unit) {
         scope.launch {
-            contributorvm.getContributors { data ->
-                list = data
-                isLoading = false
+            hasInternet = checkGithub()
+            if(hasInternet){
+                contributorvm.getContributors { data ->
+                    list = data
+                    isLoading = false
 
+                }
             }
+            else{
+                isLoading = false
+            }
+
         }
     }
     if(isLoading){
@@ -104,22 +116,30 @@ fun ContributorScreen(){
                 }
 
                 // Add contributors in a grid-like structure
-                items(list!!.chunked(3)) { rowItems ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        rowItems.forEach { person ->
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                            ) {
-                                ContributorCard(person)
+                if(hasInternet){
+                    items(list!!.chunked(3)) { rowItems ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            rowItems.forEach { person ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(4.dp)
+                                ) {
+                                    ContributorCard(person)
+                                }
                             }
                         }
+                        Spacer(modifier = Modifier.height(0.dp))
                     }
-                    Spacer(modifier = Modifier.height(0.dp))
+                }
+                else {
+                    item{
+                        EmptyScreenText("Connect to the Internet and Try Again.")
+                    }
+
                 }
 
             }

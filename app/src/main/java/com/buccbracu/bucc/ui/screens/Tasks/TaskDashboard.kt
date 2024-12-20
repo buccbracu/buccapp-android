@@ -38,10 +38,12 @@ import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.remote.models.TaskData
 import com.buccbracu.bucc.backend.viewmodels.TaskVM
 import com.buccbracu.bucc.components.BasicDialog
+import com.buccbracu.bucc.components.EmptyScreenText
 import com.buccbracu.bucc.components.MovableFloatingActionButton
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.SearchBar
 import com.buccbracu.bucc.components.appendBulletPoint
+import com.buccbracu.bucc.components.checkServer
 import com.buccbracu.bucc.components.filters.allMemberSearch
 import com.buccbracu.bucc.components.filters.filterTask
 import com.buccbracu.bucc.components.filters.memberSearch
@@ -78,19 +80,29 @@ fun TaskDashboard(navController:  NavHostController){
     var showHelp by remember{
         mutableStateOf(false)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
 
     fun fetchTasks(){
         scope.launch {
             isLoading = true
-            taskvm.getAllTasks(
-                setTasks = {
-                    allTasks = it
-                    filteredTasks = it
-                },
-                onSuccess = {
-                    isLoading = false
-                }
-            )
+            hasInternet = checkServer()
+            if(hasInternet){
+                taskvm.getAllTasks(
+                    setTasks = {
+                        allTasks = it
+                        filteredTasks = it
+                    },
+                    onSuccess = {
+                        isLoading = false
+                    }
+                )
+            }
+            else{
+                isLoading = false
+            }
+
         }
     }
 
@@ -116,6 +128,9 @@ fun TaskDashboard(navController:  NavHostController){
             title = "Loading Tasks",
             message = "Please wait..."
         )
+    }
+    else if(!hasInternet){
+        EmptyScreenText("Connect to the Internet and Try Again.")
     }
     else{
         Box(
@@ -275,7 +290,9 @@ fun TaskDashboard(navController:  NavHostController){
 fun DateField(
     value: String,
     label: String,
-    onClick: () -> Unit
+    enabled : Boolean= true,
+    onClick: () -> Unit,
+
 ){
     OutlinedTextField(
         value = value,
@@ -291,7 +308,8 @@ fun DateField(
         shape = RoundedCornerShape(10.dp),
         trailingIcon = {
             IconButton(
-                onClick = onClick
+                onClick = onClick,
+                enabled = enabled
             ){
                 Icon(
                     imageVector = Icons.Filled.EditCalendar,

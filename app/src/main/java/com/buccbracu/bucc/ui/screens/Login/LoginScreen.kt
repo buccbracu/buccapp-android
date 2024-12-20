@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.buccbracu.bucc.backend.viewmodels.LoginVM
 import com.buccbracu.bucc.components.ButtonLoading
+import com.buccbracu.bucc.components.checkServer
 import com.buccbracu.bucc.components.createNotification
 import com.dotlottie.dlplayer.Event
 import kotlinx.coroutines.delay
@@ -53,7 +54,6 @@ import kotlin.math.log
 fun LoginScreen(
     loginVM: LoginVM,
     navController: NavHostController,
-    fromLanding: Boolean = false
 ) {
     var email by remember {
         mutableStateOf("")
@@ -81,10 +81,24 @@ fun LoginScreen(
     var showResetPrompt by remember{
         mutableStateOf(false)
     }
+    var hasInternet by remember{
+        mutableStateOf(false)
+    }
+    val noInternet = "Connect to the Internet and Try Again."
+    LaunchedEffect(Unit){
+        scope.launch {
+            hasInternet = checkServer()
+        }
+        if(!hasInternet){
+            loginMessage = noInternet
+        }
+    }
     LaunchedEffect(loginMessage) {
         scope.launch {
-            delay(3000)
-            loginMessage = ""
+            if(loginMessage != noInternet){
+                delay(3000)
+                loginMessage = ""
+            }
         }
     }
 
@@ -187,7 +201,7 @@ fun LoginScreen(
                 }
             },
             shape = RoundedCornerShape(5.dp),
-            enabled = !isLoading,
+            enabled = !isLoading && hasInternet,
             modifier = Modifier
                 .width(100.dp)
         ) {

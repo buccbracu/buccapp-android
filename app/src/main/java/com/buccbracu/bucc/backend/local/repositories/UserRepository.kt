@@ -4,6 +4,7 @@ import com.buccbracu.bucc.backend.local.models.User.Profile
 import com.buccbracu.bucc.backend.local.models.User.ProfileSocial
 import com.buccbracu.bucc.backend.local.models.emptyProfile
 import com.buccbracu.bucc.backend.remote.api.UserService
+import com.buccbracu.bucc.backend.remote.firebase.topics
 import com.buccbracu.bucc.backend.remote.models.Member
 import com.buccbracu.bucc.backend.remote.models.MemberResponse
 import com.buccbracu.bucc.backend.remote.models.PatchMember
@@ -68,12 +69,20 @@ class UserRepository @Inject constructor(
     }
 
 
-    suspend fun getRemoteProfileAndSave(cookie: String){
+    suspend fun getRemoteProfileAndSave(cookie: String, setTopics: (List<String>) -> Unit){
         val response = User.getUserProfile(cookie).awaitResponse()
         val body = response.body()
         body?.let {
             println("REMOTE PROFILE ${body.user.name}")
             saveProfile(body.user)
+            setTopics(
+                topics(
+                    department = body.user.buccDepartment,
+                    designation = body.user.designation
+                )
+            )
+
+
         }
 
     }

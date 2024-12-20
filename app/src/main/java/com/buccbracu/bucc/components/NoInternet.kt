@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.buccbracu.bucc.backend.remote.BASE
 import com.buccbracu.bucc.backend.remote.BASE_URL
 import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
@@ -119,7 +120,7 @@ fun Float.dpToPx(): Float = this * (160 / 72f)
 
 suspend fun checkServer(): Boolean {
     return withContext(Dispatchers.IO) {
-        isReachable(BASE_URL)
+        isReachable(BASE)
     }
 }suspend fun checkGithub(): Boolean {
     return withContext(Dispatchers.IO) {

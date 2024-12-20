@@ -9,6 +9,7 @@ import com.buccbracu.bucc.backend.local.repositories.UserRepository
 import com.buccbracu.bucc.backend.remote.TOKEN_KEY
 import com.buccbracu.bucc.backend.remote.api.AuthService
 import com.buccbracu.bucc.backend.remote.firebase.FirebaseRepository
+import com.buccbracu.bucc.backend.remote.firebase.topics
 import com.buccbracu.bucc.backend.remote.models.ResetPassword
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
@@ -72,8 +73,15 @@ open class LoginVM @Inject constructor(
                             passwordData = password,
                             token = cookie
                         )
-                        userR.getRemoteProfileAndSave(cookie)
-                        firebase.subscribeToTopic("task")
+                        userR.getRemoteProfileAndSave(
+                            cookie = cookie,
+                            setTopics = { topics ->
+                                topics.forEach{
+                                    firebase.subscribeToTopic(it)
+                                }
+                            }
+                        )
+
                         loginStatus(true, message)
                     }
 

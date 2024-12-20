@@ -20,3 +20,19 @@ fun createNotification(
     notificationManager.notify(2024, notification)
 
 }
+
+fun createTaskNotification(
+    context: Context,
+    title: String,
+    bodyText: String
+){
+    val notificationManager = NotificationMan.notificationManager
+    val notification = NotificationCompat
+        .Builder(context, "bucc_notification")
+        .setContentTitle(title)
+        .setContentText(bodyText)
+        .setSmallIcon(R.drawable.bucc_general)
+        .build()
+    notificationManager.notify(2024, notification)
+
+}

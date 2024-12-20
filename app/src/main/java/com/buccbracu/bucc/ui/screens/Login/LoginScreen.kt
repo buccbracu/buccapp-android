@@ -88,10 +88,12 @@ fun LoginScreen(
     LaunchedEffect(Unit){
         scope.launch {
             hasInternet = checkServer()
+            println(hasInternet)
+            if(!hasInternet){
+                loginMessage = noInternet
+            }
         }
-        if(!hasInternet){
-            loginMessage = noInternet
-        }
+
     }
     LaunchedEffect(loginMessage) {
         scope.launch {

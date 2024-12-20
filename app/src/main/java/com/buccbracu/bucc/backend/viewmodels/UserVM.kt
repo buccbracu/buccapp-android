@@ -67,7 +67,7 @@ open class UserVM @Inject constructor(
     fun refreshProfile(){
         viewModelScope.launch {
             session.value?.let {
-                userR.getRemoteProfileAndSave(session.value!!.authJsToken)
+                userR.getRemoteProfileAndSave(session.value!!.authJsToken, setTopics = {})
             }
         }
     }

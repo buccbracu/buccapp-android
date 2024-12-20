@@ -65,10 +65,12 @@ fun FilterScreen(
     val (lastPromotion, setLastPromotion) = rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(department) {
-        designations = if(department.lowercase() ==  allDepartments[0].lowercase()) {
-            allDesignations.slice(0..3)
-        } else{
-            allDesignations.slice(4..<allDesignations.size)
+        designations =
+        if(allFields) {
+            allDesignations
+        }
+        else{
+            allDesignations.slice(4..<allDesignations.size-2)
         }
     }
 

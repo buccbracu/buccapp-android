@@ -163,7 +163,7 @@ fun LandingPage(
                             ),
                         mode = TileMode.Repeated
                     )
-                    Spacer(modifier = Modifier.height(150.dp))
+                    Spacer(modifier = Modifier.fillMaxHeight(0.2f))
                     AnimatedVector("up_new.json")
                     if(!showLogin){
 

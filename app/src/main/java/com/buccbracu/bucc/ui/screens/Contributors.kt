@@ -24,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,6 +48,7 @@ import com.buccbracu.bucc.R
 import com.buccbracu.bucc.backend.remote.models.Contributor
 import com.buccbracu.bucc.backend.viewmodels.ContributorVM
 import com.buccbracu.bucc.components.EmptyScreenText
+import com.buccbracu.bucc.components.GitHubLinkButton
 import com.buccbracu.bucc.components.NoButtonCircularLoadingDialog
 import com.buccbracu.bucc.components.checkGithub
 import kotlinx.coroutines.launch
@@ -133,6 +135,13 @@ fun ContributorScreen(){
                             }
                         }
                         Spacer(modifier = Modifier.height(0.dp))
+                    }
+
+                    item{
+                        GitHubLinkButton(
+                            modifier = Modifier
+                                .padding(20.dp)
+                        )
                     }
                 }
                 else {

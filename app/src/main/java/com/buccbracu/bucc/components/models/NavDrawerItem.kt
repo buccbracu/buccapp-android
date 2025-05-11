@@ -131,7 +131,13 @@ sealed class NavDrawerItem(
                     Divider,
                     AboutUs,
                     AboutClub,
-                    Login
+                    Logout
+                )
+                else if(designation== "Alumni") listOf(
+                    Blogs,
+                    AboutUs,
+                    AboutClub,
+                    Logout
                 )
                 else listOf(
                     Blogs,

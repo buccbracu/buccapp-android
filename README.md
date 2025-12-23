@@ -1,6 +1,5 @@
 # BUCC Android App
 
-![App Logo](app/src/main/res/mipmap-xhdpi/ic_launcher.png) [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat&logo=android)](https://developer.android.com)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)

@@ -18,6 +18,12 @@ It serves as a mobile companion to the BUCC ecosystem, allowing members to stay 
 * **Resources**: Access to study materials and club documentation.
 * **Club Directory**: Contact information for executive panels and faculty advisors.
 
+![image alt] (https://github.com/buccbracu/buccapp-android/blob/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/02.png)
+![image alt] (https://github.com/buccbracu/buccapp-android/blob/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/04.png)
+![image alt] (https://github.com/buccbracu/buccapp-android/blob/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/06.png)
+![image alt] (https://github.com/buccbracu/buccapp-android/blob/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/09.png)
+
+
 ## 🛠️ Built With
 
 * [Kotlin](https://kotlinlang.org/) - The primary programming language used.

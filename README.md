@@ -17,12 +17,20 @@ It serves as a mobile companion to the BUCC ecosystem, allowing members to stay 
 * **Resources**: Access to study materials and club documentation.
 * **Club Directory**: Contact information for executive panels and faculty advisors.
 
-## 📸 App Screenshots 
-![Screenshot 1](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/02.png) 
-![Screenshot 2](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/04.png) 
-![Screenshot 3](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/06.png) 
-![Screenshot 4](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/09.png)
----
+## 📸 App Screenshots
+
+![Screenshot 1](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/01.png)
+![Screenshot 2](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/02.png)
+![Screenshot 3](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/03.png)
+![Screenshot 4](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/04.png)
+![Screenshot 5](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/05.png)
+![Screenshot 6](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/06.png)
+![Screenshot 7](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/07.png)
+![Screenshot 8](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/08.png)
+![Screenshot 9](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/09.png)
+![Screenshot 10](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/10.png)
+![Screenshot 11](https://raw.githubusercontent.com/buccbracu/buccapp-android/9887d910522d786d0f5faadcc8f45e12b4626c0a/images/11.png)
+
 
 ## 🛠️ Built With
 
